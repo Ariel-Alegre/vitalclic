@@ -34,7 +34,6 @@
     "postgres": "^3.3.2",
     "request": "^2.88.2",
     "sequelize": "^6.3.5",
-    "socket.io": "^4.8.1",
     "stripe": "^14.15.0",
     "underscore": "1.13.6",
     "urllib": "^2.36.1"

@@ -23,18 +23,6 @@ server.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   next();
 });
-server.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-
-  // Desactivar caché
-  res.header('Cache-Control', 'no-store'); // Esto evita el almacenamiento en caché
-  res.header('Pragma', 'no-cache'); // Esto es para compatibilidad con HTTP 1.0
-
-  next();
-});
 
 server.use('/', routes);
 
