@@ -413,4 +413,44 @@ h1 {
   background-color: #0056b3;
 }
 
+
+.container-successRegister {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid #53676c ;
+  border-radius: 8px;
+  background-color:#53676c ;
+  color: white;
+  max-width: 800px;
+  margin: 8em auto;
+}
+
+.title-successRegister {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+@media screen and (max-width: 768px) {
+  .title-successRegister {
+    font-size: 20px;
+  }
   
+}
+.message-successRegister {
+  font-size: 16px;
+  text-align: center;
+}
+
+.button-successRegister {
+margin-top: 20px;
+padding: 10px 20px;
+font-size: 16px;
+color: #53676c;
+background-color:white ;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+

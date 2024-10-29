@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import RegisterBussines from './pages/RegisterBussines';
 import Admin from './pages/Admin';
 import StatusTable from './components/Admin/TableDoctor';
+import RegisterSuccess from './pages/RegisterSuccess';
 
 
 
@@ -31,6 +32,8 @@ function App() {
           <Route path="/registrarse-empresa" element={<RegisterBussines />} />
 
           <Route path='/iniciar-sesión' element={<Login/>}/>
+          <Route path='/formulario-enviado' element={<RegisterSuccess/>}/>
+
 
           <Route path='/administrar' element={<Admin/>}>
           <Route index element={<StatusTable/>}/>

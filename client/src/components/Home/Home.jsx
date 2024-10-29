@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import Form from "react-bootstrap/Form";
-
+import { AllDoctors } from "../../redux/action";
+import { useDispatch, useSelector } from "react-redux";
 const locations = [
   {
     name: "NOMBRE 1",
@@ -42,6 +43,8 @@ const locations = [
 ];
 
 const HomeComponent = () => {
+  const dispatch = useDispatch();
+  const alldoctors = useSelector((state) => state.alldoctors.data);
   const [selectedProvince, setSelectedProvince] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [filteredLocations, setFilteredLocations] = useState([]); // Cambiado a array vacío
@@ -50,6 +53,9 @@ const HomeComponent = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [showLocations, setShowLocations] = useState(false); // Nuevo estado para controlar la visibilidad
 
+  useEffect(() => {
+    dispatch(AllDoctors());
+  }, []);
   const handleTabClick = (key) => {
     setActiveTab(key);
   };
@@ -95,31 +101,27 @@ const HomeComponent = () => {
     : [];
 
   const handleSearch = async () => {
-
     try {
-      
-  
-    const results = await locations.filter((location) => {
-      return (
-        (selectedDepartment
-          ? location.department === selectedDepartment
-          : true) &&
-        (selectedProvince ? location.province === selectedProvince : true) &&
-        (selectedDistrict ? location.district === selectedDistrict : true)
-      );
-    });
+      const results = await locations.filter((location) => {
+        return (
+          (selectedDepartment
+            ? location.department === selectedDepartment
+            : true) &&
+          (selectedProvince ? location.province === selectedProvince : true) &&
+          (selectedDistrict ? location.district === selectedDistrict : true)
+        );
+      });
 
-    setFilteredLocations(results); // Actualiza las ubicaciones filtradas
-    setShowLocations(true); // Muestra las ubicaciones después de la búsqueda
-  } catch (error) {
-      console.error('error home:', error)
-  } finally {
-
-    const sedeElement =  await document.getElementById("sede");
-    if (sedeElement) {
-       await sedeElement.scrollIntoView({ behavior: "smooth" });
+      setFilteredLocations(results); // Actualiza las ubicaciones filtradas
+      setShowLocations(true); // Muestra las ubicaciones después de la búsqueda
+    } catch (error) {
+      console.error("error home:", error);
+    } finally {
+      const sedeElement = await document.getElementById("sede");
+      if (sedeElement) {
+        await sedeElement.scrollIntoView({ behavior: "smooth" });
+      }
     }
-  }
     // Hacer scroll hacia el id 'sede'
   };
 
@@ -249,19 +251,36 @@ const HomeComponent = () => {
           <>
             <h1>SELECCIONAR SEDE</h1>
             <div className="locations-list">
-              {filteredLocations.map((location, index) => (
-                <div key={index} className="location-card">
-                  <img
-                    src={location.image}
-                    alt="Sede"
-                    className="location-image"
-                  />
-                  <div className="location-info">
-                    <h2>{location.name}</h2>
-                    <p>{location.description}</p>
+              {alldoctors &&
+                alldoctors.map((location, index) => (
+                  <div key={index} className="location-card">
+                    <img
+                      src="https://via.placeholder.com/100"
+                      alt="Sede"
+                      className="location-image"
+                    />
+                    <div className="location-info">
+                      <h2>{location.name}</h2>
+                      <p>{location.specialty}</p>
+
+                      <p>
+                        <strong>Correo electrónico:</strong>{" "}
+                        <a href={`mailto:${location.email}`} target="__blank">
+                          {location.email}
+                        </a>
+                        <br /> <strong>Telefóno:</strong> {location.phone}
+                        <br />
+                        <strong>WhatsApp:</strong>{" "}
+                        <a
+                          href={`https://wa.me/${location.phone}`}
+                          target="__blank"
+                        >
+                          WhatsApp
+                        </a>
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </>
         )}

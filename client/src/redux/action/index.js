@@ -9,7 +9,7 @@ import axios from 'axios'
 export const RegisterUser = (payload) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/register', payload);
+      const response = await axios.post('https://vitalclic-production.up.railway.app/api/register', payload);
 
       dispatch({ type: 'REGISTER_SUCCESS', payload: response.data });
 
@@ -30,7 +30,7 @@ export const RegisterDoctor = (payload) => {
   return async (dispatch) => {
     try {
       // Realiza la solicitud POST a la API
-      const response = await axios.post('http://localhost:3001/api/register-doctor', payload);
+      const response = await axios.post('https://vitalclic-production.up.railway.app/api/register-doctor', payload);
       
       // Despacha la acción de éxito con los datos recibidos
       dispatch({ type: 'REGISTERDOCTOR_SUCCESS', payload: response.data });
@@ -51,7 +51,7 @@ export const RegisterDoctor = (payload) => {
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("http://localhost:3001/api/login", {
+      const response = await axios.post("https://vitalclic-production.up.railway.app/api/login", {
         email,
         password,
       });
@@ -89,7 +89,7 @@ export const logout = () => {
 export const AllDoctors = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('http://localhost:3001/api/doctors');
+      const res = await axios.get('https://vitalclic-production.up.railway.app/api/doctors');
       const data = res.data;
 
       dispatch({
@@ -107,7 +107,7 @@ export const AllDoctors = () => {
 export const UpdateDoctorStatus = (id, status) => {
   return async (dispatch) => {
       try {
-          const response = await axios.put(`http://localhost:3001/api/update-doctor-status/${id}`, { status });
+          const response = await axios.put(`https://vitalclic-production.up.railway.app/api/update-doctor-status/${id}`, { status });
           dispatch({ type: 'UPDATE_DOCTOR_STATUS_SUCCESS', payload: response.data });
       } catch (error) {
           console.error('Error al actualizar el estado del médico:', error);

@@ -1,333 +1,138 @@
 import { useState } from "react";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import { Link } from "react-router-dom";
-import { RegisterDoctor } from "../../redux/action";
+import { Col, Form, Row } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import { RegisterDoctor } from "../../redux/action";
+
+const specialities = [
+  "Ginecólogo", "Clínico", "Odontólogo", "Psicólogo", 
+  "Traumatólogo", "Dermatólogo", "Oftamólogo", "Neurólogo"
+];
+
+const genres = ["Femenino", "Masculino", "Prefiero no decirlo"];
 
 function RegisterDoctors() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [data, setData] = useState({
-    name: "",
-    lastName: "",
-    professional_college: "",
-    registration_number: "",
-    specialty_number_rne: "",
-    genre: "",
-    birthdate: "",
-    email: "",
-    country: "",
-    province: "",
-    district: "",
-    specialty: "",
-    phone: "",
-    password: "",
+    name: "", lastName: "", professional_college: "", 
+    registration_number: "", specialty_number_rne: "", genre: "", 
+    birthdate: "", email: "", country: "", province: "", 
+    district: "", specialty: "", phone: "", password: "", 
     termsAccepted: false,
   });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setValidated(true);
-
+    setLoading(true);
     try {
-  
-        await dispatch(RegisterDoctor(data));
-    
+      await dispatch(RegisterDoctor(data));
+      navigate("/formulario-enviado");
     } catch (error) {
-      alert("Usuario ya existe o ha ocurrido un error.");
       console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setData({
-      ...data,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+  const handleChange = ({ target: { name, value, type, checked } }) => {
+    setData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
+  const renderInputField = (label, name, type = "text", placeholder) => (
+    <Form.Group as={Col} md="12" controlId={`validation-${name}`}>
+      <Form.Label>{label}</Form.Label>
+      <Form.Control
+        name={name}
+        type={type}
+        value={data[name]}
+        onChange={handleChange}
+        placeholder={placeholder}
+        required
+      />
+      <Form.Control.Feedback type="invalid">
+        {`${label} es requerido.`}
+      </Form.Control.Feedback>
+    </Form.Group>
+  );
+
   return (
-    <Form
-      className="form-register"
-      noValidate
-      validated={validated}
-      onSubmit={handleSubmit}
-    >
+    <Form noValidate validated={validated} onSubmit={handleSubmit} className="form-register">
       <div className="logo-register">
         <img src={require("../../assets/Images/logo.png")} alt="Logo" />
       </div>
-       <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId="validationCustom01">
-          <Form.Label>Nombre</Form.Label>
-          <Form.Control
-            name="name"
-            value={data.name}
-            onChange={handleChange}
-            placeholder="Nombre"
-            type="text"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El nombre es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom02">
-          <Form.Label>Apellido</Form.Label>
-          <Form.Control
-            name="lastName"
-            value={data.lastName}
-            onChange={handleChange}
-            placeholder="Apellido"
-            type="text"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El apellido es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-
       <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId="validationCustom03">
-          <Form.Label>Colegio profesional</Form.Label>
-          <Form.Control
-            name="professional_college"
-            value={data.professional_college}
-            onChange={handleChange}
-            placeholder="Colegio profesional"
-            type="text"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El colegio profesional es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group as={Col} md="6" controlId="validationCustom04">
-          <Form.Label>N° de colegiatura</Form.Label>
-          <Form.Control
-            name="registration_number"
-            value={data.registration_number}
-            onChange={handleChange}
-            placeholder="N° de colegiatura"
-            type="text"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El N° de colegiatura es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId="validationCustom05">
+        <Form.Group as={Col} md="6">
           <Form.Label>Especialidad</Form.Label>
-          <Form.Select
-            aria-label="Default select example"
-            name="specialty"
-            value={data.specialty}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Especialidad</option>
-            <option value="2">Ginecólogo</option>
-            <option value="3">Clínico</option>
-            <option value="4">Odontólogo</option>
-            <option value="5">Psicólogo</option>
-            <option value="6">Traumatólogo</option>
-            <option value="7">Dermatólogo</option>
-            <option value="8">Oftamólogo</option>
-            <option value="9">Neurólogo</option>
+          <Form.Select name="specialty" value={data.specialty} onChange={handleChange} required>
+            <option value="">Selecciona una especialidad</option>
+            {specialities.map((spec, index) => (
+              <option key={index} value={spec}>{spec}</option>
+            ))}
           </Form.Select>
           <Form.Control.Feedback type="invalid">
             La especialidad es requerida.
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group as={Col} md="6" controlId="validationCustom06">
-          <Form.Label>N° de especialidad (RNE)</Form.Label>
-          <Form.Control
-            name="specialty_number_rne"
-            value={data.specialty_number_rne}
-            onChange={handleChange}
-            placeholder="N° de especialidad (RNE)"
-            type="number"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El N° de especialidad (RNE) es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-
-      <Row className="mb-3">
-        <Form.Label>Género</Form.Label>
-        <Form.Group as={Col} md="12" controlId="validationCustom05">
-          <Form.Select
-            aria-label="Default select example"
-            name="genre"
-            value={data.genre}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Seleccionar género</option>
-            <option value="Femenino">Femenino</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+        <Form.Group as={Col} md="6">
+          <Form.Label>Género</Form.Label>
+          <Form.Select name="genre" value={data.genre} onChange={handleChange} required>
+            <option value="">Selecciona un género</option>
+            {genres.map((gen, index) => (
+              <option key={index} value={gen}>{gen}</option>
+            ))}
           </Form.Select>
           <Form.Control.Feedback type="invalid">
             El género es requerido.
           </Form.Control.Feedback>
         </Form.Group>
       </Row>
-
       <Row className="mb-3">
-        <Form.Group as={Col} md="12" controlId="validationCustom06">
-          <Form.Label>Fecha de nacimiento</Form.Label>
-          <Form.Control
-            type="date"
-            name="birthdate"
-            value={data.birthdate}
-            onChange={handleChange}
-            placeholder="Fecha de nacimiento"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            La fecha de nacimiento es requerida.
-          </Form.Control.Feedback>
-        </Form.Group>
+        {renderInputField("Nombre", "name", "text", "Nombre")}
+        {renderInputField("Apellido", "lastName", "text", "Apellido")}
+        {renderInputField("Colegio profesional", "professional_college", "text", "Colegio profesional")}
+        {renderInputField("N° de colegiatura", "registration_number", "text", "N° de colegiatura")}
+        {renderInputField("N° de especialidad (RNE)", "specialty_number_rne", "text", "N° de especialidad (RNE)")}
+       
+        {renderInputField("Fecha de nacimiento", "birthdate", "date", "Fecha de nacimiento")}
+        {renderInputField("Correo electrónico", "email", "email", "Correo electrónico")}
+        {renderInputField("País", "country", "text", "País")}
+        {renderInputField("Provincia", "province", "text", "Provincia")}
+        {renderInputField("Distrito", "district", "text", "Distrito")}
+        {renderInputField("Teléfono", "phone", "number", "Teléfono")}
+        {renderInputField("Contraseña", "password", "password", "Contraseña")}
       </Row>
 
-      <Row className="mb-3">
-        <Form.Group as={Col} md="12" controlId="validationCustom07">
-          <Form.Label>Correo electrónico</Form.Label>
-          <Form.Control
-            name="email"
-            value={data.email}
-            onChange={handleChange}
-            type="email"
-            placeholder="Correo electrónico"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El correo es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
+   
 
-      <Row className="mb-3">
-        <Form.Group as={Col} md="12" controlId="validationCustom08">
-          <Form.Label>País</Form.Label>
-          <Form.Control
-            name="country"
-            value={data.country}
-            onChange={handleChange}
-            type="text"
-            placeholder="País"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El país es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-
-      <Row className="mb-3">
-        <Form.Group as={Col} md="12" controlId="validationCustom09">
-          <Form.Label>Provincia</Form.Label>
-          <Form.Control
-            name="province"
-            value={data.province}
-            onChange={handleChange}
-            type="text"
-            placeholder="Provincia"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            La provincia es requerida.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-
-      <Row className="mb-3">
-        <Form.Group as={Col} md="12" controlId="validationCustom10">
-          <Form.Label>Distrito</Form.Label>
-          <Form.Control
-            name="district"
-            value={data.district}
-            onChange={handleChange}
-            type="text"
-            placeholder="Distrito"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El distrito es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-
-      <Row className="mb-3">
-        <Form.Group as={Col} md="12" controlId="validationCustom11">
-          <Form.Label>Teléfono</Form.Label>
-          <Form.Control
-            name="phone"
-            value={data.phone}
-            onChange={handleChange}
-            type="number"
-            placeholder="Teléfono"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El teléfono es requerido.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-
-      <Row className="mb-3">
-        <Form.Group as={Col} md="12" controlId="validationCustom12">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            name="password"
-            value={data.password}
-            onChange={handleChange}
-            type="password"
-            placeholder="Contraseña"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            La contraseña es requerida.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
       <Form.Group className="mb-3">
-      <Form.Check
-  name="termsAccepted"
-  checked={data.termsAccepted}
-  onChange={handleChange}
-  required
-  label="Aceptar términos y condiciones"
-  feedback="Aceptar términos y condiciones es requerido."
-  feedbackType="invalid"
-  
-/>
-
+        <Form.Check
+          name="termsAccepted"
+          checked={data.termsAccepted}
+          onChange={handleChange}
+          required
+          label="Aceptar términos y condiciones"
+          feedback="Es necesario aceptar los términos."
+          feedbackType="invalid"
+        />
       </Form.Group>
+
       <div className="d-grid gap-2">
         <button className="btn-global" type="submit">
-          Registrarme
+          {loading ? <CircularProgress size={15} thickness={5} sx={{ color: "#fff" }} /> : "Enviar formulario"}
         </button>
       </div>
       <div className="a-login">
-        ¿Ya tienes cuenta?{" "}
-        <Link to="/iniciar-sesión" className="scrollto">
-          Iniciar sesión
-        </Link>
+        ¿Ya tienes cuenta? <Link to="/iniciar-sesión">Iniciar sesión</Link>
       </div>
     </Form>
   );
