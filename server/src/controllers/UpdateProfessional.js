@@ -1,6 +1,5 @@
 // controllers/YourControllerFile.js
 const { UserProfessional } = require('../db');
-const { io } = require('../app'); // Asegúrate de que esta importación sea correcta
 
 module.exports = {
     UpdateProfessional: async (req, res) => {
@@ -12,21 +11,19 @@ module.exports = {
                 return res.status(400).json({ message: 'Estado no válido' });
             }
 
-            const updatedDoctor = await UserProfessional.update(
+            const [updatedCount, updatedRows] = await UserProfessional.update(
                 { status },
                 { 
                     where: { id },
-                    returning: true
+                    returning: true  // Este campo depende de tu base de datos; por ejemplo, PostgreSQL lo soporta.
                 }
             );
 
-            if (updatedDoctor[0] === 0) {
+            if (updatedCount === 0) {
                 return res.status(404).json({ message: 'Médico no encontrado' });
             }
 
-            // Emitir el evento a todos los clientes conectados
-
-            return res.status(200).json(updatedDoctor[1][0]);
+            return res.status(200).json(updatedRows[0]);  // Devuelve el profesional actualizado.
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Error al actualizar el estado' });
