@@ -25,7 +25,6 @@ module.exports = {
             }
 
             // Emitir el evento a todos los clientes conectados
-            io.emit('doctorStatusUpdated', updatedDoctor[1][0]);
 
             return res.status(200).json(updatedDoctor[1][0]);
         } catch (error) {

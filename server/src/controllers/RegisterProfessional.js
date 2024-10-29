@@ -58,7 +58,7 @@
           country,
           province,
           district,
-          status: "earring",
+          status: "pendiente",
           backgroundColor,
           termsAccepted,
           termsAcceptedAt: termsAcceptedAt || new Date() // Usa la fecha actual si no está especificada
