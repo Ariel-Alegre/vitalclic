@@ -32,7 +32,7 @@
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        let role = 'doctor';
+        let role = 'profesional';
         const adminEmails = ['admin1@gmail.com', 'admin2@fmail.com'];
         if (adminEmails.includes(email)) {
           role = 'admin';

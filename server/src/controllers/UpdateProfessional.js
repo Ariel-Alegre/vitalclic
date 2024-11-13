@@ -20,7 +20,7 @@ module.exports = {
             );
 
             if (updatedCount === 0) {
-                return res.status(404).json({ message: 'Médico no encontrado' });
+                return res.status(404).json({ message: 'Profesional no encontrado' });
             }
 
             return res.status(200).json(updatedRows[0]);  // Devuelve el profesional actualizado.
