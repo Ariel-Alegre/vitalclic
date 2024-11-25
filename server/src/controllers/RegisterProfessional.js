@@ -26,7 +26,7 @@
 
         if (existingUser) {
           console.log('El usuario ya existe');
-          return res.status(400).json({ message: 'El usuario ya existe' });
+          return res.status(404).json({ message: 'El usuario ya existe' });
         }
 
         const saltRounds = 10;

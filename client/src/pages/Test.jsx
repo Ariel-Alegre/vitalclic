@@ -1,97 +1,124 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { useSpring, animated } from '@react-spring/web';
+/* 
+import React, { useState } from "react";
+import styles from "../../styles/Home/Form.module.css";
+import SearchIcon from "@mui/icons-material/Search";
 
-const Fade = React.forwardRef(function Fade(props, ref) {
-  const {
-    children,
-    in: open,
-    onClick,
-    onEnter,
-    onExited,
-    ownerState,
-    ...other
-  } = props;
-  const style = useSpring({
-    from: { opacity: 0 },
-    to: { opacity: open ? 1 : 0 },
-    onStart: () => {
-      if (open && onEnter) {
-        onEnter(null, true);
-      }
+export default function Home() {
+  const [mode, setMode] = useState("PRESENCIAL");
+  const [selectedDepartamento, setSelectedDepartamento] = useState("");
+  const [selectedProvincia, setSelectedProvincia] = useState("");
+  const [selectedDistrito, setSelectedDistrito] = useState("");
+
+  const especialidades = [
+    "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
+    "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología"
+  ];
+
+  const departamentos = [
+    "Amazonas", "Áncash", "Apurímac", "Arequipa", "Ayacucho", "Cajamarca",
+    "Cusco", "Huancavelica", "Huánuco", "Ica", "Junín", "La Libertad",
+    "Lambayeque", "Lima", "Loreto", "Madre de Dios", "Moquegua", "Pasco",
+    "Piura", "Puno", "San Martín", "Tacna", "Tumbes", "Ucayali"
+  ];
+
+  const provincias = {
+    "Amazonas": ["Chachapoyas", "Bagua", "Bongará", "Condorcanqui", "Luya", "Rodríguez de Mendoza", "Utcubamba"],
+    // Define otras provincias aquí...
+  };
+
+  const distritos = {
+    "Amazonas": {
+      "Chachapoyas": ["Chachapoyas", "Asunción", "Balsas", "Levanto", "Cuispes"],
+      // Define otros distritos aquí...
     },
-    onRest: () => {
-      if (!open && onExited) {
-        onExited(null, true);
-      }
-    },
-  });
+    // Define otros departamentos con sus provincias y distritos aquí...
+  };
+
+  const handleDepartamentoChange = (e) => {
+    setSelectedDepartamento(e.target.value);
+    setSelectedProvincia("");  // Resetea la provincia cuando se cambia el departamento
+    setSelectedDistrito("");   // Resetea el distrito cuando se cambia el departamento
+  };
+
+  const handleProvinciaChange = (e) => {
+    setSelectedProvincia(e.target.value);
+    setSelectedDistrito("");   // Resetea el distrito cuando se cambia la provincia
+  };
+
+  const handleDistritoChange = (e) => {
+    setSelectedDistrito(e.target.value);
+  };
+
+  const handlePresencialSubmit = (e) => {
+    e.preventDefault();
+    // Aquí podrías enviar los datos del formulario o hacer alguna acción
+    alert(`Formulario enviado: 
+    Especialidad: ${mode} 
+    Departamento: ${selectedDepartamento} 
+    Provincia: ${selectedProvincia} 
+    Distrito: ${selectedDistrito}`);
+  };
 
   return (
-    <animated.div ref={ref} style={style} {...other}>
-      {React.cloneElement(children, { onClick })}
-    </animated.div>
-  );
-});
+    <form onSubmit={handlePresencialSubmit} className={styles.formContainer}>
+      <div>
+        <label>Especialidad</label>
+        <select>
+          {especialidades.map((especialidad, index) => (
+            <option key={index} value={especialidad}>{especialidad}</option>
+          ))}
+        </select>
+      </div>
 
-Fade.propTypes = {
-  children: PropTypes.element.isRequired,
-  in: PropTypes.bool,
-  onClick: PropTypes.any,
-  onEnter: PropTypes.func,
-  onExited: PropTypes.func,
-  ownerState: PropTypes.any,
-};
+      <div>
+        <label>Departamento</label>
+        <select value={selectedDepartamento} onChange={handleDepartamentoChange}>
+          <option value="">Selecciona un Departamento</option>
+          {departamentos.map((departamento, index) => (
+            <option key={index} value={departamento}>{departamento}</option>
+          ))}
+        </select>
+      </div>
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+      <div>
+        <label>Provincia</label>
+        <select
+          value={selectedProvincia}
+          onChange={handleProvinciaChange}
+          disabled={!selectedDepartamento}
+        >
+          <option value="">Selecciona una Provincia</option>
+          {selectedDepartamento &&
+            provincias[selectedDepartamento]?.map((provincia, index) => (
+              <option key={index} value={provincia}>{provincia}</option>
+            ))}
+        </select>
+      </div>
 
-export default function SpringModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+      <div>
+        <label>Distrito</label>
+        <select
+          value={selectedDistrito}
+          onChange={handleDistritoChange}
+          disabled={!selectedProvincia}
+        >
+          <option value="">Selecciona un Distrito</option>
+          {selectedProvincia &&
+            distritos[selectedDepartamento]?.[selectedProvincia]?.map((distrito, index) => (
+              <option key={index} value={distrito}>{distrito}</option>
+            ))}
+        </select>
+      </div>
 
-  return (
-    <div>
-      <Button onClick={handleOpen}>Open modal</Button>
-      <Modal
-        aria-labelledby="spring-modal-title"
-        aria-describedby="spring-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            TransitionComponent: Fade,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Typography id="spring-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="spring-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
-          </Box>
-        </Fade>
-      </Modal>
-    </div>
+      <div>
+        <button type="submit">
+          <SearchIcon />
+          Buscar
+        </button>
+      </div>
+    </form>
   );
 }
+
+
+*/

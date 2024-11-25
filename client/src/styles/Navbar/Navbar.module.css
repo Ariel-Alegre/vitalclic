@@ -1,0 +1,17 @@
+.optionsNavbar{
+
+    color: white;
+
+}
+
+.btnLogin {
+    color: white;
+    text-decoration: none;
+    border:1px solid white;
+    padding: 10px;
+
+}
+
+.logo {
+    width: 200px;
+}

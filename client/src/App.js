@@ -2,15 +2,14 @@ import React from 'react';
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Sede from './pages/Sede';
-import Test from './pages/Test';
-import RegisterDoctor from './pages/RegisterDoctors';
-
+import ProfessionalRegistration from './pages/ProfessionalRegistration';
 import Login from './pages/Login';
-import RegisterBussines from './pages/RegisterBussines';
-import Admin from './pages/Admin';
-import StatusTable from './components/Admin/TableDoctor';
-import RegisterSuccess from './pages/RegisterSuccess';
+import PanelAdmin from './pages/PanelAdmin';
+import TableProfessional from './components/PanelAdmin/TableProfessional';
+import Test from './pages/Test';
+import DetailsProfessional from './pages/DetailsProfessional';
+import RegisterUser from './pages/RegisterUser';
+
 
 
 
@@ -28,26 +27,26 @@ function App() {
         <Routes>
  
           <Route path="/" element={<Home />} />
-          <Route path="/registrarse-profesional" element={<RegisterDoctor />} />
-          <Route path="/registrarse-empresa" element={<RegisterBussines />} />
+          <Route path="/iniciar-sesión" element={<Login />} />
 
-          <Route path='/iniciar-sesión' element={<Login/>}/>
-          <Route path='/formulario-enviado' element={<RegisterSuccess/>}/>
+          <Route path="/registrar-profesional" element={<ProfessionalRegistration />} />
+          <Route path="/registrar-usuario" element={<RegisterUser />} />
 
+          <Route path="/mi-perfil" element={<DetailsProfessional />} />
 
-          <Route path='/administrar' element={<Admin/>}>
-          <Route index element={<StatusTable/>}/>
-          <Route path='petición-registro' element={<StatusTable/>}/>
-
-
-          </Route>
-
-          
           <Route path="/test" element={<Test />} />
 
+          <Route path="/administrar" element={<PanelAdmin />} >
+
+          <Route index element={<TableProfessional />} />
+
+          <Route path="profesional" element={<TableProfessional />} />
+
+         </Route>
 
         
-
+        
+  
 
         </Routes>
       </BrowserRouter>

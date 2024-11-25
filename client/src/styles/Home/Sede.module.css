@@ -1,0 +1,153 @@
+.container_sede {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .container_sede h1 {
+    font-size: 36px;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+    margin-top: 1em;
+ margin-bottom: 1em;
+  }
+  .hr {
+    border-bottom: 1px solid #cfd8dc;
+
+  }
+ 
+  .locations_list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .location_card {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #cfd8dc;
+    padding: 20px 0;
+  }
+  .link {
+    color: #8ca7a6;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .location_image {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  
+  .location_info {
+    margin-left: 20px;
+    text-align: left;
+  }
+  
+  .location_info h2 {
+    font-size: 18px;
+    color: #4a4a4a;
+    margin: 0;
+  }
+  
+  .location_info p {
+    font-size: 14px;
+    color: #7b7b7b;
+    margin: 5px 0;
+    font-weight: bold;
+  }
+  
+  /* src/components/Profile.module.css */
+
+.profile {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  margin: 40px auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+.profileImage {
+  width: 200px;
+  height: 200px;
+
+  margin-bottom: 15px;
+  border: 4px solid #f0f0f0;
+  transition: border-color 0.3s;
+}
+
+
+
+.name {
+  font-size: 1.8em;
+  margin: 10px 0;
+  color: #333;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.specialty {
+  font-size: 1.4em;
+  margin: 10px 0;
+  color: #333;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+@media screen and (max-width: 768px) {
+  .name {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #333;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+  .profile {
+    text-align: start;
+    background-color: #ffffff;
+    border-radius: 12px;
+    margin: 40px auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .specialty {
+    text-align: center;
+  }
+}
+
+.description {
+  font-size: 1em;
+  color: #666;
+  margin: 10px 0 20px;
+  line-height: 1.6;
+  padding: 0 15px;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.socialLink {
+  color: #0077b5;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.socialLink:hover {
+  color: #005582;
+  transform: scale(1.1);
+}
+
+.address {
+  font-size: 0.9em;
+  color: #888;
+  line-height: 1.5;
+}
+
+  
+  

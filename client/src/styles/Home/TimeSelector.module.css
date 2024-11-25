@@ -1,0 +1,39 @@
+/* TimeSelector.module.css */
+.container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-bottom: 5em;
+}
+
+.title {
+    font-size: 1.5rem; /* Aumenta el tamaño de la fuente del título */
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Mantiene 4 columnas */
+    gap: 15px; /* Aumenta el espacio entre los elementos */
+    max-width: 400px; /* Aumenta el ancho máximo */
+    margin: 0 auto;
+}
+
+.time {
+    padding: 15px; /* Aumenta el espacio interior de cada elemento */
+    font-size: 1.2rem; /* Aumenta el tamaño de la fuente de cada hora */
+    color: #777;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.time:hover {
+    background-color: #e0e0e0;
+}
+
+.selected {
+    background-color: #9db4c0;
+    color: white;
+}

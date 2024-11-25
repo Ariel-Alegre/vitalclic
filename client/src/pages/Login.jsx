@@ -1,15 +1,12 @@
-import LoginComponent from "../components/LoginComponent/LoginComponent";
-import Navbar from "../components/Navbar/NavbarRelative";
-
-
+import LoginComponent from '../components/Login/Login'
+import Navbar from '../components/Navbar/Navbar';
 
 export default function Login() {
     return (
-        <div>
+    <div>
             <Navbar/>
-            <div>
-                <LoginComponent/>
-            </div>
-        </div>
+
+<LoginComponent/>
+    </div>
     )
 }
