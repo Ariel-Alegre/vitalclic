@@ -19,14 +19,7 @@ module.exports = {
         specialty,
       } = req.body;
 
-      if (!name || !lastName || !email || !phone || !date || !time || !specialty) {
-       
-       console.log('Por favor complete todos los campos obligatorios')
-        return res.status(400).json({ message: 'Por favor complete todos los campos obligatorios' });
-    
-    
-      }
-      
+
 
       // Crear el nuevo registro en la base de datos
       const newShift = await OnlineShifts.create({
@@ -41,6 +34,7 @@ module.exports = {
         date,
         time,
         specialty,
+        status: 'pendiente'
       });
 
       console.log("Turno reservado con éxito")
