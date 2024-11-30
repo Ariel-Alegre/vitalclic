@@ -74,7 +74,7 @@ module.exports = (sequelize) => {
 
     
   }, {
-    timestamps: true, // Agrega createdAt y updatedAt automáticamente
+    timestamps: false, // Agrega createdAt y updatedAt automáticamente
   });
 
   

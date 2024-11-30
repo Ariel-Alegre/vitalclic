@@ -1,7 +1,7 @@
-const { OnlineShifts } = require('../db');
+const { OnlineShifts, UserProfessional } = require('../db');  // Asegúrate de importar ambos modelos
 
 module.exports = {
-    UpdateSatusShift: async (req, res) => {
+  UpdateSatusShift: async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
@@ -25,8 +25,15 @@ module.exports = {
         return res.status(404).json({ message: 'Turno no encontrado' });
       }
 
-      // Obtener el registro actualizado (si returning no está soportado)
-      const updatedShift = await OnlineShifts.findOne({ where: { id } });
+      // Obtener el registro actualizado junto con el UserProfessional asociado
+      const updatedShift = await OnlineShifts.findOne({
+        where: { id },
+        include: {
+          model: UserProfessional,   // Incluye los datos del UserProfessional relacionado
+          as: 'userProfessional',    // Usa el alias si lo configuraste en la relación
+          attributes: ['name', 'email'],  // Selecciona los campos de UserProfessional que necesitas
+        }
+      });
 
       return res.status(200).json({ success: true, data: updatedShift });
     } catch (error) {

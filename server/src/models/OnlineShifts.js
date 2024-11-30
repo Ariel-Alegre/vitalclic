@@ -54,14 +54,21 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
 
-
+      userId: {  // Clave foránea para la relación con UserProfessional
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'UserProfessionals', // La tabla relacionada (UserProfessionals)
+          key: 'id', // Clave primaria de UserProfessionals
+        },
+      },
     
  
  
 
     
   }, {
-    timestamps: true, // Agrega createdAt y updatedAt automáticamente
+    timestamps: false, // Agrega createdAt y updatedAt automáticamente
   }
 );
 
