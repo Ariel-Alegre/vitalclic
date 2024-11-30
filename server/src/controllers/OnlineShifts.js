@@ -17,6 +17,7 @@ module.exports = {
         date,
         time,
         specialty,
+        userProfesionalId
       } = req.body;
 
 
@@ -34,7 +35,8 @@ module.exports = {
         date,
         time,
         specialty,
-        status: 'pendiente'
+        status: 'pendiente',
+        userProfesionalId
       });
 
       console.log("Turno reservado con éxito")
