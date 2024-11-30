@@ -1,23 +1,36 @@
-const { OnlineShifts, UserProfessional } = require('../db');  // Asegúrate de importar ambos modelos
+const { OnlineShifts, UserProfessional } = require('../db');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 module.exports = {
-  UpdateSatusShift: async (req, res) => {
+  UpdateStatusShift: async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
     try {
+      // Obtener el token desde los headers
+      const token = req.headers.authorization;
+
+      if (!token) {
+        return res.status(401).json({ message: 'Token de autenticación requerido' });
+      }
+
+      // Decodificar el token para obtener el userProfesionalId
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);  // Verifica el token usando tu clave secreta
+
+      // Obtener el userProfesionalId del payload decodificado
+      const userProfesionalId = decoded.id;  // Asegúrate de que el token contiene este campo
+
       // Validar el estado proporcionado
       const validStatuses = ['pendiente', 'activo', 'atendido', 'cancelar'];
       if (!validStatuses.includes(status)) {
         return res.status(400).json({ message: 'Estado no válido' });
       }
 
-      // Actualizar el estado
+      // Actualizar el estado del turno
       const [updatedCount] = await OnlineShifts.update(
-        { status },
-        {
-          where: { id },
-        }
+        { status, userProfesionalId },  // También actualizas el userProfesionalId si lo necesitas
+        { where: { id } }
       );
 
       // Verificar si se actualizó algún registro
@@ -29,10 +42,10 @@ module.exports = {
       const updatedShift = await OnlineShifts.findOne({
         where: { id },
         include: {
-          model: UserProfessional,   // Incluye los datos del UserProfessional relacionado
-          as: 'userProfessional',    // Usa el alias si lo configuraste en la relación
+          model: UserProfessional,  // Incluye los datos del UserProfessional relacionado
+          as: 'userProfessional',   // Usa el alias si lo configuraste en la relación
           attributes: ['name', 'email'],  // Selecciona los campos de UserProfessional que necesitas
-        }
+        },
       });
 
       return res.status(200).json({ success: true, data: updatedShift });

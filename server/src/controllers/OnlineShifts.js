@@ -1,4 +1,5 @@
 const { OnlineShifts } = require('../db');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 module.exports = {
@@ -17,10 +18,11 @@ module.exports = {
         date,
         time,
         specialty,
-        userProfesionalId
+        userProfesionalId,  // Este campo ahora puede ser opcional
       } = req.body;
 
-
+      // Si no se proporciona el `userProfesionalId`, se establece como `null`
+      const userProfesional = userProfesionalId || null;
 
       // Crear el nuevo registro en la base de datos
       const newShift = await OnlineShifts.create({
@@ -36,11 +38,10 @@ module.exports = {
         time,
         specialty,
         status: 'pendiente',
-        userProfesionalId
+        userProfesionalId: userProfesional,  // Asigna `null` si no se proporciona
       });
 
-      console.log("Turno reservado con éxito")
-      // Responder con éxito
+      console.log("Turno reservado con éxito");
       return res.status(200).json({
         message: 'Formulario enviado con éxito',
         data: newShift,
@@ -50,5 +51,6 @@ module.exports = {
       console.error(error);
       return res.status(500).json({ message: 'Error en el servidor' });
     }
-  },
-};
+  }
+}
+
