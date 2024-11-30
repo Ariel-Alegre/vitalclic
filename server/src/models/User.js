@@ -73,7 +73,9 @@ module.exports = (sequelize) => {
  
 
     
-  }, );
+  }, {
+    timestamps: true, // Agrega createdAt y updatedAt automáticamente
+  });
 
   
 
