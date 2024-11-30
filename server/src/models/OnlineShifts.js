@@ -54,8 +54,8 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
 
-      userId: {  // Clave foránea para la relación con UserProfessional
-        type: DataTypes.INTEGER,
+      userProfesionalId: {  // Clave foránea para la relación con UserProfessional
+        type: DataTypes.UUID, // Cambié el tipo de INTEGER a UUID
         allowNull: false,
         references: {
           model: 'UserProfessionals', // La tabla relacionada (UserProfessionals)

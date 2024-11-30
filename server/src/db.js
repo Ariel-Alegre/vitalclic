@@ -37,16 +37,10 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { OnlineShifts, UserProfessional } = sequelize.models;
 
 // Un UserProfessional puede tener muchos OnlineShifts
-UserProfessional.hasMany(OnlineShifts, {
-  foreignKey: 'userId',  // La clave foránea en OnlineShifts que hace referencia a UserProfessional
-  as: 'onlineShifts',    // Alias para acceder a la relación desde UserProfessional
-});
 
-// Un OnlineShift pertenece a un UserProfessional
-OnlineShifts.belongsTo(UserProfessional, {
-  foreignKey: 'userId',  // La misma clave foránea usada en hasMany
-  as: 'userProfessional', // Alias para acceder a la relación desde OnlineShifts
-});
+
+UserProfessional.hasMany(OnlineShifts, { foreignKey: 'userProfesionalId' });
+OnlineShifts.belongsTo(UserProfessional, { foreignKey: 'userProfesionalId' });
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importar la conexión { conn } = require('./db.js');
