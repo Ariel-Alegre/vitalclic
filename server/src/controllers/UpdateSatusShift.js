@@ -7,7 +7,7 @@ module.exports = {
 
     try {
       // Validar el estado proporcionado
-      const validStatuses = ['pendiente', 'activo', 'atendido'];
+      const validStatuses = ['pendiente', 'activo', 'atendido', 'cancelar'];
       if (!validStatuses.includes(status)) {
         return res.status(400).json({ message: 'Estado no válido' });
       }
