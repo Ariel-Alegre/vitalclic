@@ -11,7 +11,7 @@ const {ShiftReservates} = require('../controllers/ShiftReservates');
 
 router.post('/online-shifts', OnlineShifts);
 router.get('/all-shifts', AllShifts);
-router.get('/shift-reservates', ShiftReservates);
+router.get('/shift-reservates', ShiftReservates );
 
 
 
