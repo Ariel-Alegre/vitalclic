@@ -18,6 +18,10 @@ module.exports = {
       // Buscar al usuario en UserProfessional
       let user = await UserProfessional.findOne({
         where: { id: payload.id },
+        include: {
+          model: UserProfessional,  // Incluye los datos del UserProfessional relacionado
+          as: 'userProfessional',   // Usa el alias si lo configuraste en la relación
+        },
       });
 
       // Si no está en UserProfessional, buscar en User
