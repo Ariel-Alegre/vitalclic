@@ -38,7 +38,7 @@ const Sede = ({ filteredProfessionals, setSelectedProfessional, notProfessional 
   
    const DetailsProfessional = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/professional/${professionalId}`);
+      const res = await axios.get(`https://vitalclic-production.up.railway.app/api/professional/${professionalId}`);
       setDetailsProfessional(res.data.data)
     } catch (error) {
       console.log(error)

@@ -50,7 +50,7 @@ function DrawerAppBar(props) {
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `http://localhost:3001/api/datapersonal`,
+        `https://vitalclic-production.up.railway.app/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí
@@ -137,7 +137,7 @@ function DrawerAppBar(props) {
               />
             </Link>
           </Typography>
-          {token && role === "profesional" ? (
+          {token && role === "personal" ? (
             <>
               <Box
                 sx={{
@@ -237,7 +237,7 @@ function DrawerAppBar(props) {
                 </MenuItem>
               </Menu>
             </>
-          ) :  token && role === "personal" ? (
+          ) :  token && role === "profesional" ? (
             <>
             <Box
               sx={{
@@ -323,12 +323,18 @@ function DrawerAppBar(props) {
                   Perfil
                 </MenuItem>
               </Link>
+              <Link
+                to={"/turnos"}
+                style={{ textDecoration: "none", color: "#000" }}
+              >
               <MenuItem onClick={handleClose}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>
-                Mis turnos
+                Turnos reservados
               </MenuItem>
+              </Link>
+
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />

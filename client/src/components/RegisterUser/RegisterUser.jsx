@@ -44,7 +44,7 @@ const RegisterUser = () => {
     password: "",
     termsAccepted: false,
     termsAcceptedAt: null,
-    dependents: [], // Cada objeto tendrá la estructura especificada
+    dependents: [], // Cada dependiente será un objeto separado
   });
   
   const [loading, setLoading] = useState(false);
@@ -79,50 +79,40 @@ const RegisterUser = () => {
     setFormData((prev) => ({ ...prev, birthdate: date }));
   };
   
-// Función para agregar un nuevo dependiente
-const addDependent = () => {
-  const dependentsCount = formData.dependents.length;
-  const newDependentKey = `dependiente${dependentsCount + 1}`; // Calcular la nueva clave
-
-  // Crear un nuevo dependiente vacío
-  const newDependent = {
-    [newDependentKey]: {
+  // Función para agregar un nuevo dependiente
+  const addDependent = () => {
+    // Crear un nuevo dependiente vacío
+    const newDependent = {
       name: "",
       lastName: "",
       birthdate: "",
       genre: "",
-      dni: ""
-    }
+      dni: "",
+    };
+  
+    // Actualizar el estado de los dependientes
+    setFormData((prev) => ({
+      ...prev,
+      dependents: [...prev.dependents, newDependent], // Añadir el nuevo dependiente al array
+    }));
   };
-
-  // Actualizar el estado de los dependientes
-  setFormData((prev) => ({
-    ...prev,
-    dependents: [...prev.dependents, newDependent] // Añadir el nuevo dependiente
-  }));
-};
-
-// Función para manejar cambios en los campos de los dependientes
-const handleDependentChange = (index, e) => {
-  const { name, value } = e.target;
-
-  // Copiar los dependientes actuales
-  const updatedDependents = [...formData.dependents];
-
-  // Obtener la clave del dependiente que estamos editando
-  const dependentKey = `dependiente${index + 1}`;
-
-  // Actualizar el campo específico del dependiente
-  updatedDependents[index] = {
-    [dependentKey]: {
-      ...updatedDependents[index][dependentKey],
-      [name]: value // Actualizar el campo específico del dependiente
-    }
+  
+  // Función para manejar cambios en los campos de los dependientes
+  const handleDependentChange = (index, e) => {
+    const { name, value } = e.target;
+  
+    // Copiar los dependientes actuales
+    const updatedDependents = [...formData.dependents];
+  
+    // Actualizar el campo específico del dependiente
+    updatedDependents[index] = {
+      ...updatedDependents[index],
+      [name]: value, // Actualizar la clave específica del objeto
+    };
+  
+    // Actualizar el estado con los nuevos dependientes
+    setFormData((prev) => ({ ...prev, dependents: updatedDependents }));
   };
-
-  // Actualizar el estado con los nuevos dependientes
-  setFormData((prev) => ({ ...prev, dependents: updatedDependents }));
-};
   
   // Enviar formulario
   const handleSubmit = async (e) => {
@@ -135,11 +125,9 @@ const handleDependentChange = (index, e) => {
         throw new Error("Dependents no es un array");
       }
   
-  
-  
       // Enviar datos al servidor
       const response = await axios.post(
-        "http://localhost:3001/api/register-user",
+        "https://vitalclic-production.up.railway.app/api/register-user",
         formData
       );
   
@@ -155,7 +143,6 @@ const handleDependentChange = (index, e) => {
     }
   };
   
-
   return (
     <div className={styles.RegisterContainer}>
       <form
@@ -482,181 +469,175 @@ const handleDependentChange = (index, e) => {
 
           {/* Formulario para dependientes */}
           {Object.entries(formData.dependents).map((dependent, index) => (
-           <React.Fragment key={index}>
-           <Grid item xs={12} sm={6}>
-             <TextField
-               label={`Nombre Dependiente ${index + 1}`}
-               name="name"
-               value={formData.dependents[index].name}
+            <React.Fragment key={index}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label={`Nombre Dependiente ${index + 1}`}
+                  name="name"
+                  value={formData.dependents[index].name}
+                  onChange={(e) => handleDependentChange(index, e)}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                  }}
+                  fullWidth
+                />
+              </Grid>
 
-               onChange={(e) => handleDependentChange(index, e)}
-               sx={{
-                 "& .MuiOutlinedInput-root": {
-                   "&:hover fieldset": {
-                     borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                   },
-                   "&.Mui-focused fieldset": {
-                     borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                   },
-                 },
-                 "& .MuiInputLabel-root": {
-                   color: "#000", // Color del label por defecto
-                 },
-                 "& .MuiInputLabel-root.Mui-focused": {
-                   color: "#53676c", // Cambia el color del label cuando está enfocado
-                 },
-               }}
-               fullWidth
-             />
-           </Grid>
-         
-           <Grid item xs={12} sm={6}>
-             <TextField
-               label={`Apellido Dependiente ${index + 1}`}
-               name="lastName"
-               value={formData.dependents[index].lastName}
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label={`Apellido Dependiente ${index + 1}`}
+                  name="lastName"
+                  value={formData.dependents[index].lastName}
+                  onChange={(e) => handleDependentChange(index, e)}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                  }}
+                  fullWidth
+                />
+              </Grid>
 
-               onChange={(e) => handleDependentChange(index, e)}
-               sx={{
-                 "& .MuiOutlinedInput-root": {
-                   "&:hover fieldset": {
-                     borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                   },
-                   "&.Mui-focused fieldset": {
-                     borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                   },
-                 },
-                 "& .MuiInputLabel-root": {
-                   color: "#000", // Color del label por defecto
-                 },
-                 "& .MuiInputLabel-root.Mui-focused": {
-                   color: "#53676c", // Cambia el color del label cuando está enfocado
-                 },
-               }}
-               fullWidth
-             />
-           </Grid>
-         
-           <Grid item xs={12} sm={6}>
-             <LocalizationProvider dateAdapter={AdapterDateFns}>
-               <DatePicker
-                 label={`Fecha de Nacimiento Dependiente ${index + 1}`}
-               value={formData.dependents[index].birthdate}
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    label={`Fecha de Nacimiento Dependiente ${index + 1}`}
+                    value={formData.dependents[index].birthdate}
+                    onChange={(date) =>
+                      handleDependentChange(index, {
+                        target: { name: "birthdate", value: date },
+                      })
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&:hover fieldset": {
+                              borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                            },
+                          },
+                          "& .MuiInputLabel-root": {
+                            color: "#000", // Color del label por defecto
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#53676c", // Cambia el color del label cuando está enfocado
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
 
-                 onChange={(date) =>
-                   handleDependentChange(index, {
-                     target: { name: "birthdate", value: date },
-                   })
-                 }
-                 renderInput={(params) => (
-                   <TextField
-                     {...params}
-                     fullWidth
-                     sx={{
-                       "& .MuiOutlinedInput-root": {
-                         "&:hover fieldset": {
-                           borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                         },
-                         "&.Mui-focused fieldset": {
-                           borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                         },
-                       },
-                       "& .MuiInputLabel-root": {
-                         color: "#000", // Color del label por defecto
-                       },
-                       "& .MuiInputLabel-root.Mui-focused": {
-                         color: "#53676c", // Cambia el color del label cuando está enfocado
-                       },
-                     }}
-                   />
-                 )}
-               />
-             </LocalizationProvider>
-           </Grid>
-         
-           <Grid item xs={12} sm={6}>
-             <FormControl
-               fullWidth
-               sx={{
-                 "& .MuiOutlinedInput-root": {
-                   "&:hover fieldset": {
-                     borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                   },
-                   "&.Mui-focused fieldset": {
-                     borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                   },
-                 },
-                 "& .MuiInputLabel-root": {
-                   color: "#000", // Color del label por defecto
-                 },
-                 "& .MuiInputLabel-root.Mui-focused": {
-                   color: "#53676c", // Cambia el color del label cuando está enfocado
-                 },
-               }}
-             >
-               <InputLabel>Género Dependiente {index + 1}</InputLabel>
-               <Select
-                 label={`Género Dependiente ${index + 1}`}
-                 name="genre"
-               value={formData.dependents[index].genre}
+              <Grid item xs={12} sm={6}>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                  }}
+                >
+                  <InputLabel>Género Dependiente {index + 1}</InputLabel>
+                  <Select
+                    label={`Género Dependiente ${index + 1}`}
+                    name="genre"
+                    value={formData.dependents[index].genre}
+                    onChange={(e) => handleDependentChange(index, e)}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "#000", // Color del label por defecto
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#53676c", // Cambia el color del label cuando está enfocado
+                      },
+                    }}
+                    fullWidth
+                  >
+                    <MenuItem value="Masculino">Masculino</MenuItem>
+                    <MenuItem value="Femenino">Femenino</MenuItem>
+                    <MenuItem value="Otro">Otro</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
 
-                 onChange={(e) => handleDependentChange(index, e)}
-                 sx={{
-                   "& .MuiOutlinedInput-root": {
-                     "&:hover fieldset": {
-                       borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                     },
-                     "&.Mui-focused fieldset": {
-                       borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                     },
-                   },
-                   "& .MuiInputLabel-root": {
-                     color: "#000", // Color del label por defecto
-                   },
-                   "& .MuiInputLabel-root.Mui-focused": {
-                     color: "#53676c", // Cambia el color del label cuando está enfocado
-                   },
-                 }}
-                 fullWidth
-               >
-                 <MenuItem value="Masculino">Masculino</MenuItem>
-                 <MenuItem value="Femenino">Femenino</MenuItem>
-                 <MenuItem value="Otro">Otro</MenuItem>
-               </Select>
-             </FormControl>
-           </Grid>
-         
-           <Grid item xs={12}>
-             <TextField
-               label={`Documento de identidad ${index + 1}`}
-               name="dni"
-               value={formData.dependents[index].dni}
+              <Grid item xs={12}>
+                <TextField
+                  label={`Documento de identidad ${index + 1}`}
+                  name="dni"
+                  value={formData.dependents[index].dni}
+                  onChange={(e) => handleDependentChange(index, e)}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                    marginBottom: "2em",
+                  }}
+                  fullWidth
+                />
+              </Grid>
 
-               onChange={(e) => handleDependentChange(index, e)}
-               sx={{
-                 "& .MuiOutlinedInput-root": {
-                   "&:hover fieldset": {
-                     borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                   },
-                   "&.Mui-focused fieldset": {
-                     borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                   },
-                 },
-                 "& .MuiInputLabel-root": {
-                   color: "#000", // Color del label por defecto
-                 },
-                 "& .MuiInputLabel-root.Mui-focused": {
-                   color: "#53676c", // Cambia el color del label cuando está enfocado
-                 },
-                 marginBottom: "2em",
-               }}
-               fullWidth
-             />
-           </Grid>
-         
-           <Grid item xs={12}></Grid>
-         </React.Fragment>
-         
+              <Grid item xs={12}></Grid>
+            </React.Fragment>
           ))}
           <Grid item xs={12}>
             <FormControlLabel

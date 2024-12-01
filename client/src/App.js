@@ -9,6 +9,10 @@ import TableProfessional from './components/PanelAdmin/TableProfessional';
 import Test from './pages/Test';
 import DetailsProfessional from './pages/DetailsProfessional';
 import RegisterUser from './pages/RegisterUser';
+import PanelProfessional from './pages/PanelProfessional';
+import TableShift from './pages/TableShift';
+import TableAcceptedShifts from './components/PanelProfessional/TableAcceptedShifts';
+
 
 
 
@@ -25,7 +29,7 @@ function App() {
     <div >
       <BrowserRouter>
         <Routes>
- 
+
           <Route path="/" element={<Home />} />
           <Route path="/iniciar-sesión" element={<Login />} />
 
@@ -38,15 +42,25 @@ function App() {
 
           <Route path="/administrar" element={<PanelAdmin />} >
 
-          <Route index element={<TableProfessional />} />
+            <Route index element={<TableProfessional />} />
 
-          <Route path="profesional" element={<TableProfessional />} />
+            <Route path="profesional" element={<TableProfessional />} />
 
-         </Route>
+          </Route>
 
-        
-        
-  
+          <Route path="/turnos" element={<PanelProfessional />}>
+
+<Route index element={<TableShift/>} />
+
+<Route path="disponibles" element={<TableShift />} />
+<Route path="aceptados" element={<TableAcceptedShifts />} />
+
+
+</Route>
+
+
+
+
 
         </Routes>
       </BrowserRouter>

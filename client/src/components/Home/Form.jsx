@@ -9,7 +9,7 @@ export default function Form({ setSpecialty}) {
   const [selectedDistrito, setSelectedDistrito] = useState("");
   const especialidades = [
     "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
-    "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogoo","Clinico"
+    "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogo","Clinico"
   ];
 
   const departamentos = [
@@ -128,10 +128,6 @@ export default function Form({ setSpecialty}) {
       // Obtenemos la especialidad seleccionada
       const selectedSpecialty = e.target[0].value; // El valor del primer select
 
-      if (!selectedSpecialty) {
-        console.log("Por favor, seleccione una especialidad");
-        return;
-      }
       setSpecialty(selectedSpecialty)
       // Filtramos los profesionales por la especialidad seleccionada
    
@@ -277,7 +273,7 @@ export default function Form({ setSpecialty}) {
             ))}
           </select>
           <button type="submit" className={styles.searchButton}>
-            BUSCAR{" "}
+            SELECCIONAR{" "}
             <span className={styles.searchIcon}>
               <SearchIcon />
             </span>

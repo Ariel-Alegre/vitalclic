@@ -24,7 +24,7 @@ export default function Home() {
 
  const Professionals = async () => {
   try {
-    const res = await axios.get("http://localhost:3001/api/professionals");
+    const res = await axios.get("https://vitalclic-production.up.railway.app/api/professionals");
     setProfessional(res.data.data)
 
   } catch (error) {

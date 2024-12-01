@@ -16,7 +16,7 @@ module.exports = {
       }
 
       // Decodificar el token para obtener el userProfesionalId
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);  // Verifica el token usando tu clave secreta
+      const decoded = jwt.verify(token, process.env.FIRMA_TOKEN);  // Verifica el token usando tu clave secreta
 
       // Obtener el userProfesionalId del payload decodificado
       const userProfesionalId = decoded.id;  // Asegúrate de que el token contiene este campo
@@ -29,7 +29,7 @@ module.exports = {
 
       // Actualizar el estado del turno
       const [updatedCount] = await OnlineShifts.update(
-        { status, userProfesionalId },  // También actualizas el userProfesionalId si lo necesitas
+        { status, userProfesionalId: userProfesionalId },  // También actualizas el userProfesionalId si lo necesitas
         { where: { id } }
       );
 

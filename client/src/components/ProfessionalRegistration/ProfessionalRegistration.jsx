@@ -79,7 +79,7 @@ const ProfessionalRegistration = () => {
   
     try {
       // Envía una solicitud POST al backend
-      const response = await axios.post("http://localhost:3001/api/register-professional", formData);
+      const response = await axios.post("https://vitalclic-production.up.railway.app/api/register-professional", formData);
         console.log(response.status)
       // Maneja la respuesta si la solicitud fue exitosa
       if (response.status === 200) {
