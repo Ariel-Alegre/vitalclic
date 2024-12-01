@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { UserProfessional, User } = require('../db');
+const { UserProfessional, User, OnlineShifts } = require('../db');
 
 module.exports = {
   DataPersonal: async (req, res) => {
@@ -19,8 +19,7 @@ module.exports = {
       let user = await UserProfessional.findOne({
         where: { id: payload.id },
         include: {
-          model: UserProfessional,  // Incluye los datos del UserProfessional relacionado
-          as: 'userProfessional',   // Usa el alias si lo configuraste en la relación
+          model: OnlineShifts,  // Incluye los datos del UserProfessional relacionado
         },
       });
 

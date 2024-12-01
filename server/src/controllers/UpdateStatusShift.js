@@ -44,7 +44,6 @@ module.exports = {
         include: {
           model: UserProfessional,  // Incluye los datos del UserProfessional relacionado
           as: 'userProfessional',   // Usa el alias si lo configuraste en la relación
-          attributes: ['name', 'email'],  // Selecciona los campos de UserProfessional que necesitas
         },
       });
 
