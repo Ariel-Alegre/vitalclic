@@ -43,7 +43,6 @@ module.exports = {
         where: { id },
         include: {
           model: UserProfessional,  // Incluye los datos del UserProfessional relacionado
-          as: 'userProfessional',   // Usa el alias si lo configuraste en la relación
         },
       });
 
