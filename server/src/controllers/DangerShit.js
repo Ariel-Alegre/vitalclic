@@ -19,34 +19,39 @@ client.on('ready', () => {
 client.initialize();
 
 module.exports = {
-  DangerShit: async (req, res) => {
-    try {
-      // Número fijo al que siempre se enviará el mensaje
-      const numeroFijo = '541161361408'; // Reemplaza con el número de WhatsApp al que quieres enviar (incluye código de país, sin '+')
-      const chatId = `${numeroFijo}@c.us`; // El formato requerido por WhatsApp Web
-
-      // Extrae los datos del cuerpo de la solicitud
-      const { nombre, apellido, email, telefono } = req.body;
-
-      // Valida los datos
-      if (!nombre || !apellido || !email || !telefono) {
-        return res.status(400).json({
-          message: 'Nombre, apellido, email y teléfono son requeridos',
-        });
+    DangerShit: async (req, res) => {
+      try {
+        // Verifica si el cliente está listo
+        if (!client.info || !client.info.wid) {
+          return res.status(503).json({ message: 'El cliente de WhatsApp no está conectado' });
+        }
+  
+        // Número fijo al que siempre se enviará el mensaje
+        const numeroFijo = '5491123456789'; // Reemplaza con tu número en formato internacional
+        const chatId = `${numeroFijo}@c.us`; // El formato requerido por WhatsApp Web
+  
+        // Extrae los datos del cuerpo de la solicitud
+        const { nombre, apellido, email, telefono } = req.body;
+  
+        // Valida los datos
+        if (!nombre || !apellido || !email || !telefono) {
+          return res.status(400).json({
+            message: 'Nombre, apellido, email y teléfono son requeridos',
+          });
+        }
+  
+        // Construye el mensaje
+        const mensaje = `Hola, tienes un nuevo contacto:
+  - Nombre: ${nombre} ${apellido}
+  - Email: ${email}
+  - Teléfono: ${telefono}`;
+  
+        // Envía el mensaje
+        await client.sendMessage(chatId, mensaje);
+        res.status(200).json({ message: 'Mensaje enviado correctamente' });
+      } catch (error) {
+        console.error('Error al enviar el mensaje:', error);
+        res.status(500).json({ message: 'Error al enviar el mensaje', error });
       }
-
-      // Construye el mensaje
-      const mensaje = `Hola, tienes un nuevo contacto:
-- Nombre: ${nombre} ${apellido}
-- Email: ${email}
-- Teléfono: ${telefono}`;
-
-      // Envía el mensaje
-      await client.sendMessage(chatId, mensaje);
-      res.status(200).json({ message: 'Mensaje enviado correctamente' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error al enviar el mensaje' });
-    }
-  },
-};
+    },
+  };
