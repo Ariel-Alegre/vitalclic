@@ -43,7 +43,6 @@ module.exports = {
       password, 
       termsAccepted, 
       termsAcceptedAt, 
-      dependents // Añadido dependents
     } = req.body;
 
     try {
@@ -55,14 +54,14 @@ module.exports = {
       const existingUser = await User.findOne({ where: { email } });
 
       if (existingUser) {
-        console.log('El usuario ya existe');
-        return res.status(404).json({ message: 'El usuario ya existe' });
+        console.log('La sede ya existe');
+        return res.status(404).json({ message: 'La sede ya existe' });
       }
 
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-      let role = 'personal';
+      let role = 'sede';
       const adminEmails = ['admin1@gmail.com', 'admin2@fmail.com'];
       if (adminEmails.includes(email)) {
         role = 'admin';
@@ -119,7 +118,6 @@ await transporter.sendMail({
     subject: '¡Bienvenido a nuestra plataforma!',
     html: emailContent,
   }); */
-  const validatedDependents = Array.isArray(dependents) ? dependents : [];
 
       const newUser = await UserSede.create({
         reason_social,
@@ -140,13 +138,12 @@ await transporter.sendMail({
         backgroundColor,
         termsAccepted,
         termsAcceptedAt: termsAcceptedAt || new Date(),
-        dependents: validatedDependents || [], // Si no se envían dependents, se guarda como un array vacío
       });
 
       const tokenPayload = { id: newUser.id, role: newUser.role };
       const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
-      console.log('Usuario creado correctamente');
+      console.log('sede creado correctamente');
 
       return res.json({ token });
     } catch (error) {
