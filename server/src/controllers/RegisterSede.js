@@ -51,7 +51,7 @@ module.exports = {
         return res.status(400).json({ message: 'Debes aceptar los términos y condiciones para registrarte' });
       }
 
-      const existingUser = await User.findOne({ where: { email } });
+      const existingUser = await UserSede.findOne({ where: { email } });
 
       if (existingUser) {
         console.log('La sede ya existe');
