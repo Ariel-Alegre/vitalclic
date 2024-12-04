@@ -22,7 +22,7 @@ module.exports = {
   DangerShit: async (req, res) => {
     try {
       // Número fijo al que siempre se enviará el mensaje
-      const numeroFijo = '1234567890'; // Reemplaza con el número de WhatsApp al que quieres enviar (incluye código de país, sin '+')
+      const numeroFijo = '541161361408'; // Reemplaza con el número de WhatsApp al que quieres enviar (incluye código de país, sin '+')
       const chatId = `${numeroFijo}@c.us`; // El formato requerido por WhatsApp Web
 
       // Extrae los datos del cuerpo de la solicitud
