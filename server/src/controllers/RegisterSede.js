@@ -1,4 +1,4 @@
-const { User } = require('../db');
+const { UserSede } = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -26,18 +26,20 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports = {
-  RegisterUser: async (req, res) => {
+  RegisterSede: async (req, res) => {
     const { 
+      reason_social, 
       name, 
-      lastName, 
-      genre, 
-      birthdate, 
+      ruc, 
+      address, 
       email, 
       country, 
       province, 
       district, 
-      dni,
       phone, 
+      type_of_service,
+      contact_person,
+      charges,
       password, 
       termsAccepted, 
       termsAcceptedAt, 
@@ -68,7 +70,7 @@ module.exports = {
 
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-      const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+       
   /*     const emailContent = `
       <html>
      <body    style="
@@ -119,20 +121,22 @@ await transporter.sendMail({
   }); */
   const validatedDependents = Array.isArray(dependents) ? dependents : [];
 
-      const newUser = await User.create({
+      const newUser = await UserSede.create({
+        reason_social,
         name: capitalizedName,
-        lastName: capitalizedLastName,
+        ruc, 
+        address, 
         email,
         password: hashedPassword,
         phone,
         role,
-        genre,
-        birthdate,
+        type_of_service,
+        contact_person,
+        charges,
         country,
         province,
-        dni,
         district,
-        status: "activo",
+        status: "pendiente",
         backgroundColor,
         termsAccepted,
         termsAcceptedAt: termsAcceptedAt || new Date(),

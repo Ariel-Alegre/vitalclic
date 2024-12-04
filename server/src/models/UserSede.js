@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const UserProfessional = sequelize.define('UserProfessional', {
+  const UserSede = sequelize.define('UserSede', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -11,61 +11,50 @@ module.exports = (sequelize) => {
     image: {
       type: DataTypes.STRING,
     },
+    reason_social: {
+      type: DataTypes.STRING,
+    },
     name: {
       type: DataTypes.STRING,
     },
-    lastName: {
-      type: DataTypes.STRING,
-    },
-    professional_college: {
+    ruc: {
       type: DataTypes.STRING,
     },
 
-    registration_number: {
+    address: {
       type: DataTypes.STRING,
     },
-    specialty_number_rne: {
-      type: DataTypes.STRING,
-    },
-
-    specialty: {
-      type: DataTypes.STRING,
-    },
-    
-    
-    genre: {
-      type: DataTypes.STRING,
-    },
-    birthdate: {
-      type: DataTypes.STRING,
-    },
-    
     email: {
       type: DataTypes.STRING,
     },
+    phone: {
+        type: DataTypes.STRING,
+      },
 
-    country: {
+      type_of_service: {
+        type: DataTypes.STRING,
+      },
+      contact_person: {
+        type: DataTypes.STRING,
+      },
+      charges: {
+        type: DataTypes.STRING,
+      },
+      country: {
+        type: DataTypes.STRING,
+      },
+      
+      
+    province: {
       type: DataTypes.STRING,
-    }, 
-     province: {
-      type: DataTypes.STRING,
-    },  
+    },
     district: {
-      type: DataTypes.STRING,
-    }, 
-    
-    dni: {
-      type: DataTypes.STRING,
-    }, 
-     phone: {
-      type: DataTypes.STRING,
-    }, 
-     password: {
-      type: DataTypes.STRING,
-    },
-    role: {
-      type: DataTypes.STRING,
-    },
+        type: DataTypes.STRING,
+      },  
+        password: {
+        type: DataTypes.STRING,
+      },  
+   
 
     status: {
       type: DataTypes.STRING,
@@ -92,5 +81,5 @@ module.exports = (sequelize) => {
 
   
 
-  return UserProfessional;
+  return UserSede;
 };

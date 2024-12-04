@@ -1,4 +1,4 @@
-const { UserProfessional } = require('../db');
+const { UserSede } = require('../db');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
@@ -10,16 +10,16 @@ cloudinary.config({
 });
 
 module.exports = {
-  PutProfessional: async (req, res) => {
-    const { professionalId } = req.params;
+  PutSede: async (req, res) => {
+    const { sedeId } = req.params;
     const { name, lastName, email, phone, specialty, genre, dni, province, district } = req.body;
     const file = req.file; // Imagen cargada desde un formulario multipart/form-data
 
     try {
       // Buscar el profesional en la base de datos
-      const professional = await UserProfessional.findByPk(professionalId);
+      const sede = await UserSede.findByPk(sedeId);
 
-      if (!professional) {
+      if (!sede) {
         return res
           .status(404)
           .send({ success: false, message: "No se encuentra el profesional de la salud" });
