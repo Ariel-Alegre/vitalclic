@@ -1,9 +1,12 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
-// Inicializa el cliente con autenticación local
+// Inicializa el cliente con autenticación local y configuración de puppeteer
 const client = new Client({
   authStrategy: new LocalAuth(),
+  puppeteer: {
+    args: ['--no-sandbox', '--disable-setuid-sandbox'] // Asegúrate de que Puppeteer funcione sin problemas en entornos restrictivos
+  }
 });
 
 // Genera el QR para iniciar sesión en WhatsApp
