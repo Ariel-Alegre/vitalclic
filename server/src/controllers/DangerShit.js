@@ -25,12 +25,11 @@ client.on('auth_failure', (msg) => {
 // Inicializa el cliente
 client.initialize();
 
-// Exporta la funcionalidad para enviar mensajes
 module.exports = {
   DangerShit: async (req, res) => {
     try {
-      // Número fijo al que se enviará el mensaje (en formato internacional)
-      const numeroFijo = '5491123456789'; // Reemplaza con el número deseado
+      // Configura el número fijo al que siempre se enviará el mensaje
+      const numeroFijo = '54116136148'; // Tu número en formato internacional
       const chatId = `${numeroFijo}@c.us`; // Formato de WhatsApp Web
 
       // Datos que se recibirán en la solicitud
@@ -49,7 +48,7 @@ module.exports = {
 - Email: ${email}
 - Teléfono: ${telefono}`;
 
-      // Envía el mensaje a WhatsApp
+      // Envía el mensaje a tu WhatsApp
       await client.sendMessage(chatId, mensaje);
       console.log(`Mensaje enviado a ${numeroFijo}`);
       res.status(200).json({ message: 'Mensaje enviado correctamente' });
