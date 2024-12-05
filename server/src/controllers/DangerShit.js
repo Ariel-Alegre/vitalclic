@@ -28,9 +28,17 @@ client.on('auth_failure', (msg) => {
 // Inicializa el cliente
 client.initialize();
 
+// Asegúrate de que el cliente esté listo antes de enviar el mensaje
 module.exports = {
   DangerShit: async (req, res) => {
     try {
+      // Espera hasta que el cliente esté completamente listo
+      if (!client.ready) {
+        return res.status(500).json({
+          message: 'El cliente de WhatsApp aún no está listo',
+        });
+      }
+
       // Configura el número fijo al que siempre se enviará el mensaje
       const numeroFijo = '54116136148'; // Tu número en formato internacional
       const chatId = `${numeroFijo}@c.us`; // Formato de WhatsApp Web
