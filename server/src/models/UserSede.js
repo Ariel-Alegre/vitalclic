@@ -43,7 +43,9 @@ module.exports = (sequelize) => {
       country: {
         type: DataTypes.STRING,
       },
-      
+      specialty: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+      },
       
     province: {
       type: DataTypes.STRING,
