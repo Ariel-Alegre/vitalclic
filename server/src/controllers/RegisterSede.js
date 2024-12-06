@@ -92,7 +92,7 @@ module.exports = {
            <img src="https://vitalclic.com/static/media/logo.43cb5a9254f3543cf08c.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
          </div>
    
-         <p style="color: black;">¡Hola ${name} ${lastName} !</p>
+         <p style="color: black;">¡Hola ${name} !</p>
          <p style="color: black;">¡Bienvenido a Vitalclic! Nos complace que te hayas registrado y formes parte de nuestra comunidad.</p>
          <p style="color: black;">Aquí tienes algunos detalles importantes:</p>
          <p style="color: black;"> <strong>Tu cuenta ha sido creada exitosamente.</strong> </p>
