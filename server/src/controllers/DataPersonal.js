@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { UserProfessional, User, OnlineShifts } = require('../db');
+const { UserProfessional, User, OnlineShifts, UserSede } = require('../db');
 
 module.exports = {
   DataPersonal: async (req, res) => {
@@ -29,9 +29,16 @@ module.exports = {
           where: { id: payload.id },
         });
 
+        // Si no está en User, buscar en UserSede
         if (!user) {
-          console.log('Usuario no encontrado en ninguno de los modelos');
-          return res.status(404).json({ message: 'Usuario no encontrado' });
+          user = await UserSede.findOne({
+            where: { id: payload.id },
+          });
+
+          if (!user) {
+            console.log('Usuario no encontrado en ninguno de los modelos');
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+          }
         }
       }
 
