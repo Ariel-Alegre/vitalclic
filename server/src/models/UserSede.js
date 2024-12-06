@@ -57,7 +57,9 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },  
    
-
+      role: {
+        type: DataTypes.STRING,
+      },  
     status: {
       type: DataTypes.STRING,
     },
