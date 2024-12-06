@@ -23,7 +23,7 @@ module.exports = {
         if (!user) {
           user = await UserSede.findOne({
             where: { email },
-            attributes: ['id', 'name', 'lastName', 'email', 'password', 'phone', 'status', 'role'],
+            attributes: ['id', 'name', 'email', 'password', 'phone', 'status', 'role'],
           });
 
           if (!user) {
