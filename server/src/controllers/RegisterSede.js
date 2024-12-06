@@ -39,6 +39,7 @@ module.exports = {
       phone, 
       type_of_service,
       contact_person,
+      specialty,
       charges,
       password, 
       termsAccepted, 
@@ -70,7 +71,7 @@ module.exports = {
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
        
-  /*     const emailContent = `
+   const emailContent = `
       <html>
      <body    style="
      background-color: #f3f3f3;
@@ -117,7 +118,87 @@ await transporter.sendMail({
     to: email,
     subject: '¡Bienvenido a nuestra plataforma!',
     html: emailContent,
-  }); */
+  }); 
+
+      const newUser = await UserSede.create({
+        reason_social,
+        name: capitalizedName,
+        ruc, 
+        address, 
+        email,
+        password: hashedPassword,
+        phone,
+        role,
+        type_of_service,
+        contact_person,
+        charges,
+        country,
+        specialty,
+        province,
+        district,
+        status: "pendiente",
+        backgroundColor,
+        termsAccepted,
+        termsAcceptedAt: termsAcceptedAt || new Date(),
+      });
+
+      const tokenPayload = { id: newUser.id, role: newUser.role };
+      const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
+
+      console.log('sede creado correctamente');
+
+      return res.json({ token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error en el servidor' });
+    }
+  },
+};
+module.exports = {
+  RegisterSede: async (req, res) => {
+    const { 
+      reason_social, 
+      name, 
+      ruc, 
+      address, 
+      email, 
+      country, 
+      province, 
+      district, 
+      phone, 
+      type_of_service,
+      contact_person,
+      charges,
+      password, 
+      termsAccepted, 
+      termsAcceptedAt, 
+      specialties, // Este es el nuevo campo
+    } = req.body;
+
+    try {
+      // Validación de aceptación de términos
+      if (!termsAccepted) {
+        return res.status(400).json({ message: 'Debes aceptar los términos y condiciones para registrarte' });
+      }
+
+      const existingUser = await UserSede.findOne({ where: { email } });
+
+      if (existingUser) {
+        console.log('La sede ya existe');
+        return res.status(404).json({ message: 'La sede ya existe' });
+      }
+
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      let role = 'sede';
+      const adminEmails = ['admin1@gmail.com', 'admin2@fmail.com'];
+      if (adminEmails.includes(email)) {
+        role = 'admin';
+      }
+
+      const backgroundColor = getRandomColor();
+      const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
 
       const newUser = await UserSede.create({
         reason_social,
@@ -136,6 +217,7 @@ await transporter.sendMail({
         district,
         status: "pendiente",
         backgroundColor,
+        specialties, // Guardamos el array de especialidades
         termsAccepted,
         termsAcceptedAt: termsAcceptedAt || new Date(),
       });
@@ -143,7 +225,7 @@ await transporter.sendMail({
       const tokenPayload = { id: newUser.id, role: newUser.role };
       const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
-      console.log('sede creado correctamente');
+      console.log('Sede creada correctamente');
 
       return res.json({ token });
     } catch (error) {
