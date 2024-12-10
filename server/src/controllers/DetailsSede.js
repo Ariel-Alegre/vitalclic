@@ -16,7 +16,7 @@ module.exports = {
         res.status(200).send({success: true, data: detailSede})
       } else {
         console.log("No se encuentran sede")
-        res.status(404).send({success: false, message: "No se encuentran profesionales de la salud"})
+        res.status(404).send({success: false, message: "No se encuentran sede"})
       }
  
     } catch (error) {

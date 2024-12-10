@@ -19,7 +19,7 @@ router.get('/all-sede', AllSede);
 router.put('/update-sede/:sedeId', upload.single('image'), PutSede);
 router.post('/register-sede', RegisterSede );
 router.put('/update-sede-status/:id',  UpdateSede);
-router.get('/sede/:sedeid',  DetailsSede);
+router.get('/sede/:sedeId',  DetailsSede);
 
 
 
