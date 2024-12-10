@@ -169,6 +169,7 @@ module.exports = {
       type_of_service,
       contact_person,
       charges,
+      specialty,
       password, 
       termsAccepted, 
       termsAcceptedAt, 
@@ -215,6 +216,7 @@ module.exports = {
         country,
         province,
         district,
+        specialty,
         status: "pendiente",
         backgroundColor,
         specialties, // Guardamos el array de especialidades
