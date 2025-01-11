@@ -18,17 +18,52 @@ import Typography from "@mui/material/Typography";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import axios from "axios";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
 const drawerWidth = 240;
 
-function PanelAdmin(props) {
+function PanelSede(props) {
   const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
   const location = useLocation(); // Hook para obtener la ruta actual
+  const [sedeDetails, setSedeDetails] = React.useState(null);
+  const [token, setToken] = React.useState(""); // Estado para la vista previa de imagen
 
+  const dataPersonal = async () => {
+    try {
+      const tokenFromStorage = localStorage.getItem("token"); // Obtener el token directamente
+      if (!tokenFromStorage) {
+        throw new Error("Token no encontrado en localStorage");
+      }
+      const response = await axios.get(
+        `http://localhost:3001/api/datapersonal`,
+        {
+          headers: {
+            Authorization: tokenFromStorage, // Usa el token aquí
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      setSedeDetails(response.data);
+    } catch (error) {
+      console.error("Error al obtener los detalles:", error);
+    }
+  };
+
+    React.useEffect(() => {
+      const token = localStorage.getItem("token");
+  
+      setToken(token);
+    }, []);
+    React.useEffect(() => {
+      if (token) {
+        dataPersonal();
+      }
+    }, [token]);
   const handleDrawerClose = () => {
     setIsClosing(true);
     setMobileOpen(false);
@@ -57,14 +92,14 @@ function PanelAdmin(props) {
       <Divider />
       <List>
         <Link
-          to="turnos/disponibles"
+          to="turnos"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem
             disablePadding
             sx={{
               backgroundColor:
-                location.pathname === "/panel/turnos/disponibles"
+                location.pathname === "/panel/sede/turnos"
                   ? "#e0f7fa"
                   : "transparent",
             }}
@@ -74,7 +109,7 @@ function PanelAdmin(props) {
                 <DashboardIcon
                   sx={{
                     color:
-                      location.pathname === "/panel/turnos/disponibles"
+                      location.pathname === "/panel/sede/turnos"
                         ? "#53676c"
                         : "black",
                   }}
@@ -84,7 +119,7 @@ function PanelAdmin(props) {
                 primary={"Turnos disponibles"}
                 sx={{
                   color:
-                    location.pathname === "/panel/turnos/disponibles"
+                    location.pathname === "/panel/sede/turnos"
                       ? "#53676c"
                       : "black",
                 }}
@@ -93,7 +128,7 @@ function PanelAdmin(props) {
           </ListItem>
         </Link>
 
-        <Link
+      {/*   <Link
           to="turnos/aceptados"
           style={{ textDecoration: "none", color: "black" }}
         >
@@ -128,14 +163,14 @@ function PanelAdmin(props) {
               />
             </ListItemButton>
           </ListItem>
-        </Link>
+        </Link> */}
 
         <Link to="perfil" style={{ textDecoration: "none", color: "black" }}>
           <ListItem
             disablePadding
             sx={{
               backgroundColor:
-                location.pathname === "/panel/perfil"
+                location.pathname === "/panel/sede/perfil"
                   ? "#e0f7fa"
                   : "transparent",
             }}
@@ -145,7 +180,7 @@ function PanelAdmin(props) {
                 <AccountBoxIcon
                   sx={{
                     color:
-                      location.pathname === "/panel/perfil"
+                      location.pathname === "/panel/sede/perfil"
                         ? "#53676c"
                         : "black",
                   }}
@@ -155,7 +190,7 @@ function PanelAdmin(props) {
                 primary={"Perfil"}
                 sx={{
                   color:
-                    location.pathname === "/panel/perfil" ? "#53676c" : "black",
+                    location.pathname === "/panel/sede/perfil" ? "#53676c" : "black",
                 }}
               />
             </ListItemButton>
@@ -212,7 +247,7 @@ function PanelAdmin(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Profesional
+            Administrar {sedeDetails && sedeDetails.name}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -269,4 +304,4 @@ function PanelAdmin(props) {
   );
 }
 
-export default PanelAdmin;
+export default PanelSede;

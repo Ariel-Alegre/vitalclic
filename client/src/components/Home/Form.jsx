@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import styles from "../../styles/Home/Form.module.css";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function Form({ setSpecialty}) {
-  const [mode, setMode] = useState("PRESENCIAL");
-  const [selectedDepartamento, setSelectedDepartamento] = useState("");
-  const [selectedProvincia, setSelectedProvincia] = useState("");
-  const [selectedDistrito, setSelectedDistrito] = useState("");
+export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInperson, districtInperson, provinceInperson, departmentInperson, setSpecialtyInperson, setProvinceInperson, setDepartmentInperson, setDistrictInperson}) {
   const especialidades = [
     "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
     "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogo","Clinico"
@@ -116,9 +112,32 @@ export default function Form({ setSpecialty}) {
     },
     // Agrega el resto de provincias y distritos aquí.
   };
-  
+
+  React.useEffect(() => {
+    if (mode === "PRESENCIAL") {
+     localStorage.removeItem("specialty"); // Guarda la fecha formateada en localStorage
+     localStorage.removeItem("selectedDate"); // Guarda la fecha formateada en localStorage
+     localStorage.removeItem("selectedTime"); // Guarda la fecha formateada en localStorage
+     setSpecialty(null)
+    }
+
+    if (mode === "VIRTUAL") {
+      localStorage.removeItem("inpersonData"); // Guarda la fecha formateada en localStorage
+      setSpecialtyInperson(null)
+      setProvinceInperson(null)
+      setDepartmentInperson(null)
+      setDistrictInperson(null)
+      setDistrictInperson(null)
+
+      
+      localStorage.removeItem("selectedSede"); // Guarda la fecha formateada en localStorage
+      localStorage.removeItem("selectedDateInPerson"); // Guarda la fecha formateada en localStorage
+      localStorage.removeItem("selectedTimeInPerson"); // Guarda la fecha formateada en localStorage
 
 
+
+    }
+  }, [mode]);
 
 
   const handleVirtualSubmit = (e) => {
@@ -134,6 +153,7 @@ export default function Form({ setSpecialty}) {
       localStorage.setItem("specialty", selectedSpecialty); // Guarda la fecha formateada en localStorage
         
         window.location.href = "#date"
+        
     
     } catch (error) {
       console.log(error);
@@ -142,35 +162,57 @@ export default function Form({ setSpecialty}) {
   
 
 
- 
-
-
- 
-
-  const handleDistritoChange = (e) => {
-    setSelectedDistrito(e.target.value);
-  };
-
   const handlePresencialSubmit = (e) => {
     e.preventDefault();
-    // Aquí podrías enviar los datos del formulario o hacer alguna acción
-    alert(`Formulario enviado: 
-    Especialidad: ${mode} 
-    Departamento: ${selectedDepartamento} 
-    Provincia: ${selectedProvincia} 
-    Distrito: ${selectedDistrito}`);
-  };
-  const handleDepartamentoChange = (e) => {
-    const departamentoSeleccionado = e.target.value;
-    setSelectedDepartamento(departamentoSeleccionado);
-    setSelectedProvincia(''); // Resetea la provincia al cambiar el departamento
-    setSelectedDistrito(''); // Resetea el distrito al cambiar el departamento
+  
+    try {
+      // Crear un objeto con las variables
+      const inpersonData = {
+        specialty: specialtyInperson ,
+        province: provinceInperson ,
+        department: departmentInperson ,
+        district: districtInperson ,
+      };
+
+
+
+  
+      if (specialtyInperson && provinceInperson && departmentInperson ) {
+     localStorage.setItem("inpersonData", JSON.stringify(inpersonData));
+    
+     window.location.href = "#sede";
+   } else {
+    alert("Completar los campos")
+   }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      allSede()
+    }
   };
   
+
+
+ 
+  const handleSpecialtyChange = (e) => {
+    setSpecialtyInperson(e.target.value);
+  };
+
+  const handleDistritoChange = (e) => {
+    setDistrictInperson(e.target.value);
+  };
+
+
+  const handleDepartamentoChange = (e) => {
+    const departamentoSeleccionado = e.target.value;
+    setDepartmentInperson(departamentoSeleccionado);
+    setProvinceInperson(''); // Resetea la provincia al cambiar el departamento
+    setDistrictInperson(''); // Resetea el distrito al cambiar el departamento
+  };
   const handleProvinciaChange = (e) => {
     const provinciaSeleccionada = e.target.value;
-    setSelectedProvincia(provinciaSeleccionada);
-    setSelectedDistrito(''); // Resetea el distrito al cambiar la provincia
+    setProvinceInperson(provinciaSeleccionada);
+    setDistrictInperson(''); // Resetea el distrito al cambiar la provincia
   };
   
   return (
@@ -199,7 +241,7 @@ export default function Form({ setSpecialty}) {
       {/* Formulario para PRESENCIAL */}
       {mode === "PRESENCIAL" && (
         <form onSubmit={handlePresencialSubmit} className={styles.form}>
-          <select className={styles.select}>
+          <select className={styles.select} onChange={handleSpecialtyChange}  value={specialtyInperson}>
             <option>ESPECIALIDAD</option>
             {especialidades.map((especialidad, index) => (
               <option key={index} value={especialidad}>
@@ -209,7 +251,7 @@ export default function Form({ setSpecialty}) {
           </select>
           <select
             className={styles.select}
-            value={selectedDepartamento}
+            value={departmentInperson}
             onChange={handleDepartamentoChange}
           >
             <option>DEPARTAMENTO</option>
@@ -221,13 +263,13 @@ export default function Form({ setSpecialty}) {
           </select>
           <select
             className={styles.select}
-            value={selectedProvincia}
+            value={provinceInperson}
             onChange={handleProvinciaChange}
-            disabled={!selectedDepartamento}
+            disabled={!departmentInperson}
           >
             <option>PROVINCIA</option>
-            {selectedDepartamento && provincias[selectedDepartamento] ? (
-              provincias[selectedDepartamento].map((provincia, index) => (
+            {departmentInperson && provincias[departmentInperson] ? (
+              provincias[departmentInperson].map((provincia, index) => (
                 <option key={index} value={provincia}>
                   {provincia}
                 </option>
@@ -236,21 +278,22 @@ export default function Form({ setSpecialty}) {
               <option disabled>No disponible</option>
             )}
           </select>
-          <select className={styles.select}
-          value={selectedDistrito}
-          onChange={handleDistritoChange}
-          disabled={!selectedProvincia}>
-  <option>DISTRITO</option>
-  {selectedDepartamento && selectedProvincia && distritos[selectedDepartamento] && distritos[selectedDepartamento][selectedProvincia] ? (
-    distritos[selectedDepartamento][selectedProvincia].map((distrito, index) => (
-      <option key={index} value={distrito}>
-        {distrito}
-      </option>
-    ))
-  ) : (
-    <option disabled>No disponible</option>
-  )}
-</select>
+      <select
+      className={styles.select}
+        value={districtInperson}
+        onChange={handleDistritoChange}
+        disabled={!provinceInperson}
+      >
+        <option value="">Seleccione un distrito</option>
+        {provinceInperson &&
+          distritos[departmentInperson]?.[provinceInperson]?.map(
+            (distrito) => (
+              <option key={distrito} value={distrito}>
+                {distrito}
+              </option>
+            )
+          )}
+      </select>
 
           <button type="submit" className={styles.searchButton}>
             BUSCAR{" "}

@@ -20,46 +20,46 @@ const style = {
   p: 4,
 };
 
-const TableProfessional = () => {
+const TableSede = () => {
   const [open, setOpen] = React.useState(false);
-  const [selectedProfessional, setSelectedProfessional] = React.useState(null);
-  const [professionals, setProfessionals] = React.useState([]);
-console.log(professionals)
+  const [selectedSede, setSelectedSede] = React.useState(null);
+  const [sede, setSede] = React.useState([]);
+
   const handleOpen = (professional) => {
-    setSelectedProfessional(professional); // Establece el profesional seleccionado
+    setSelectedSede(professional); // Establece el profesional seleccionado
     setOpen(true);
   };
   
   const handleClose = () => setOpen(false);
 
-  const AllProfessional = async () => {
+  const AllSede = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/professionals");
-      setProfessionals(res.data.data);
+      const res = await axios.get("http://localhost:3001/api/all-sede");
+      setSede(res.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   React.useEffect(() => {
-    AllProfessional();
+    AllSede();
   }, []);
 
   const updateAccount = async () => {
-    if (!selectedProfessional) return;
+    if (!selectedSede) return;
 
-    const newStatus = selectedProfessional.status === "pendiente" ? "activo" : "pendiente";
+    const newStatus = selectedSede.status === "pendiente" ? "activo" : "pendiente";
 
     try {
       const res = await axios.put(
-        `http://localhost:3001/api/update-doctor-status/${selectedProfessional.id}`,
+        `http://localhost:3001/api/update-sede-status/${selectedSede.id}`,
         { status: newStatus }
       );
 
       // Actualiza la lista de profesionales con el estado modificado
-      setProfessionals((prevProfessionals) =>
-        prevProfessionals.map((prof) =>
-          prof.id === selectedProfessional.id ? { ...prof, status: newStatus } : prof
+      setSede((prevSede) =>
+        prevSede.map((prof) =>
+          prof.id === selectedSede.id ? { ...prof, status: newStatus } : prof
         )
       );
       
@@ -87,7 +87,7 @@ console.log(professionals)
             <th>Cambiar estado de la cuenta</th>
           </tr>
         </thead>
-        {professionals.map((data, index) => (
+        {sede && sede.map((data, index) => (
           <tbody key={index}>
             <tr>
               <td>{data.name} {data.lastName}</td>
@@ -123,7 +123,7 @@ console.log(professionals)
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              ¿Estás seguro de que deseas {selectedProfessional?.status === "pendiente" ? "activar" : "poner en pendiente"} la cuenta?
+              ¿Estás seguro de que deseas {selectedSede?.status === "pendiente" ? "activar" : "poner en pendiente"} la cuenta?
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2, display: "flex", gap: "2em" }}>
               <Button variant="contained" onClick={updateAccount}>
@@ -140,4 +140,4 @@ console.log(professionals)
   );
 };
 
-export default TableProfessional;
+export default TableSede;

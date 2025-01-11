@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const RegistroConfirmacion = () => {
+const RegisterSedesSuccess = () => {
   const navigate = useNavigate();
 
   const handleVolverInicio = () => {
@@ -21,15 +21,21 @@ const RegistroConfirmacion = () => {
       p={2}
     >
       <Alert severity="info" sx={{ fontSize: "18px", padding: "20px", mb: 3 }}>
-        Espere a que verifiquemos su perfil para poder iniciar sesión. Esto puede tardar entre 24 y 48 horas. ⏳
+        Espere a que verifiquemos su perfil para poder iniciar sesión. Esto
+        puede tardar entre 24 y 48 horas. ⏳
       </Alert>
       <Stack direction="row" spacing={2}>
-        <Button    sx={{
+        <Button
+          sx={{
             backgroundColor: "#53676c",
             ":hover": { backgroundColor: "#3e5852" },
             margin: "auto",
-            color: "white"
-          }} variant="contained" color="primary" onClick={handleVolverInicio}>
+            color: "white",
+          }}
+          variant="contained"
+          color="primary"
+          onClick={handleVolverInicio}
+        >
           Volver al inicio
         </Button>
       </Stack>
@@ -37,4 +43,4 @@ const RegistroConfirmacion = () => {
   );
 };
 
-export default RegistroConfirmacion;
+export default RegisterSedesSuccess;

@@ -37,6 +37,7 @@ function DrawerAppBar(props) {
   const [role, setRole] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  console.log(professional)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,7 +51,7 @@ function DrawerAppBar(props) {
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `https://vitalclic-production.up.railway.app/api/datapersonal`,
+        `http://localhost:3001/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí
@@ -91,8 +92,14 @@ function DrawerAppBar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+    <Typography variant="h6" sx={{  background: "#53676c", p: 2 }} >
+      <Link to="/" className={[styles.optionsNavbar]}>
+              <img
+                src={require("../../assets/Images/logo.png")}
+                alt="Logo"
+                className={styles.logoMobile}
+              />
+            </Link>
       </Typography>
       <Divider />
       <List>
@@ -127,7 +134,7 @@ function DrawerAppBar(props) {
 
           <Typography
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{ flexGrow: 1, display: { sm: "block" } }}
           >
             <Link to="/" className={[styles.optionsNavbar]}>
               <img
@@ -137,6 +144,8 @@ function DrawerAppBar(props) {
               />
             </Link>
           </Typography>
+
+      
           {token && role === "personal" ? (
             <>
               <Box
@@ -212,7 +221,7 @@ function DrawerAppBar(props) {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-                <Link
+             {/*    <Link
                   to={"/mi-perfil"}
                   style={{ textDecoration: "none", color: "#000" }}
                 >
@@ -222,13 +231,8 @@ function DrawerAppBar(props) {
                     </ListItemIcon>
                     Perfil
                   </MenuItem>
-                </Link>
-                <MenuItem onClick={handleClose}>
-                  <ListItemIcon>
-                    <Settings fontSize="small" />
-                  </ListItemIcon>
-                  Administrar turnos
-                </MenuItem>
+                </Link> */}
+               
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
@@ -312,7 +316,7 @@ function DrawerAppBar(props) {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <Link
+            {/*   <Link
                 to={"/mi-perfil"}
                 style={{ textDecoration: "none", color: "#000" }}
               >
@@ -322,9 +326,9 @@ function DrawerAppBar(props) {
                   </ListItemIcon>
                   Perfil
                 </MenuItem>
-              </Link>
+              </Link> */}
               <Link
-                to={"/turnos"}
+                to={"/panel/turnos/disponibles"}
                 style={{ textDecoration: "none", color: "#000" }}
               >
               <MenuItem onClick={handleClose}>
@@ -343,7 +347,112 @@ function DrawerAppBar(props) {
               </MenuItem>
             </Menu>
           </>
-          ):(
+          ):  token && role === "sede" ? (
+            <>
+            <Box
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "flex",
+                  gap: "2em",
+                  placeItems: "center",
+                  paddingRight: 30,
+                },
+              }}
+            >
+              <Tooltip title="Account settings">
+                <IconButton
+                  onClick={handleClick}
+                  size="small"
+                  sx={{ ml: 2 }}
+                  aria-controls={open ? "account-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                >
+                  <Avatar
+                    src={professional && professional.image}
+                    sx={{
+                      backgroundColor:
+                        professional && professional.backgroundColor,
+                      width: 50,
+                      height: 50,
+                    }}
+                  >
+                    {professional && professional.image
+                      ? null
+                      : professional && professional.name[0]}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              slotProps={{
+                paper: {
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "&::before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+         {/*      <Link
+                to={"/mi-perfil"}
+                style={{ textDecoration: "none", color: "#000" }}
+              >
+                <MenuItem onClick={handleClose}>
+                  <ListItemIcon>
+                    <PersonAdd fontSize="small" />
+                  </ListItemIcon>
+                  Perfil
+                </MenuItem>
+              </Link> */}
+              <Link
+                to={"/panel/sede"}
+                style={{ textDecoration: "none", color: "#000" }}
+              >
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <Settings fontSize="small" />
+                </ListItemIcon>
+                Turnos reservados sede
+              </MenuItem>
+              </Link>
+
+              <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Cerrar sesión
+              </MenuItem>
+            </Menu>
+          </> ): (
             <Box
               sx={{
                 display: {
@@ -361,7 +470,7 @@ function DrawerAppBar(props) {
               >
                 ¿Eres profesional de salud?
               </Link>
-              <Link className={[styles.optionsNavbar]}>
+              <Link to="/registrar-sede" className={[styles.optionsNavbar]}>
                 ¿Es usted una empresa?
               </Link>
 

@@ -34,13 +34,19 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { OnlineShifts, UserProfessional } = sequelize.models;
+const { OnlineShifts, UserProfessional, InPersonShifts, UserSede } = sequelize.models;
 
 // Un UserProfessional puede tener muchos OnlineShifts
 
 
 UserProfessional.hasMany(OnlineShifts, { foreignKey: 'userProfesionalId' });
 OnlineShifts.belongsTo(UserProfessional, { foreignKey: 'userProfesionalId' });
+
+
+UserSede.hasMany(InPersonShifts, { foreignKey: 'sedeId' });
+InPersonShifts.belongsTo(UserSede, { foreignKey: 'sedeId' });
+
+
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importar la conexión { conn } = require('./db.js');

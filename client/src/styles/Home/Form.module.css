@@ -110,3 +110,27 @@
     margin-left: 8px;
   }
   
+
+  @media screen and (max-width: 768px) {
+    .logo {
+  display: none;
+  }
+
+  .SearchForm_container h2 {
+    font-size: 18px;
+ 
+  }
+
+  .SearchForm_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    max-width: 100%;
+    background-color: rgba(255, 255, 255, 0.811);
+    border-radius: 0;
+    margin: 0 auto;
+    padding: 2em ;
+  }
+  }

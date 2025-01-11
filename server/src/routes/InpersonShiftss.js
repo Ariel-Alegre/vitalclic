@@ -2,8 +2,8 @@
 const { Router  }= require('express');
 const router = Router();
 
-const {OnlineShifts} = require('../controllers/OnlineShifts');
-const {AllShifts} = require('../controllers/AllShifts');
+const {InpersonShifts} = require('../controllers/InPersonShifts');
+const {AllShiftsInPerson} = require('../controllers/AllShiftsInPerson');
 const {ShiftReservates} = require('../controllers/ShiftReservates');
 const {UpdateStatusShift} = require('../controllers/UpdateStatusShift');
 
@@ -11,10 +11,12 @@ const {UpdateStatusShift} = require('../controllers/UpdateStatusShift');
 
 
 
-router.post('/online-shifts', OnlineShifts);
-router.get('/all-shifts', AllShifts);
+
+router.post('/inperson-shifts', InpersonShifts);
+router.get('/shiftsinperson/:sedeId', AllShiftsInPerson);
 router.get('/shift-reservates', ShiftReservates );
 router.put('/online-shifts/:id', UpdateStatusShift);
+
 
 
 

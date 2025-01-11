@@ -6,6 +6,7 @@ const routerUser = require("./user");
 const routerShift = require("./onlineShifts");
 const routerSede= require("./sede");
 const routerShiftDanger= require("./DangerShit");
+const routerInpersonShifts= require("./InpersonShiftss");
 
 
 
@@ -13,7 +14,8 @@ const routerShiftDanger= require("./DangerShit");
 
 
 
-router.use('/api', routerProfesional, routerUser, routerShift, routerSede, routerShiftDanger ) 
+
+router.use('/api', routerProfesional, routerUser, routerShift, routerSede, routerShiftDanger, routerInpersonShifts) 
 
 
 

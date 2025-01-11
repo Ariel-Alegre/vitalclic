@@ -5,10 +5,14 @@ import axios from "axios";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 
-const PatientForm = ({  specialty, selectedDate, mode }) => {
-  const { pathname } = useLocation();
-const selectedTime = localStorage.getItem("selectedTime");
+const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyInperson, setSelectedTimeInperson, setDepartmentInperson}) => {
   const navigate = useNavigate()
+  const { pathname } = useLocation();
+  const selectedTimeInPerson = localStorage.getItem("selectedTimeInPerson");
+  const selectedDateInPerson = localStorage.getItem("selectedDateInPerson");
+
+  const inpersonData = JSON.parse(localStorage.getItem("inpersonData"));
+
 
   const [formData, setFormData] = useState({
     shifts: "Para mi",
@@ -19,9 +23,10 @@ const selectedTime = localStorage.getItem("selectedTime");
     age: "",
     document_number: "",
     reason_for_shift: "",
-    date: selectedDate,
-    time: selectedTime,
-    specialty: specialty,
+    date: selectedDateInPerson || "",
+    time: selectedTimeInPerson || "",
+    specialty: inpersonData && inpersonData?.specialty,
+    sedeId: ""
   }); // Estado para manejar los datos del formulario
   const [loading, setLoading] = useState(false); // Estado de carga
   const [openAlertError, setOpenAlertError] = React.useState(false);
@@ -29,7 +34,6 @@ const selectedTime = localStorage.getItem("selectedTime");
   const [user, setUser] = React.useState(null);
   const [role, setRole] = React.useState("");
   const [token, setToken] = React.useState("");
-  console.log(user)
   const handleCloseAlertError = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -50,11 +54,11 @@ const selectedTime = localStorage.getItem("selectedTime");
 
   React.useEffect(() => {
     setFormData({
-      date: selectedDate,
-      time: selectedTime,
-      specialty: specialty,
+      date: selectedDateInPerson,
+      time: selectedTimeInPerson,
+      specialty: inpersonData &&  inpersonData?.specialty ,
     });
-  }, [specialty, selectedTime, selectedDate]);
+  }, [inpersonData?.specialty, selectedTimeInPerson, selectedDateInPerson]);
 
   // Maneja cambios en los inputs
   const handleChange = (e) => {
@@ -68,16 +72,29 @@ const selectedTime = localStorage.getItem("selectedTime");
     setOpenAlertError(null); // Resetea el estado de error
 
     try {
-      await axios.post("http://localhost:3001/api/online-shifts", formData);
+      await axios.post(
+        "http://localhost:3001/api/inperson-shifts",
+        formData
+      );
       setTimeout(() => {
-        navigate("/reservación-exitosa")
+      navigate("/reservación-exitosa")
 
       }, 4000);
 
-      localStorage.removeItem("selectedDate");
-      localStorage.removeItem("selectedTime");
-      localStorage.removeItem("specialty");
+      
 
+      setTimeout(() => {
+        localStorage.removeItem("inpersonData");
+        localStorage.removeItem("selectedDateInPerson");
+        localStorage.removeItem("selectedSede");
+        localStorage.removeItem("selectedTimeInPerson");
+   
+
+        
+        allSede()
+
+     
+      }, 6000);
     } catch (err) {
       setOpenAlertError(true);
     } finally {
@@ -93,12 +110,15 @@ const selectedTime = localStorage.getItem("selectedTime");
       if (!tokenFromStorage) {
         throw new Error("Token no encontrado en localStorage");
       }
-      const response = await axios.get(`http://localhost:3001/api/datapersonal`, {
-        headers: {
-          Authorization: tokenFromStorage, // Usa el token aquí
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.get(
+        `http://localhost:3001/api/datapersonal`,
+        {
+          headers: {
+            Authorization: tokenFromStorage, // Usa el token aquí
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       setUser(response.data);
       setRole(response.data.role);
@@ -117,7 +137,7 @@ const selectedTime = localStorage.getItem("selectedTime");
       dataPersonal();
     }
   }, [token]);
-
+  const selectedSede = JSON.parse(localStorage.getItem("selectedSede"));
   // Efecto para actualizar los campos según la selección
   React.useEffect(() => {
     if (formData.shifts === "Para mi") {
@@ -127,10 +147,11 @@ const selectedTime = localStorage.getItem("selectedTime");
         name: user?.name || "",
         lastName: user?.lastName || "",
         email: user?.email || "",
+
         phone: user?.phone || "",
         document_number: user?.dni || "",
+        sedeId: selectedSede?.id || "",
 
-        
       }));
     } else {
       // Rellenar datos con el dependiente seleccionado
@@ -146,6 +167,7 @@ const selectedTime = localStorage.getItem("selectedTime");
 
           email: user?.email || "",
           document_number: selectedDependent?.dni || "",
+        sedeId: selectedSede?.id || "",
 
         }));
       }
@@ -154,32 +176,30 @@ const selectedTime = localStorage.getItem("selectedTime");
 
 
   return (
-    <div id="patient">
+    <div id="patientInPerson">
       <br />
       <br />
-      {selectedTime && mode === "VIRTUAL"  ? (
+      {selectedTimeInPerson && mode === "PRESENCIAL" ? (
         <>
           <div className={styles.formContainer}>
             <h2 className={styles.title}>DATOS DEL PACIENTE</h2>
             <form className={styles.form} onSubmit={handleSubmit}>
               <label className={styles.label}>¿Para quién es el turno?</label>
               <select
-              className={styles.input}
-              name="shifts"
-              value={formData.shifts}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccionar para quien es el turno</option>
-                <option value="Para mi">
-                Para mi
-              </option>
-              {user?.dependents?.map((data, index) => (
-                <option key={index} value={data.name}>
-                  {data.name}
-                </option>
-              ))}
-            </select>
+                className={styles.input}
+                name="shifts"
+                value={formData.shifts}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Seleccionar para quien es el turno</option>
+                <option value="Para mi">Para mi</option>
+                {user?.dependents?.map((data, index) => (
+                  <option key={index} value={data.name}>
+                    {data.name}
+                  </option>
+                ))}
+              </select>
 
               <label className={styles.label}>Especialidad</label>
               <input
@@ -199,9 +219,7 @@ const selectedTime = localStorage.getItem("selectedTime");
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
-              disabled
-
-
+                disabled
                 required
               />
               <label className={styles.label}>Horario</label>
@@ -212,33 +230,30 @@ const selectedTime = localStorage.getItem("selectedTime");
                 name="time"
                 onChange={handleChange}
                 value={formData.time}
-              disabled
-
+                disabled
                 required
               />
               <label className={styles.label}>NOMBRES</label>
               <input
-              type="text"
-              className={styles.input}
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              disabled
-
-              readOnly
-            />
+                type="text"
+                className={styles.input}
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                disabled
+                readOnly
+              />
 
               <label className={styles.label}>APELLIDOS</label>
               <input
-              type="text"
-              className={styles.input}
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              disabled
-
-              required
-            />
+                type="text"
+                className={styles.input}
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                disabled
+                required
+              />
 
               <label className={styles.label}>EMAIL</label>
               <input
@@ -246,9 +261,7 @@ const selectedTime = localStorage.getItem("selectedTime");
                 className={styles.input}
                 placeholder="Ingrese su correo electrónico"
                 name="email"
-                value={
-                 formData.email
-                }
+                value={formData.email}
                 onChange={handleChange}
                 disabled
               />
@@ -259,9 +272,7 @@ const selectedTime = localStorage.getItem("selectedTime");
                 className={styles.input}
                 placeholder="Ingrese su teléfono"
                 name="phone"
-                value={
-                formData.phone
-                }
+                value={formData.phone}
                 onChange={handleChange}
                 required
               />
@@ -269,7 +280,9 @@ const selectedTime = localStorage.getItem("selectedTime");
               {/* Mostrar campos adicionales solo si se selecciona "Para un familiar" */}
               {formData.shifts !== "Para mi" && (
                 <>
-                  <label className={styles.label}>Edad de {formData.shifts} </label>
+                  <label className={styles.label}>
+                    Edad de {formData.shifts}{" "}
+                  </label>
                   <input
                     type="number"
                     className={styles.input}
@@ -343,9 +356,9 @@ const selectedTime = localStorage.getItem("selectedTime");
             </Snackbar>
           </div>
         </>
-      ):null}
+      ) : null}
     </div>
   );
 };
 
-export default PatientForm;
+export default PatientFormInperson;

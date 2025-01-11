@@ -8,14 +8,14 @@ module.exports = {
 
     try {
 
-      const allProfessional = await UserSede.findAll();
+      const allSede = await UserSede.findAll();
 
-      if (allProfessional) {
+      if (allSede) {
         console.log("Todas las sede de la salud")
-        res.status(200).send({success: true, data: allProfessional})
+        res.status(200).send({success: true, data: allSede})
       } else {
         console.log("No se encuentran las sede")
-        res.status(404).send({success: false, message: "No se encuentran profesionales de la salud"})
+        res.status(404).send({success: false, message: "No se encuentran las sedes"})
       }
  
     } catch (error) {

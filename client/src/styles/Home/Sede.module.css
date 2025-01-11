@@ -114,6 +114,14 @@
   .specialty {
     text-align: center;
   }
+
+  .container_sede h1 {
+    font-size: 23px;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+    margin-top: 1em;
+ margin-bottom: 1em;
+  }
 }
 
 .description {

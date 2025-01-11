@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 
 registerLocale('es', es);
 
-const DatePickerComponent = ({ selectedDate, setSelectedDate, mode }) => {
+const DatePickerComponentInperson = ({  allSede,selectedDateInPerson, setSelectedDateInPerson, mode }) => {
   const { pathname } = useLocation();
   React.useEffect(() => {
     window.scrollTo(0, 200);
@@ -17,20 +17,21 @@ const DatePickerComponent = ({ selectedDate, setSelectedDate, mode }) => {
   const handleFechaChange = (date) => {
     if (date && isValid(date)) { // Verifica si la fecha es válida
       const formattedDate = format(date, 'dd/MM/yyyy'); // Formatea la fecha en formato dd/MM/yyyy
-      localStorage.setItem("selectedDate", formattedDate); // Guarda la fecha formateada en localStorage
-      setSelectedDate(formattedDate); // Actualiza el estado con la fecha formateada
-      window.location.href = "#time"; // Redirige a la sección de tiempo
+      localStorage.setItem("selectedDateInPerson", formattedDate); // Guarda la fecha formateada en localStorage
+      setSelectedDateInPerson(formattedDate); // Actualiza el estado con la fecha formateada
+      window.location.href = "#timeInperson"; // Redirige a la sección de tiempo
     } else {
       console.error("Fecha inválida seleccionada");
     }
+    allSede()
   };
 
   // Convierte la fecha seleccionada a un objeto Date si está en formato 'dd/MM/yyyy'
-  const parsedDate = selectedDate ? parse(selectedDate, 'dd/MM/yyyy', new Date()) : null;
-  const specialty = localStorage.getItem("specialty");
+  const parsedDate = selectedDateInPerson ? parse(selectedDateInPerson, 'dd/MM/yyyy', new Date()) : null;
+  const storedSede = JSON.parse(localStorage.getItem("selectedSede"));
   return (
-    <div id="date">
-      {specialty && mode === "VIRTUAL" ?  (
+    <div id="dateInperson">
+      {storedSede && mode === "PRESENCIAL" ?  (
         <>
           <div className="date-picker-container">
             <h2>SELECCIONAR FECHA</h2>
@@ -48,9 +49,9 @@ const DatePickerComponent = ({ selectedDate, setSelectedDate, mode }) => {
           </div>
           <div className="hr"></div>
         </>
-      ): null}
+      ):null}
     </div>
   );
 };
 
-export default DatePickerComponent;
+export default DatePickerComponentInperson;

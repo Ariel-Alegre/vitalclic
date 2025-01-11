@@ -68,7 +68,7 @@ const TableProfessional = () => {
     }
     try {
       const res = await axios.get(
-        "https://vitalclic-production.up.railway.app/api/shift-reservates",
+        "http://localhost:3001/api/shift-reservates",
         {
           headers: {
             Authorization: tokenFromStorage,
@@ -109,7 +109,7 @@ const TableProfessional = () => {
 
     // Realiza la solicitud PUT al servidor
     const res = await axios.put(
-      `https://vitalclic-production.up.railway.app/api/online-shifts/${selectedShift.id}`,
+      `http://localhost:3001/api/online-shifts/${selectedShift.id}`,
       { status: newStatus },
       {
         headers: {
@@ -136,7 +136,7 @@ const TableProfessional = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Turnos</h1>
+      <h1>Turnos disponibles</h1>
 
       <table className={styles.table}>
         <thead>
@@ -225,13 +225,13 @@ const TableProfessional = () => {
               {/* Botón para cambiar el estado a 'cancelar' */}
               <Button
                 variant="contained"
-                onClick={() => updateAccount("cancelar")}
+                onClick={() => handleClose()}
                 sx={{
                   backgroundColor: "#f44336",
                   ":hover": { backgroundColor: "#f44336" },
                 }}
               >
-                Cancelar turno
+                Salir
               </Button>
               {/* Botón para cambiar el estado a 'atendido' */}
               {/*       <Button

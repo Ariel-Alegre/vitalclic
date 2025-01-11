@@ -19,8 +19,10 @@ import axios from 'axios';
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { useNavigate } from "react-router-dom";
 
 const ProfessionalRegistration = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
@@ -53,9 +55,16 @@ const ProfessionalRegistration = () => {
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "specialty") {
+      // Actualizar el array de especialidades
+      setFormData((prev) => ({
+        ...prev,
+        [name]: typeof value === "string" ? value.split(",") : value,
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
-
   const handleCheckboxChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -79,7 +88,7 @@ const ProfessionalRegistration = () => {
   
     try {
       // Envía una solicitud POST al backend
-      const response = await axios.post("https://vitalclic-production.up.railway.app/api/register-professional", formData);
+      const response = await axios.post("http://localhost:3001/api/register-professional", formData);
         console.log(response.status)
       // Maneja la respuesta si la solicitud fue exitosa
       if (response.status === 200) {
@@ -98,6 +107,7 @@ const ProfessionalRegistration = () => {
       console.error("Error al enviar el formulario:", error);
     } finally {
   setLoading(false)
+  navigate("/registro/profesional-exitosa")
 
     }
   };

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from 'react';
 import styles from "../../styles/PanelAdmin/TableShift.module.css";
 import axios from "axios";
 import Backdrop from "@mui/material/Backdrop";
@@ -7,6 +7,11 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 const style = {
   position: "absolute",
   top: "50%",
@@ -35,20 +40,27 @@ const styleInfo = {
   borderRadius: "8px", // Bordes redondeados
 };
 
-const TableAcceptedShifts = () => {
+const TableInPersonShifts = () => {
   const [open, setOpen] = React.useState(false);
   const [openInfo, setOpenInfo] = React.useState(false);
 
   const [selectedShift, setSelectedShift] = React.useState(null);
   const [allShfit, setAllShfit] = React.useState([]);
+  const [scroll, setScroll] = React.useState('paper');
 
   const [token, setToken] = React.useState(""); // Estado para la autenticación
-  console.log(allShfit);
-  // Función para abrir el modal
-  const handleOpenInfo = (shift) => {
-    setSelectedShift(shift); // Establece el turno seleccionado
-    setOpenInfo(true); // Abre el modal
+
+console.log(selectedShift)
+
+  const handleClickOpen = (scrollType, shift) => {
+    return () => {
+      setOpenInfo(true);
+      setScroll(scrollType);
+      setSelectedShift(shift);
+    };
   };
+  
+
   const handleCloseInfo = () => setOpenInfo(false);
 
   const handleOpen = (shift) => {
@@ -58,7 +70,15 @@ const TableAcceptedShifts = () => {
   };
   // Función para cerrar el modal
   const handleClose = () => setOpen(false);
-
+  const descriptionElementRef = React.useRef(null);
+  React.useEffect(() => {
+    if (openInfo) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [openInfo]);
   // Función para obtener los turnos
   const dataPersonal = async () => {
     try {
@@ -75,14 +95,12 @@ const TableAcceptedShifts = () => {
           },
         }
       );
-
-      setAllShfit(response.data.OnlineShifts);
+  
+      setAllShfit(response.data);
     } catch (error) {
       console.error("Error al obtener los detalles:", error);
-    } finally {
     }
   };
-
   // Efecto para obtener el token y cargar los turnos
   React.useEffect(() => {
     const token = localStorage.getItem("token");
@@ -96,34 +114,48 @@ const TableAcceptedShifts = () => {
   }, [token]);
 
   // Función para actualizar el estado del turno
-  const updateAccount = async (newStatus) => {
-    if (!selectedShift) return;
+ const updateAccount = async (newStatus) => {
+  if (!selectedShift) return;
 
-    try {
-      // Realiza la solicitud PUT al servidor
-      const res = await axios.put(
-        `http://localhost:3001/api/online-shifts/${selectedShift.id}`,
-        { status: newStatus }
-      );
+  try {
+    // Obtener el token (ajusta esto según dónde lo almacenes)
+    const token = localStorage.getItem("token"); // O donde estés guardando tu token
 
-      // Actualiza el estado local en el frontend
-      setAllShfit((prevShifts) =>
-        prevShifts.map((shift) =>
-          shift.id === selectedShift.id
-            ? { ...shift, status: newStatus }
-            : shift
-        )
-      );
-
-      handleClose(); // Cierra el modal después de actualizar
-    } catch (error) {
-      console.error("Error al actualizar el estado del turno:", error);
+    if (!token) {
+      console.error("Token no encontrado. Por favor, inicia sesión.");
+      return;
     }
-  };
+
+    // Realiza la solicitud PUT al servidor
+    const res = await axios.put(
+      `http://localhost:3001/api/online-shifts/${selectedShift.id}`,
+      { status: newStatus },
+      {
+        headers: {
+          Authorization: token, // Incluye el token en los encabezados
+        },
+      }
+    );
+
+    // Actualiza el estado local en el frontend
+    setAllShfit((prevShifts) =>
+      prevShifts.map((shift) =>
+        shift.id === selectedShift.id
+          ? { ...shift, status: newStatus }
+          : shift
+      )
+    );
+
+    handleClose(); // Cierra el modal después de actualizar
+  } catch (error) {
+    console.error("Error al actualizar el estado del turno:", error);
+  }
+};
+
 
   return (
     <div className={styles.container}>
-      <h1>Turnos aceptados</h1>
+      <h1>Turnos disponibles</h1>
 
       <table className={styles.table}>
         <thead>
@@ -133,46 +165,52 @@ const TableAcceptedShifts = () => {
             <th>Teléfono</th>
             <th>Fecha</th>
             <th>Hora</th>
+            <th>Especialidad</th>
+
             <th>Información completa</th>
             <th>Estado de turno</th>
-          {/*   <th>Cambiar estado de la cuenta</th> */}
+            <th>Cambiar estado de la cuenta</th>
           </tr>
         </thead>
         <tbody>
-          {allShfit &&
-            allShfit.map((data, index) => (
-              <tr key={index}>
-                <td>
-                  {data.name} {data.lastName}
-                </td>
-                <td>{data.email}</td>
-                <td>{data.phone}</td>
-                <td>{data.date}</td>
-                <td>{data.time}:00</td>
+          {allShfit.InPersonShifts && allShfit.InPersonShifts.map(
+            (data, index) =>
+              data.status === "pendiente" ? (
+                <tr key={index}>
+                  <td>
+                    {data.name} {data.lastName}
+                  </td>
+                  <td>{data.email}</td>
+                  <td>{data.phone}</td>
+                  <td>{data.date}</td>
+                  <td>{data.time}:00</td>
+                  <td>{data.specialty}</td>
 
-                <td
-                  className={styles.viewInformation}
-                  onClick={() => handleOpenInfo(data)}
-                >
-                  Ver información
-                </td>
-                <td>{data.status}</td>
-           {/*      <td>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleOpen(data)}
-                    sx={{
-                      width: "45%",
-                      backgroundColor: "#53676c",
-                      ":hover": { backgroundColor: "#3e5852" },
-                    }}
+
+                  <td
+                    className={styles.viewInformation}
+                    onClick={ handleClickOpen('paper',data)}
                   >
-                    {data.status === "activo" && "Tomar turno"}
-                  </Button>
-                </td> */}
-              </tr>
-            ))}
+                    Ver información
+                  </td>
+                  <td>{data.status}</td>
+                  <td>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleOpen(data)}
+                      sx={{
+                        width: "45%",
+                        backgroundColor: "#53676c",
+                        ":hover": { backgroundColor: "#3e5852" },
+                      }}
+                    >
+                      {data.status === "pendiente" && "Tomar turno"}
+                    </Button>
+                  </td>
+                </tr>
+              ) : null // Solo se muestran turnos con estado 'pendiente', 'activo', 'atendido' o 'cancelar'
+          )}
         </tbody>
       </table>
 
@@ -211,7 +249,6 @@ const TableAcceptedShifts = () => {
               <Button
                 variant="contained"
                 onClick={() => handleClose()}
-
                 sx={{
                   backgroundColor: "#f44336",
                   ":hover": { backgroundColor: "#f44336" },
@@ -219,43 +256,40 @@ const TableAcceptedShifts = () => {
               >
                 Salir
               </Button>
-     
+              {/* Botón para cambiar el estado a 'atendido' */}
+              {/*       <Button
+                variant="contained"
+                onClick={() => updateAccount("atendido")}
+                sx={{ backgroundColor: "#FF9800" }}
+              >
+                Marcar como atendido
+              </Button> */}
+              {/* Botón para cambiar el estado a 'pendiente' */}
+              {/*      <Button
+                variant="contained"
+                onClick={() => updateAccount("pendiente")}
+                sx={{ backgroundColor: "#53676c" }}
+              >
+                Poner en pendiente
+              </Button> */}
+              {/* Botón para cancelar */}
             </Typography>
           </Box>
         </Fade>
       </Modal>
 
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={openInfo}
-        onClose={handleCloseInfo}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={openInfo}>
-          <Box sx={styleInfo}>
-            {/* Información detallada */}
-            <Typography
-              id="transition-modal-title"
-              variant="h6"
-              component="h2"
-              sx={{
-                textAlign: "center",
-                fontWeight: "bold",
-                color: "#53676c",
-                mb: 2,
-              }}
-            >
-              Información del turno
-            </Typography>
+ 
 
-            {/* Contenido del turno */}
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <Typography variant="body1" sx={{ fontSize: "18px" }}>
+      <Dialog
+        open={openInfo}
+        onClose={handleClose}
+        scroll={scroll}
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+      >
+        <DialogTitle id="scroll-dialog-title">Toda la información</DialogTitle>
+        <DialogContent dividers={scroll === 'paper'}>
+        <Typography variant="body1" sx={{ fontSize: "18px" }}>
                 <strong>Nombre: </strong>
                 {selectedShift?.name} {selectedShift?.lastName}
               </Typography>
@@ -283,41 +317,34 @@ const TableAcceptedShifts = () => {
                 <strong>Hora: </strong>
                 {selectedShift?.time}:00
               </Typography>
-
+              <Typography variant="body1" sx={{ fontSize: "18px" }}>
+                <strong>Especialidad: </strong>
+                {selectedShift?.specialty}
+              </Typography>
               <Typography variant="body1" sx={{ fontSize: "18px" }}>
                 <strong>Motivo de la consulta: </strong>
                 {selectedShift?.reason_for_shift}
               </Typography>
               <Typography variant="body1" sx={{ fontSize: "18px" }}>
                 <strong>Estado: </strong>
-                <span className={styles.status_bg}>
-                  {selectedShift?.status}
-                </span>
+                <span className={styles.status_bg}>{selectedShift?.status}</span>
               </Typography>
-            </Box>
+        </DialogContent>
+        <DialogActions>
+        <Button
+                  onClick={() => handleCloseInfo()}
+                  sx={{
+                    width: "45%",
+                    backgroundColor: "#53676c",
+                    ":hover": { backgroundColor: "#3e5852" },
+                    margin: "auto",
+                    color: "white"
+                  }}>Salir</Button>
 
-            {/* Botones de acción */}
-            <Box
-              sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleCloseInfo()}
-                sx={{
-                  width: "45%",
-                  backgroundColor: "#53676c",
-                  ":hover": { backgroundColor: "#3e5852" },
-                }}
-              >
-                Cerrar
-              </Button>
-            </Box>
-          </Box>
-        </Fade>
-      </Modal>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
 
-export default TableAcceptedShifts;
+export default TableInPersonShifts;

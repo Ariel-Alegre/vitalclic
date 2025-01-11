@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-const HealthProfessionalInfo = () => {
+const PerfilUser = () => {
   const [professional, setProfessional] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [open, setOpen] = React.useState(false);
@@ -366,4 +366,4 @@ const HealthProfessionalInfo = () => {
   );
 };
 
-export default HealthProfessionalInfo;
+export default PerfilUser;

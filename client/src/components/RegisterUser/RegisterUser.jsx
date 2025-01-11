@@ -22,6 +22,7 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import styles from "../../styles/RegisterUser/RegisterUser.module.css";
 import { format, isValid, parse } from "date-fns"; // Importa la función format, isValid y parse
+import { useNavigate } from "react-router-dom";
 registerLocale("es", es);
 
 const adapter = new AdapterDateFns({
@@ -31,6 +32,7 @@ const adapter = new AdapterDateFns({
   },
 });
 const RegisterUser = () => {
+  const navigate =useNavigate()
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
@@ -127,7 +129,7 @@ const RegisterUser = () => {
   
       // Enviar datos al servidor
       const response = await axios.post(
-        "https://vitalclic-production.up.railway.app/api/register-user",
+        "http://localhost:3001/api/register-user",
         formData
       );
   
@@ -140,6 +142,7 @@ const RegisterUser = () => {
       setOpenAlertError(true);
     } finally {
       setLoading(false);
+      navigate("/registrado-exitosamente")
     }
   };
   

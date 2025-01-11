@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-const HealthProfessionalInfo = () => {
+const ProfessionalRegistration = () => {
   const [professional, setProfessional] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [open, setOpen] = React.useState(false);
@@ -33,7 +33,6 @@ const HealthProfessionalInfo = () => {
   const [imagePreview, setImagePreview] = React.useState(""); // Estado para la vista previa de imagen
   const [token, setToken] = React.useState(""); // Estado para la vista previa de imagen
   
-  console.log(professional)
   const handleOpen = () => {
     setFormData({
       name: professional?.name || "",
@@ -93,7 +92,7 @@ const HealthProfessionalInfo = () => {
   
     try {
       const response = await axios.put(
-        `http://localhost:3001/api/user/${professional.id}`,
+        `http://localhost:3001/api/professional/${professional.id}`,
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -164,7 +163,7 @@ const HealthProfessionalInfo = () => {
             align="center"
             color="text.secondary"
           >
-            {professional && professional?.specialty.join(", ")}
+            {professional?.specialty}
           </Typography>
 
           <Typography variant="body1" color="text.secondary" align="center">
@@ -366,4 +365,4 @@ const HealthProfessionalInfo = () => {
   );
 };
 
-export default HealthProfessionalInfo;
+export default ProfessionalRegistration;

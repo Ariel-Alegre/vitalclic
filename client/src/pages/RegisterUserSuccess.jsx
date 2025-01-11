@@ -2,8 +2,12 @@ import React from "react";
 import { Alert, Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const RegistroConfirmacion = () => {
+const RegisterUserSuccess = () => {
   const navigate = useNavigate();
+
+  const handleVerReservas = () => {
+    navigate("/mis-reservas"); // Ruta para ver las reservas
+  };
 
   const handleVolverInicio = () => {
     navigate("/"); // Ruta para volver al inicio
@@ -20,21 +24,24 @@ const RegistroConfirmacion = () => {
       textAlign="center"
       p={2}
     >
-      <Alert severity="info" sx={{ fontSize: "18px", padding: "20px", mb: 3 }}>
-        Espere a que verifiquemos su perfil para poder iniciar sesión. Esto puede tardar entre 24 y 48 horas. ⏳
+      <Alert severity="success" sx={{ fontSize: "18px", padding: "20px", mb: 3 }}>
+        ¡Reserva realizada exitosamente! 🎉
       </Alert>
       <Stack direction="row" spacing={2}>
-        <Button    sx={{
+     
+        <Button 
+           sx={{
             backgroundColor: "#53676c",
             ":hover": { backgroundColor: "#3e5852" },
             margin: "auto",
             color: "white"
-          }} variant="contained" color="primary" onClick={handleVolverInicio}>
-          Volver al inicio
+          }}
+        variant="contained" color="secondary" onClick={handleVolverInicio}>
+          Iniciar sesión
         </Button>
       </Stack>
     </Box>
   );
 };
 
-export default RegistroConfirmacion;
+export default RegisterUserSuccess;
