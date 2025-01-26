@@ -24,6 +24,7 @@ import RegisterSedesSuccess from './pages/RegisterSedesSuccess';
 import RegisterProfessionalSuccess from './pages/RegisterProfessionalSuccess';
 import PerfilSede from './components/PanelSede/PerfilSede';
 import RegisterUserSuccess from './pages/RegisterUserSuccess';
+import TermsAndConditions from './pages/TermsAndConditions';
 
 
 
@@ -54,6 +55,7 @@ function App() {
           <Route path="/registro/sede-exitosa" element={<RegisterSedesSuccess />} />
           <Route path="/registro/profesional-exitosa" element={<RegisterProfessionalSuccess />} />
           <Route path="/registrado-exitosamente" element={<RegisterUserSuccess />} />
+          <Route path="/terminos-condiciones" element={<TermsAndConditions />} />
 
 
           <Route path="/test" element={<Test />} />

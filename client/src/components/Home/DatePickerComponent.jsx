@@ -30,10 +30,10 @@ const DatePickerComponent = ({ selectedDate, setSelectedDate, mode }) => {
   const specialty = localStorage.getItem("specialty");
   return (
     <div id="date">
-      {specialty && mode === "VIRTUAL" ?  (
+      {specialty && mode === "Virtual" ?  (
         <>
           <div className="date-picker-container">
-            <h2>SELECCIONAR FECHA</h2>
+            <h2>Seleccionar fecha</h2>
             <DatePicker
               selected={parsedDate} // Pasa el objeto Date al DatePicker
               onChange={handleFechaChange} // Usa el manejador corregido
@@ -44,6 +44,18 @@ const DatePickerComponent = ({ selectedDate, setSelectedDate, mode }) => {
               dropdownMode="select"
               inline
               className="calendar"
+              style={{
+                fontSize: '18px', // Aumenta el tamaño de la fuente
+              }}
+              calendarContainerStyle={{
+                fontSize: '18px', // Aumenta el tamaño de la fuente en el calendario
+              }}
+              popperModifiers={{
+                offset: {
+                  enabled: true,
+                  offset: '0, 5px',
+                },
+              }}
             />
           </div>
           <div className="hr"></div>

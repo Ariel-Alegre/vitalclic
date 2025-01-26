@@ -114,14 +114,14 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
   };
 
   React.useEffect(() => {
-    if (mode === "PRESENCIAL") {
+    if (mode === "Presencial") {
      localStorage.removeItem("specialty"); // Guarda la fecha formateada en localStorage
      localStorage.removeItem("selectedDate"); // Guarda la fecha formateada en localStorage
      localStorage.removeItem("selectedTime"); // Guarda la fecha formateada en localStorage
      setSpecialty(null)
     }
 
-    if (mode === "VIRTUAL") {
+    if (mode === "Virtual") {
       localStorage.removeItem("inpersonData"); // Guarda la fecha formateada en localStorage
       setSpecialtyInperson(null)
       setProvinceInperson(null)
@@ -221,28 +221,31 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
     <div className={styles.logo}>
       <img src={require("../../assets/Images/logo.png")} alt="Logo" />
     </div>
+    <div>
+      
+    </div>
     <div className={styles.SearchForm_container}>
       <h2>Encuentra tu especialista y agenda cita</h2>
       <div className={styles.modeToggle}>
         <button
-          className={`${styles.button} ${mode === "PRESENCIAL" ? styles.active : ""}`}
-          onClick={() => setMode("PRESENCIAL")}
+          className={`${styles.button} ${mode === "Presencial" ? styles.active : ""}`}
+          onClick={() => setMode("Presencial")}
         >
-          PRESENCIAL
+          Presencial
         </button>
         <button
-          className={`${styles.button} ${mode === "VIRTUAL" ? styles.active : ""}`}
-          onClick={() => setMode("VIRTUAL")}
+          className={`${styles.button} ${mode === "Virtual" ? styles.active : ""}`}
+          onClick={() => setMode("Virtual")}
         >
-          VIRTUAL
+          Virtual
         </button>
       </div>
 
       {/* Formulario para PRESENCIAL */}
-      {mode === "PRESENCIAL" && (
+      {mode === "Presencial" && (
         <form onSubmit={handlePresencialSubmit} className={styles.form}>
           <select className={styles.select} onChange={handleSpecialtyChange}  value={specialtyInperson}>
-            <option>ESPECIALIDAD</option>
+            <option>Especialidad</option>
             {especialidades.map((especialidad, index) => (
               <option key={index} value={especialidad}>
                 {especialidad}
@@ -254,7 +257,7 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
             value={departmentInperson}
             onChange={handleDepartamentoChange}
           >
-            <option>DEPARTAMENTO</option>
+            <option>Departamento</option>
             {departamentos.map((departamento, index) => (
               <option key={index} value={departamento}>
                 {departamento}
@@ -267,7 +270,7 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
             onChange={handleProvinciaChange}
             disabled={!departmentInperson}
           >
-            <option>PROVINCIA</option>
+            <option>Provincia</option>
             {departmentInperson && provincias[departmentInperson] ? (
               provincias[departmentInperson].map((provincia, index) => (
                 <option key={index} value={provincia}>
@@ -296,7 +299,7 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
       </select>
 
           <button type="submit" className={styles.searchButton}>
-            BUSCAR{" "}
+            Buscar{" "}
             <span className={styles.searchIcon}>
               <SearchIcon />
             </span>
@@ -305,7 +308,7 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
       )}
 
       {/* Formulario para VIRTUAL */}
-      {mode === "VIRTUAL" && (
+      {mode === "Virtual" && (
         <form onSubmit={handleVirtualSubmit} className={styles.form}>
           <select className={styles.select}>
             <option value="">Seleccionar especialidad</option>
@@ -316,7 +319,7 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
             ))}
           </select>
           <button type="submit" className={styles.searchButton}>
-            SELECCIONAR{" "}
+            Seleccionar {" "}
             <span className={styles.searchIcon}>
               <SearchIcon />
             </span>

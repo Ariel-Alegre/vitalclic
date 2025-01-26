@@ -21,7 +21,7 @@
   import CircularProgress from "@mui/material/CircularProgress";
   import Alert from "@mui/material/Alert";
   import Snackbar from "@mui/material/Snackbar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
   const specialties = [
     "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
     "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogo","Clinico"
@@ -100,7 +100,7 @@ const navigate =useNavigate()
       try {
         // Envía una solicitud POST al backend
         const response = await axios.post(
-          "http://localhost:3001/api/register-sede",
+          "https://vitalclic-production.up.railway.app/api/register-sede",
           formData
         );
         console.log(response.status);
@@ -136,7 +136,7 @@ const navigate =useNavigate()
             Registro de Sede
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Razón Social"
                 name="reason_social"
@@ -163,7 +163,7 @@ const navigate =useNavigate()
                 autoComplete="off"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Nombre del comercio"
                 name="name"
@@ -191,7 +191,7 @@ const navigate =useNavigate()
               />
             </Grid>
 
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Ruc"
                 name="ruc"
@@ -217,7 +217,7 @@ const navigate =useNavigate()
                 autoComplete="off"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Dirección"
                 name="address"
@@ -243,7 +243,7 @@ const navigate =useNavigate()
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Tipo de servicios"
                 name="type_of_service"
@@ -269,7 +269,7 @@ const navigate =useNavigate()
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Persona de contacto"
                 name="contact_person"
@@ -296,7 +296,7 @@ const navigate =useNavigate()
               />
             </Grid>
 
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Cargo"
                 name="charges"
@@ -323,7 +323,7 @@ const navigate =useNavigate()
               />
             </Grid>
 
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Email"
                 name="email"
@@ -351,7 +351,7 @@ const navigate =useNavigate()
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
             <FormControl       sx={{
               width: "100%",
               "& .MuiOutlinedInput-root": {
@@ -409,7 +409,7 @@ const navigate =useNavigate()
         </Select>
       </FormControl>
           </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="País"
                 name="country"
@@ -434,7 +434,7 @@ const navigate =useNavigate()
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Provincia"
                 name="province"
@@ -460,7 +460,7 @@ const navigate =useNavigate()
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Distrito"
                 name="district"
@@ -487,7 +487,7 @@ const navigate =useNavigate()
               />
             </Grid>
 
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Teléfono"
                 name="phone"
@@ -514,7 +514,7 @@ const navigate =useNavigate()
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Contraseña"
                 name="password"
@@ -552,6 +552,7 @@ const navigate =useNavigate()
                 }
                 label="Acepto los términos y condiciones"
               />
+                         <Link to="/terminos-condiciones">términos y condiciones</Link>
             </Grid>
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
               <Button

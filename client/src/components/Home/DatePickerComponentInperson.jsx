@@ -31,10 +31,10 @@ const DatePickerComponentInperson = ({  allSede,selectedDateInPerson, setSelecte
   const storedSede = JSON.parse(localStorage.getItem("selectedSede"));
   return (
     <div id="dateInperson">
-      {storedSede && mode === "PRESENCIAL" ?  (
+      {storedSede && mode === "Presencial" ?  (
         <>
           <div className="date-picker-container">
-            <h2>SELECCIONAR FECHA</h2>
+            <h2>Seleccionar fecha</h2>
             <DatePicker
               selected={parsedDate} // Pasa el objeto Date al DatePicker
               onChange={handleFechaChange} // Usa el manejador corregido

@@ -19,15 +19,16 @@
 .SearchForm_container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; /* Mantiene el contenido centrado verticalmente */
   align-items: center;
   width: 800px;
   max-width: 100%;
   background-color: rgba(255, 255, 255, 0.811);
   border-radius: 3em;
   margin: 0 auto;
-  padding: 2em ;
+  padding: 2em;
 }
+
 
   
 .SearchForm_container h2 {
@@ -83,6 +84,10 @@
     outline: none;
     border: none 1px solid #53676c;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    color: black;
+    padding-left: 10px;
   }
   
   .searchButton {

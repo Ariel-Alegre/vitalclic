@@ -51,7 +51,7 @@ function DrawerAppBar(props) {
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `http://localhost:3001/api/datapersonal`,
+        `https://vitalclic-production.up.railway.app/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí
@@ -468,10 +468,10 @@ function DrawerAppBar(props) {
                 to="/registrar-profesional"
                 className={[styles.optionsNavbar]}
               >
-                ¿Eres profesional de salud?
+                ¿Eres un personal de salud?
               </Link>
               <Link to="/registrar-sede" className={[styles.optionsNavbar]}>
-                ¿Es usted una empresa?
+                ¿Eres una empresa?
               </Link>
 
               <Link to="/iniciar-sesión" className={[styles.btnLogin]}>

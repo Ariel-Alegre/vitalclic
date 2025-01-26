@@ -19,7 +19,7 @@ import axios from 'axios';
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProfessionalRegistration = () => {
   const navigate = useNavigate()
@@ -88,7 +88,7 @@ const ProfessionalRegistration = () => {
   
     try {
       // Envía una solicitud POST al backend
-      const response = await axios.post("http://localhost:3001/api/register-professional", formData);
+      const response = await axios.post("https://vitalclic-production.up.railway.app/api/register-professional", formData);
         console.log(response.status)
       // Maneja la respuesta si la solicitud fue exitosa
       if (response.status === 200) {
@@ -122,7 +122,7 @@ const ProfessionalRegistration = () => {
           Registro de Profesional
         </Typography>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Nombre"
               name="name"
@@ -149,7 +149,7 @@ const ProfessionalRegistration = () => {
               autoComplete="off"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Apellido"
               name="lastName"
@@ -176,7 +176,7 @@ const ProfessionalRegistration = () => {
               autoComplete="off"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Colegio Profesional"
               name="professional_college"
@@ -202,7 +202,7 @@ const ProfessionalRegistration = () => {
               autoComplete="off"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Número de Registro"
               name="registration_number"
@@ -228,7 +228,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Número de Especialidad RNE"
               name="specialty_number_rne"
@@ -254,7 +254,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <FormControl fullWidth>
               <InputLabel htmlFor="genre">Género</InputLabel>
               <Select
@@ -291,7 +291,7 @@ const ProfessionalRegistration = () => {
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <DatePicker
               label="Fecha de Nacimiento"
               value={formData.birthdate}
@@ -321,7 +321,7 @@ const ProfessionalRegistration = () => {
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Email"
               name="email"
@@ -349,7 +349,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="País"
               name="country"
@@ -374,7 +374,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Provincia"
               name="province"
@@ -400,7 +400,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Distrito"
               name="district"
@@ -426,7 +426,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Especialidad"
               name="specialty"
@@ -452,7 +452,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Teléfono"
               name="phone"
@@ -479,7 +479,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Contraseña"
               name="password"
@@ -517,6 +517,8 @@ const ProfessionalRegistration = () => {
               }
               label="Acepto los términos y condiciones"
             />
+                                     <Link to="/terminos-condiciones">términos y condiciones</Link>
+            
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
             <Button

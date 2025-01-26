@@ -24,12 +24,11 @@ const TimeSelector = ({ selectedTime , setSelectedTime, mode}) => {
 
   return (
     <div id="time">
-      <br />
-      <br />
-      {selectedDate && mode === "VIRTUAL" ? (
+   
+      {selectedDate && mode === "Virtual" ? (
         <>
           <div className={styles.container}>
-            <h2 className={styles.title}>SELECCIONAR HORA</h2>
+            <h2 className={styles.title}>Seleccionar hora</h2>
             <div className={styles.grid}>
               {times.map((time) => (
                 <div

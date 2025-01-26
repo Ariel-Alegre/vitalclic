@@ -30,7 +30,7 @@ export default function Home() {
   const [districtInperson, setDistrictInperson] = useState(null);
   const [selectedDateInperson, setSelectedDateInPerson] = useState(null);
 
-   const [mode, setMode] = useState("PRESENCIAL");
+   const [mode, setMode] = useState("Presencial");
  
   const [sede, setSede] = React.useState([]);
 
@@ -38,7 +38,7 @@ export default function Home() {
 
  const Professionals = async () => {
   try {
-    const res = await axios.get("http://localhost:3001/api/professionals");
+    const res = await axios.get("https://vitalclic-production.up.railway.app/api/professionals");
     setProfessional(res.data.data)
 
   } catch (error) {
@@ -48,7 +48,7 @@ export default function Home() {
 
  const allSede = async () => {
   try {
-    const res = await axios.get("http://localhost:3001/api/all-sede");
+    const res = await axios.get("https://vitalclic-production.up.railway.app/api/all-sede");
     setSede(res.data.data)
 
   } catch (error) {
@@ -65,19 +65,19 @@ export default function Home() {
   return (
     <div>
    <Form allSede = {allSede}setMode={setMode} mode={mode} provinceInperson={provinceInperson }  departmentInperson={departmentInperson} specialty={specialty} setSpecialtyInperson ={setSpecialtyInperson} setDistrictInperson={setDistrictInperson} professional={professional} specialtyInperson= {specialtyInperson} setSpecialty={setSpecialty} setDepartmentInperson={setDepartmentInperson} setProvinceInperson={setProvinceInperson} districtInperson={districtInperson}/>
+  
    <Sede allSede = {allSede} sede ={sede}mode={mode}  specialtyInperson= {specialtyInperson} provinceInperson = {provinceInperson} departmentInperson={departmentInperson} districtInperson={districtInperson} />
    <DatePickerComponent mode={mode} setSelectedDate={setSelectedDate} selectedDate={selectedDate} specialty={specialty}/>
    <DatePickerinPerson allSede = {allSede} mode={mode}  sede={sede} setSelectedDateInPerson={setSelectedDateInPerson} selectedDateInperson={selectedDateInperson} specialty={specialty}/>
-
    <TimeSelectorInperson allSede = {allSede} selectedTimeInPerson={selectedTimeInPerson} setSelectedTimeInperson={setSelectedTimeInperson} mode={mode} selectedTime={selectedTime} setSelectedTime={setSelectedTime}selectedDate={selectedDate}/>
 
    <TimeSelector mode={mode} selectedTime={selectedTime} setSelectedTime={setSelectedTime}selectedDate={selectedDate}/>
    <PatientForm  mode={mode}  specialty={specialty} selectedTime={selectedTime} selectedDate={selectedDate}/>
    <PatientFormInperson  allSede={allSede} mode={mode}  setSelectedTimeInperson={setSelectedTimeInperson} setDepartmentInperson={setDepartmentInperson} setProvinceInperson={setProvinceInperson} setSpecialtyInperson={setSpecialtyInperson}/>
+   <ServiceAditional/>
    
    
- {/*   <ServiceAditional/> */}
-  {/*  <AditionalForm/> */}
+{/*  <AditionalForm/>  */} 
     </div>
   );
 }

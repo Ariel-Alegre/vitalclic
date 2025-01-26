@@ -22,7 +22,7 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import styles from "../../styles/RegisterUser/RegisterUser.module.css";
 import { format, isValid, parse } from "date-fns"; // Importa la función format, isValid y parse
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 registerLocale("es", es);
 
 const adapter = new AdapterDateFns({
@@ -42,6 +42,9 @@ const RegisterUser = () => {
     country: "",
     province: "",
     district: "",
+    department:"",
+    dni:"",
+
     phone: "",
     password: "",
     termsAccepted: false,
@@ -129,7 +132,7 @@ const RegisterUser = () => {
   
       // Enviar datos al servidor
       const response = await axios.post(
-        "http://localhost:3001/api/register-user",
+        "https://vitalclic-production.up.railway.app/api/register-user",
         formData
       );
   
@@ -156,7 +159,7 @@ const RegisterUser = () => {
           Registro de usuario
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Nombre"
               name="name"
@@ -183,9 +186,9 @@ const RegisterUser = () => {
               autoComplete="off"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
-              label="Apellido"
+              label="Apellidos"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
@@ -211,7 +214,7 @@ const RegisterUser = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <FormControl
               fullWidth
               sx={{
@@ -266,7 +269,7 @@ const RegisterUser = () => {
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
               adapterLocale={es}
@@ -301,7 +304,7 @@ const RegisterUser = () => {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Email"
               name="email"
@@ -329,7 +332,32 @@ const RegisterUser = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
+            <TextField
+              label="Dni"
+              name="dni"
+              value={formData.dni}
+              onChange={handleChange}
+              fullWidth
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="País"
               name="country"
@@ -354,7 +382,7 @@ const RegisterUser = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Provincia"
               name="province"
@@ -380,7 +408,34 @@ const RegisterUser = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+
+          <Grid item xs={12} sm={3}>
+            <TextField
+              label="Departamento"
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              fullWidth
+              autoComplete="off"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Distrito"
               name="district"
@@ -407,7 +462,7 @@ const RegisterUser = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Teléfono"
               name="phone"
@@ -434,7 +489,7 @@ const RegisterUser = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="Contraseña"
               name="password"
@@ -473,7 +528,7 @@ const RegisterUser = () => {
           {/* Formulario para dependientes */}
           {Object.entries(formData.dependents).map((dependent, index) => (
             <React.Fragment key={index}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={3}>
                 <TextField
                   label={`Nombre Dependiente ${index + 1}`}
                   name="name"
@@ -499,7 +554,7 @@ const RegisterUser = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={3}>
                 <TextField
                   label={`Apellido Dependiente ${index + 1}`}
                   name="lastName"
@@ -525,7 +580,7 @@ const RegisterUser = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={3}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     label={`Fecha de Nacimiento Dependiente ${index + 1}`}
@@ -561,7 +616,7 @@ const RegisterUser = () => {
                 </LocalizationProvider>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={3}>
                 <FormControl
                   fullWidth
                   sx={{
@@ -612,7 +667,7 @@ const RegisterUser = () => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={3}>
                 <TextField
                   label={`Documento de identidad ${index + 1}`}
                   name="dni"
@@ -652,6 +707,7 @@ const RegisterUser = () => {
               }
               label="Acepto los términos y condiciones"
             />
+            <Link to="/terminos-condiciones">términos y condiciones</Link>
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
             <Button

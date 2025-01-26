@@ -1,0 +1,52 @@
+.footer {
+    background-color: #000;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .logoSection {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .logo {
+    width: 80px; /* Ajusta el tamaño del logo */
+    height: auto;
+  }
+  
+  .textSection {
+    font-size: 16px;
+  }
+  
+  .contactSection {
+    margin-top: 10px;
+  }
+  
+  .contactButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .contactButton:hover {
+    background-color: #e64a19;
+  }
+  

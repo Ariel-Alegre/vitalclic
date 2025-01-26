@@ -2,14 +2,16 @@
 
 .serviciosContainer {
     width: 100%;
-    text-align: center;
-    font-family: Arial, sans-serif;
+    margin-top: 2em;
+    margin-bottom: 2em;
+      
   }
   
   .titulo {
     font-size: 2rem;
     color: #4a5b57;
     margin-bottom: 20px;
+    text-align: center;
   }
   
   .serviciosGrid {
@@ -40,5 +42,67 @@
   .servicioCard:hover {
     background-color: #4a5b57;
     color: #ffffff;
+    cursor: pointer;
   }
-  
+  /* Contenedor principal */
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+}
+
+/* Título */
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #4a5b57;
+}
+
+/* Formulario */
+.form {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Etiquetas */
+.label {
+  font-size: 1rem;
+  color: #4a5b57;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/* Inputs */
+.input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #4a5b57;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 10px;
+  outline: none;
+}
+
+/* Botón */
+.button {
+  margin-top: 20px;
+  padding: 10px;
+  color: #ffff;
+  background-color: #4a5b57;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.5s ease;
+
+}
+
+.button:hover {
+  background-color: #718983;
+}

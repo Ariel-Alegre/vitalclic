@@ -56,7 +56,7 @@ const Sede = ({ mode, sede, allSede}) => {
 
   const DetailsSede = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/sede/${sedelId}`);
+      const res = await axios.get(`https://vitalclic-production.up.railway.app/api/sede/${sedelId}`);
       setDetailsSede(res.data.data);
     } catch (error) {
       console.log(error);
@@ -102,9 +102,9 @@ const Sede = ({ mode, sede, allSede}) => {
       {inpersonData?.specialty &&
       inpersonData?.province &&
       inpersonData?.department &&
-      mode === "PRESENCIAL" ? (
+      mode === "Presencial" ? (
         <>
-          <h1>SELECCIONAR SEDE</h1>
+          <h1>Seleccionar sede</h1>
           <div className={styles.hr}></div>
           <div className={styles.locations_list}>
             <div>

@@ -27,12 +27,11 @@ const TimeSelectorInperson = ({allSede, selectedTimeInPerson , setSelectedTimeIn
 
   return (
     <div id="timeInperson">
-      <br />
-      <br />
-      {selectedDateInPerson && mode === "PRESENCIAL" ? (
+  
+      {selectedDateInPerson && mode === "Presencial" ? (
         <>
           <div className={styles.container}>
-            <h2 className={styles.title}>SELECCIONAR HORA</h2>
+            <h2 className={styles.title}>Seleccionar hora</h2>
             <div className={styles.grid}>
               {times.map((time) => (
                 <div

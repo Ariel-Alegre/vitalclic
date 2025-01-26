@@ -68,7 +68,7 @@ const selectedTime = localStorage.getItem("selectedTime");
     setOpenAlertError(null); // Resetea el estado de error
 
     try {
-      await axios.post("http://localhost:3001/api/online-shifts", formData);
+      await axios.post("https://vitalclic-production.up.railway.app/api/online-shifts", formData);
       setTimeout(() => {
         navigate("/reservación-exitosa")
 
@@ -93,7 +93,7 @@ const selectedTime = localStorage.getItem("selectedTime");
       if (!tokenFromStorage) {
         throw new Error("Token no encontrado en localStorage");
       }
-      const response = await axios.get(`http://localhost:3001/api/datapersonal`, {
+      const response = await axios.get(`https://vitalclic-production.up.railway.app/api/datapersonal`, {
         headers: {
           Authorization: tokenFromStorage, // Usa el token aquí
           "Content-Type": "application/json",
@@ -155,12 +155,11 @@ const selectedTime = localStorage.getItem("selectedTime");
 
   return (
     <div id="patient">
-      <br />
-      <br />
-      {selectedTime && mode === "VIRTUAL"  ? (
+  
+      {selectedTime && mode === "Virtual"  ? (
         <>
           <div className={styles.formContainer}>
-            <h2 className={styles.title}>DATOS DEL PACIENTE</h2>
+            <h2 className={styles.title}>Datos del paciente</h2>
             <form className={styles.form} onSubmit={handleSubmit}>
               <label className={styles.label}>¿Para quién es el turno?</label>
               <select
@@ -216,7 +215,7 @@ const selectedTime = localStorage.getItem("selectedTime");
 
                 required
               />
-              <label className={styles.label}>NOMBRES</label>
+              <label className={styles.label}>Nombre</label>
               <input
               type="text"
               className={styles.input}
@@ -228,7 +227,7 @@ const selectedTime = localStorage.getItem("selectedTime");
               readOnly
             />
 
-              <label className={styles.label}>APELLIDOS</label>
+              <label className={styles.label}>Apellidos</label>
               <input
               type="text"
               className={styles.input}
@@ -240,7 +239,7 @@ const selectedTime = localStorage.getItem("selectedTime");
               required
             />
 
-              <label className={styles.label}>EMAIL</label>
+              <label className={styles.label}>Email</label>
               <input
                 type="email"
                 className={styles.input}
@@ -253,7 +252,7 @@ const selectedTime = localStorage.getItem("selectedTime");
                 disabled
               />
 
-              <label className={styles.label}>TELÉFONO</label>
+              <label className={styles.label}>Telefóno</label>
               <input
                 type="tel"
                 className={styles.input}
@@ -295,7 +294,7 @@ const selectedTime = localStorage.getItem("selectedTime");
                 </>
               )}
 
-              <label className={styles.label}>Motivo del Turno</label>
+              <label className={styles.label}>Motivo del turno</label>
               <textarea
                 className={styles.input}
                 placeholder="Especifique el motivo del turno"
@@ -311,7 +310,7 @@ const selectedTime = localStorage.getItem("selectedTime");
                 className={styles.button}
                 disabled={loading}
               >
-                {loading ? "Enviando..." : "SEPARAR CITA"}
+                {loading ? "Enviando..." : "Solicitar atención"}
               </button>
             </form>
             <Snackbar

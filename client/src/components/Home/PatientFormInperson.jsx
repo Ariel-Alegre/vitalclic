@@ -73,7 +73,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
 
     try {
       await axios.post(
-        "http://localhost:3001/api/inperson-shifts",
+        "https://vitalclic-production.up.railway.app/api/inperson-shifts",
         formData
       );
       setTimeout(() => {
@@ -111,7 +111,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `http://localhost:3001/api/datapersonal`,
+        `https://vitalclic-production.up.railway.app/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí
@@ -177,12 +177,11 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
 
   return (
     <div id="patientInPerson">
-      <br />
-      <br />
-      {selectedTimeInPerson && mode === "PRESENCIAL" ? (
+  
+      {selectedTimeInPerson && mode === "Presencial" ? (
         <>
           <div className={styles.formContainer}>
-            <h2 className={styles.title}>DATOS DEL PACIENTE</h2>
+            <h2 className={styles.title}>Datos del paciente</h2>
             <form className={styles.form} onSubmit={handleSubmit}>
               <label className={styles.label}>¿Para quién es el turno?</label>
               <select
@@ -233,7 +232,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 disabled
                 required
               />
-              <label className={styles.label}>NOMBRES</label>
+              <label className={styles.label}>Nombre</label>
               <input
                 type="text"
                 className={styles.input}
@@ -244,7 +243,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 readOnly
               />
 
-              <label className={styles.label}>APELLIDOS</label>
+              <label className={styles.label}>Apellido</label>
               <input
                 type="text"
                 className={styles.input}
@@ -255,7 +254,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 required
               />
 
-              <label className={styles.label}>EMAIL</label>
+              <label className={styles.label}>Email</label>
               <input
                 type="email"
                 className={styles.input}
@@ -266,7 +265,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 disabled
               />
 
-              <label className={styles.label}>TELÉFONO</label>
+              <label className={styles.label}>Telefóno</label>
               <input
                 type="tel"
                 className={styles.input}
@@ -324,7 +323,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 className={styles.button}
                 disabled={loading}
               >
-                {loading ? "Enviando..." : "SEPARAR CITA"}
+                {loading ? "Enviando..." : "Solicitar atención"}
               </button>
             </form>
             <Snackbar
