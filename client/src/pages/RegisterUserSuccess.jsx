@@ -25,7 +25,7 @@ const RegisterUserSuccess = () => {
       p={2}
     >
       <Alert severity="success" sx={{ fontSize: "18px", padding: "20px", mb: 3 }}>
-        ¡Reserva realizada exitosamente! 🎉
+        Usuario creado exitosamente! 🎉
       </Alert>
       <Stack direction="row" spacing={2}>
      

@@ -122,9 +122,36 @@ const ProfessionalRegistration = () => {
           Registro de Profesional
         </Typography>
         <Grid container spacing={3}>
+        <Grid item xs={12} sm={3}>
+            <TextField
+              label="DNI"
+              name="dni"
+              value={formData.dni}
+              onChange={handleChange}
+              fullWidth
+              required
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+              autoComplete="off"
+            />
+          </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Nombre"
+              label="Nombres"
               name="name"
               value={formData.name}
               onChange={handleChange}
@@ -151,7 +178,7 @@ const ProfessionalRegistration = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Apellido"
+              label="Apellidos"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
@@ -178,7 +205,7 @@ const ProfessionalRegistration = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Colegio Profesional"
+              label="Colegio profesional"
               name="professional_college"
               value={formData.professional_college}
               onChange={handleChange}
@@ -202,9 +229,10 @@ const ProfessionalRegistration = () => {
               autoComplete="off"
             />
           </Grid>
+     
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Número de Registro"
+              label="Número de colegio profesional"
               name="registration_number"
               value={formData.registration_number}
               onChange={handleChange}
@@ -230,7 +258,33 @@ const ProfessionalRegistration = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Número de Especialidad RNE"
+              label="Especialidad"
+              name="specialty"
+              value={formData.specialty}
+              onChange={handleChange}
+              fullWidth
+              autoComplete="off"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <TextField
+              label="Número de especialidad RNE"
               name="specialty_number_rne"
               value={formData.specialty_number_rne}
               onChange={handleChange}
@@ -293,7 +347,7 @@ const ProfessionalRegistration = () => {
 
           <Grid item xs={12} sm={3}>
             <DatePicker
-              label="Fecha de Nacimiento"
+              label="Fecha de nacimiento"
               value={formData.birthdate}
               onChange={handleDateChange}
               renderInput={(params) => (
@@ -323,7 +377,7 @@ const ProfessionalRegistration = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Email"
+              label="Correo electrónico"
               name="email"
               type="email"
               value={formData.email}
@@ -356,6 +410,58 @@ const ProfessionalRegistration = () => {
               value={formData.country}
               onChange={handleChange}
               fullWidth
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={3}>
+            <TextField
+              label="Departamento"
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              fullWidth
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <TextField
+              label="Provincia"
+              name="province"
+              value={formData.province}
+              onChange={handleChange}
+              fullWidth
+              autoComplete="off"
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -426,32 +532,7 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              label="Especialidad"
-              name="specialty"
-              value={formData.specialty}
-              onChange={handleChange}
-              fullWidth
-              autoComplete="off"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}
-            />
-          </Grid>
+        
           <Grid item xs={12} sm={3}>
             <TextField
               label="Teléfono"

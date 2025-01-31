@@ -26,7 +26,7 @@ const style = {
   borderRadius: "8px",
 };
 
-const Sede = ({ mode, sede, allSede}) => {
+const Sede = ({ mode, sede, allSede, specialtyInperson, provinceInperson, departmentInperson}) => {
   const { pathname } = useLocation();
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -99,9 +99,9 @@ const Sede = ({ mode, sede, allSede}) => {
 
   return (
     <div id="sede" className={styles.container_sede}>
-      {inpersonData?.specialty &&
-      inpersonData?.province &&
-      inpersonData?.department &&
+      {specialtyInperson &&
+      provinceInperson &&
+      departmentInperson &&
       mode === "Presencial" ? (
         <>
           <h1>Seleccionar sede</h1>

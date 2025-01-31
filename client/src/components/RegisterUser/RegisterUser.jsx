@@ -159,9 +159,34 @@ const RegisterUser = () => {
           Registro de usuario
         </Typography>
         <Grid container spacing={2}>
+        <Grid item xs={12} sm={3}>
+            <TextField
+              label="DNI"
+              name="dni"
+              value={formData.dni}
+              onChange={handleChange}
+              fullWidth
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            />
+          </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Nombre"
+              label="Nombres"
               name="name"
               value={formData.name}
               onChange={handleChange}
@@ -332,11 +357,12 @@ const RegisterUser = () => {
               }}
             />
           </Grid>
+         
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Dni"
-              name="dni"
-              value={formData.dni}
+              label="País"
+              name="country"
+              value={formData.country}
               onChange={handleChange}
               fullWidth
               sx={{
@@ -359,11 +385,12 @@ const RegisterUser = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="País"
-              name="country"
-              value={formData.country}
+              label="Departamento"
+              name="department"
+              value={formData.department}
               onChange={handleChange}
               fullWidth
+              autoComplete="off"
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -409,32 +436,7 @@ const RegisterUser = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={3}>
-            <TextField
-              label="Departamento"
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              fullWidth
-              autoComplete="off"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}
-            />
-          </Grid>
+       
           <Grid item xs={12} sm={3}>
             <TextField
               label="Distrito"

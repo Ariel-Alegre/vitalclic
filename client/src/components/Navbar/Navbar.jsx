@@ -464,6 +464,9 @@ function DrawerAppBar(props) {
                 },
               }}
             >
+               <Link to="/registrar-sede" className={[styles.optionsNavbar]}>
+                ¿Eres una empresa?
+              </Link>
               <Link
                 to="/registrar-profesional"
                 className={[styles.optionsNavbar]}
@@ -471,8 +474,10 @@ function DrawerAppBar(props) {
                 ¿Eres un personal de salud?
               </Link>
               <Link to="/registrar-sede" className={[styles.optionsNavbar]}>
-                ¿Eres una empresa?
+                ¿Eres una clínica?
               </Link>
+
+             
 
               <Link to="/iniciar-sesión" className={[styles.btnLogin]}>
                 INICIAR SESIÓN

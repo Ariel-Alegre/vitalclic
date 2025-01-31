@@ -133,12 +133,12 @@ const navigate =useNavigate()
           style={{ padding: "2rem", marginTop: "5em" }}
         >
           <Typography variant="h4" gutterBottom>
-            Registro de Sede
+            Registro de sede
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Razón Social"
+                label="Razón social"
                 name="reason_social"
                 value={formData.reason_social}
                 onChange={handleChange}
@@ -193,7 +193,7 @@ const navigate =useNavigate()
 
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Ruc"
+                label="RUC"
                 name="ruc"
                 value={formData.ruc}
                 onChange={handleChange}
@@ -217,58 +217,8 @@ const navigate =useNavigate()
                 autoComplete="off"
               />
             </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                label="Dirección"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                fullWidth
-                autoComplete="off"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                label="Tipo de servicios"
-                name="type_of_service"
-                value={formData.type_of_service}
-                onChange={handleChange}
-                fullWidth
-                autoComplete={false}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              />
-            </Grid>
+          
+           
             <Grid item xs={12} sm={3}>
               <TextField
                 label="Persona de contacto"
@@ -325,7 +275,7 @@ const navigate =useNavigate()
 
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Email"
+                label="Correo electrónico"
                 name="email"
                 type="email"
                 value={formData.email}
@@ -436,6 +386,32 @@ const navigate =useNavigate()
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
+                label="Departamento"
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+                fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "&:hover fieldset": {
+                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000", // Color del label por defecto
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#53676c", // Cambia el color del label cuando está enfocado
+                  },
+                }}
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={3}>
+              <TextField
                 label="Provincia"
                 name="province"
                 value={formData.province}
@@ -486,7 +462,32 @@ const navigate =useNavigate()
                 }}
               />
             </Grid>
-
+            <Grid item xs={12} sm={3}>
+              <TextField
+                label="Dirección"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                fullWidth
+                autoComplete="off"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "&:hover fieldset": {
+                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000", // Color del label por defecto
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#53676c", // Cambia el color del label cuando está enfocado
+                  },
+                }}
+              />
+            </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
                 label="Teléfono"

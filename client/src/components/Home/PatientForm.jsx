@@ -294,10 +294,10 @@ const selectedTime = localStorage.getItem("selectedTime");
                 </>
               )}
 
-              <label className={styles.label}>Motivo del turno</label>
+              <label className={styles.label}>Motivo de la consulta</label>
               <textarea
                 className={styles.input}
-                placeholder="Especifique el motivo del turno"
+                placeholder="Especifique el motivo de la consulta"
                 rows="4"
                 name="reason_for_shift"
                 value={formData.reason_for_shift}
@@ -310,7 +310,7 @@ const selectedTime = localStorage.getItem("selectedTime");
                 className={styles.button}
                 disabled={loading}
               >
-                {loading ? "Enviando..." : "Solicitar atención"}
+                {loading ? "Enviando..." : "Reservar cita"}
               </button>
             </form>
             <Snackbar
