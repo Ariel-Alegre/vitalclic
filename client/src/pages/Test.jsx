@@ -4,21 +4,21 @@ import { useLoadScript } from "@react-google-maps/api";
 
 const libraries = ["places"];
 
-const ProvinceAutocomplete = () => {
-  const [formData, setFormData] = useState({ province: "" });
-  const inputRefProvince = useRef(null);
+const DistrictAutocomplete = () => {
+  const [formData, setFormData] = useState({ district: "" });
+  const inputRefDistrict = useRef(null);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA", // 🔴 Reemplaza con tu clave de API válida
+    googleMapsApiKey: "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA", // Reemplaza con tu clave de API válida
     libraries,
   });
 
   useEffect(() => {
-    if (isLoaded && inputRefProvince.current) {
+    if (isLoaded && inputRefDistrict.current) {
       const autoCompleteInstance = new window.google.maps.places.Autocomplete(
-        inputRefProvince.current,
+        inputRefDistrict.current,
         {
-          types: ["(regions)"], // Solo busca regiones (provincias/estados)
+          types: ["(regions)"], // Buscará solo regiones (distritos o provincias)
           componentRestrictions: { country: "PE" }, // Restricción a Perú
         }
       );
@@ -26,12 +26,17 @@ const ProvinceAutocomplete = () => {
       autoCompleteInstance.addListener("place_changed", () => {
         const place = autoCompleteInstance.getPlace();
         if (place.address_components) {
-          const province = place.address_components.find((comp) =>
-            comp.types.includes("administrative_area_level_1")
+          // Busca el distrito en la dirección seleccionada
+          const district = place.address_components.find((comp) =>
+            comp.types.includes("sublocality_level_1") // Tipo específico para distrito
           )?.long_name;
 
-          if (province) {
-            setFormData({ province });
+          if (district) {
+            // Actualiza el estado de formData con el distrito
+            setFormData((prev) => ({
+              ...prev,
+              district: district, // Asigna el distrito seleccionado al estado
+            }));
           }
         }
       });
@@ -45,11 +50,11 @@ const ProvinceAutocomplete = () => {
   return (
     <Grid item xs={12} sm={3}>
       <TextField
-        inputRef={inputRefProvince} // 🔹 Se corrigió la prop incorrecta
-        label="Provincia"
-        name="province"
-        value={formData.province}
-        onChange={(e) => setFormData({ province: e.target.value })}
+        inputRef={inputRefDistrict} // Usamos el ref para autocompletar
+        label="Distrito"
+        name="district"
+        value={formData.district} // El valor se actualiza con el distrito seleccionado
+        onChange={(e) => setFormData({ district: e.target.value })} // Permite cambios manuales si es necesario
         fullWidth
         autoComplete="off"
         sx={{
@@ -65,4 +70,4 @@ const ProvinceAutocomplete = () => {
   );
 };
 
-export default ProvinceAutocomplete;
+export default DistrictAutocomplete;
