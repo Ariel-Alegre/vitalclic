@@ -26,16 +26,16 @@ const DistrictAutocomplete = () => {
       autoCompleteInstance.addListener("place_changed", () => {
         const place = autoCompleteInstance.getPlace();
         if (place.address_components) {
-          // Busca el distrito en la dirección seleccionada
+          // Buscará el distrito en la dirección seleccionada
           const district = place.address_components.find((comp) =>
             comp.types.includes("sublocality_level_1") // Tipo específico para distrito
           )?.long_name;
 
           if (district) {
-            // Actualiza el estado de formData con el distrito
+            // Actualiza el estado de formData con el distrito seleccionado
             setFormData((prev) => ({
               ...prev,
-              district: district, // Asigna el distrito seleccionado al estado
+              district: district, // Asigna solo el nombre del distrito al estado
             }));
           }
         }
@@ -53,7 +53,7 @@ const DistrictAutocomplete = () => {
         inputRef={inputRefDistrict} // Usamos el ref para autocompletar
         label="Distrito"
         name="district"
-        value={formData.district} // El valor se actualiza con el distrito seleccionado
+        value={formData.district} // Solo se mostrará el nombre del distrito aquí
         onChange={(e) => setFormData({ district: e.target.value })} // Permite cambios manuales si es necesario
         fullWidth
         autoComplete="off"
