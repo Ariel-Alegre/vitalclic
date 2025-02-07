@@ -49,8 +49,8 @@ const MenuProps = {
   },
 };
 const RegisterEmpresa = () => {
-  const navigate = useNavigate();
-  
+    const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     reason_social: "",
     name: "",
@@ -68,64 +68,69 @@ const RegisterEmpresa = () => {
     password: "",
     termsAccepted: false,
     termsAcceptedAt: null,
+    department: "",
   });
-  
-  const autocompleteRef = useRef(null);
+
+  const inputRefAddress = useRef(null);
   const inputRefProvince = useRef(null);
   const inputRefDistrict = useRef(null);
   const inputRefDepartment = useRef(null);
-  const inputRefAddress = useRef(null);
+  const autocompleteRef = useRef(null);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: API_KEY, 
+    googleMapsApiKey: API_KEY,
     libraries,
   });
-   useEffect(() => {
-      if (isLoaded && inputRefAddress.current) {
-        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
-          inputRefAddress.current,
-          {
-            types: ["address"], // Busca direcciones completas
-            componentRestrictions: { country: "PE" }, // Restricción a Perú
-          }
-        );
-  
-        autoCompleteInstance.addListener("place_changed", () => {
-          const place = autoCompleteInstance.getPlace();
-          if (place.formatted_address) {
-            // Si se seleccionó una dirección completa, actualiza el estado
-            setFormData({ address: place.formatted_address });
-          }
-        });
-  
-        return () => {
-          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
-        };
-      }
-    }, [isLoaded]);
- useEffect(() => {
+
+  // Autocompletado para la dirección
+  useEffect(() => {
+    if (isLoaded && inputRefAddress.current) {
+      const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+        inputRefAddress.current,
+        {
+          types: ["address"],
+          componentRestrictions: { country: "PE" },
+        }
+      );
+
+      autoCompleteInstance.addListener("place_changed", () => {
+        const place = autoCompleteInstance.getPlace();
+        if (place.formatted_address) {
+          setFormData((prev) => ({
+            ...prev,
+            address: place.formatted_address,
+          }));
+        }
+      });
+
+      return () => {
+        window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+      };
+    }
+  }, [isLoaded]);
+
+  // Autocompletado para el departamento
+  useEffect(() => {
     if (isLoaded && inputRefDepartment.current) {
       const autoCompleteInstance = new window.google.maps.places.Autocomplete(
         inputRefDepartment.current,
         {
-          types: ["(regions)"], // Solo buscará regiones (departamentos, provincias)
-          componentRestrictions: { country: "PE" }, // Restricción a Perú
+          types: ["(regions)"],
+          componentRestrictions: { country: "PE" },
         }
       );
 
       autoCompleteInstance.addListener("place_changed", () => {
         const place = autoCompleteInstance.getPlace();
         if (place.address_components) {
-          // Buscamos el departamento (administrative_area_level_1) en la dirección seleccionada
           const department = place.address_components.find((comp) =>
-            comp.types.includes("administrative_area_level_1") // Busca el tipo de departamento
+            comp.types.includes("administrative_area_level_1")
           )?.long_name;
 
           if (department) {
-            // Actualiza el estado con el nombre del departamento
             setFormData((prev) => ({
               ...prev,
-              department: department, // Asignamos solo el nombre del departamento
+              department,
             }));
           }
         }
@@ -136,13 +141,15 @@ const RegisterEmpresa = () => {
       };
     }
   }, [isLoaded]);
+
+  // Autocompletado para la provincia
   useEffect(() => {
     if (isLoaded && inputRefProvince.current) {
       const autoCompleteInstance = new window.google.maps.places.Autocomplete(
         inputRefProvince.current,
         {
-          types: ["(regions)"], // Solo busca regiones (provincias/estados)
-          componentRestrictions: { country: "PE" }, // Restricción a Perú
+          types: ["(regions)"],
+          componentRestrictions: { country: "PE" },
         }
       );
 
@@ -154,7 +161,10 @@ const RegisterEmpresa = () => {
           )?.long_name;
 
           if (province) {
-            setFormData((prev) => ({ ...prev, province }));
+            setFormData((prev) => ({
+              ...prev,
+              province,
+            }));
           }
         }
       });
@@ -164,40 +174,41 @@ const RegisterEmpresa = () => {
       };
     }
   }, [isLoaded]);
-    useEffect(() => {
-      if (isLoaded && inputRefDistrict.current) {
-        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
-          inputRefDistrict.current,
-          {
-            types: ["(regions)"], // Solo buscará regiones (provincias o distritos)
-            componentRestrictions: { country: "PE" }, // Restricción a Perú
-          }
-        );
-  
-        autoCompleteInstance.addListener("place_changed", () => {
-          const place = autoCompleteInstance.getPlace();
-          if (place.address_components) {
-            // Buscamos el distrito (sublocality_level_1) en la dirección seleccionada
-            const district = place.address_components.find((comp) =>
-              comp.types.includes("sublocality_level_1") // Busca el tipo de distrito
-            )?.long_name;
-  
-            if (district) {
-              // Actualiza el estado con el nombre del distrito
-              setFormData((prev) => ({
-                ...prev,
-                district: district, // Asignamos solo el nombre del distrito
-              }));
-            }
-          }
-        });
-  
-        return () => {
-          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
-        };
-      }
-    }, [isLoaded]);
 
+  // Autocompletado para el distrito
+  useEffect(() => {
+    if (isLoaded && inputRefDistrict.current) {
+      const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+        inputRefDistrict.current,
+        {
+          types: ["(regions)"],
+          componentRestrictions: { country: "PE" },
+        }
+      );
+
+      autoCompleteInstance.addListener("place_changed", () => {
+        const place = autoCompleteInstance.getPlace();
+        if (place.address_components) {
+          const district = place.address_components.find((comp) =>
+            comp.types.includes("sublocality_level_1")
+          )?.long_name;
+
+          if (district) {
+            setFormData((prev) => ({
+              ...prev,
+              district,
+            }));
+          }
+        }
+      });
+
+      return () => {
+        window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+      };
+    }
+  }, [isLoaded]);
+
+  // Autocompletado general (país)
   const onLoad = (autocomplete) => {
     autocompleteRef.current = autocomplete;
     autocomplete.setTypes(["(regions)"]);
@@ -253,16 +264,15 @@ const RegisterEmpresa = () => {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
+
   const [loading, setLoading] = useState(false);
-  const [openAlertError, setOpenAlertError] = React.useState(false);
+  const [openAlertError, setOpenAlertError] = useState(false);
 
   const handleCloseAlertError = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
+    if (reason === "clickaway") return;
     setOpenAlertError(false);
   };
+
   const handleCheckboxChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -270,6 +280,7 @@ const RegisterEmpresa = () => {
       termsAcceptedAt: e.target.checked ? new Date() : null,
     }));
   };
+
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={es}>
