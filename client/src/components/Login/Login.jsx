@@ -3,6 +3,7 @@ import { TextField, Button, Box, Typography, Alert, CircularProgress, IconButton
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Importa tanto el proveedor como el login
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorGoogle, setErrorGoogle] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -43,6 +45,29 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+  const handleLoginSuccess = async (response) => {
+    try {
+      // Llamamos a la acción redux para manejar el login
+      const data = await axios.post('https://en-una-production.up.railway.app/api/auth/google', {
+        token: response.credential, // Token JWT de Google
+      });
+
+      if (data) {
+        console.log("Login exitoso:", data);
+        navigate("/");
+      } else {
+        setErrorGoogle("Error al autenticar el usuario");
+      }
+    } catch (error) {
+      setErrorGoogle("Error al autenticar el usuario");
+      console.error("Login failed:", error);
+    }
+  };
+
+  const handleLoginError = (error) => {
+    setErrorGoogle("Error en la autenticación");
+    console.error(error);
   };
 
   return (
@@ -151,6 +176,17 @@ const Login = () => {
       >
         {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Ingresar'}
       </Button>
+
+      <div >
+
+<GoogleOAuthProvider clientId="962025699097-20o18d8bj0tf8gj0qj3q96acrmvtr720.apps.googleusercontent.com" >
+    <GoogleLogin
+      onSuccess={handleLoginSuccess}
+      onError={handleLoginError}
+      styles={{width: "100%"}}
+      />
+</GoogleOAuthProvider>
+      </div>
       <Typography variant="body2" align="center" sx={{ mt: 2 }}>
         ¿No tienes una cuenta?{' '}
         <Link to="/registrar-usuario" style={{ color: '#53676c', textDecoration: 'none', fontWeight: 'bold' }}>

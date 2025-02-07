@@ -1,5 +1,5 @@
   // src/components/Form.js
-  import React, { useState } from "react";
+  import React, { useState, useEffect, useRef} from "react";
   import {
     TextField,
     Button,
@@ -26,6 +26,13 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
   import Alert from "@mui/material/Alert";
   import Snackbar from "@mui/material/Snackbar";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  LoadScript,
+  Autocomplete,
+  useLoadScript,
+} from "@react-google-maps/api";
+const API_KEY = "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA"; // 🔹 Reemplaza con tu clave de Google Maps
+const libraries = ["places"];
   const specialties = [
     "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
     "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogo","Clinico"
@@ -66,7 +73,166 @@ const handleClickShowPassword = () => {
       termsAccepted: false,
       termsAcceptedAt: null,
     });
+  const inputRefAddress = useRef(null);
+  const inputRefProvince = useRef(null);
+  const inputRefDistrict = useRef(null);
+  const inputRefDepartment = useRef(null);
+  const autocompleteRef = useRef(null);
 
+    const { isLoaded } = useLoadScript({
+      googleMapsApiKey: API_KEY,
+      libraries,
+    });
+  
+    // Autocompletado para la dirección
+    useEffect(() => {
+      if (isLoaded && inputRefAddress.current) {
+        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+          inputRefAddress.current,
+          {
+            types: ["address"],
+            componentRestrictions: { country: "PE" },
+          }
+        );
+  
+        autoCompleteInstance.addListener("place_changed", () => {
+          const place = autoCompleteInstance.getPlace();
+          if (place.formatted_address) {
+            setFormData((prev) => ({
+              ...prev,
+              address: place.formatted_address,
+            }));
+          }
+        });
+  
+        return () => {
+          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+        };
+      }
+    }, [isLoaded]);
+  
+    // Autocompletado para el departamento
+    useEffect(() => {
+      if (isLoaded && inputRefDepartment.current) {
+        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+          inputRefDepartment.current,
+          {
+            types: ["(regions)"],
+            componentRestrictions: { country: "PE" },
+          }
+        );
+  
+        autoCompleteInstance.addListener("place_changed", () => {
+          const place = autoCompleteInstance.getPlace();
+          if (place.address_components) {
+            const department = place.address_components.find((comp) =>
+              comp.types.includes("administrative_area_level_1")
+            )?.long_name;
+  
+            if (department) {
+              setFormData((prev) => ({
+                ...prev,
+                department,
+              }));
+            }
+          }
+        });
+  
+        return () => {
+          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+        };
+      }
+    }, [isLoaded]);
+  
+    // Autocompletado para la provincia
+    useEffect(() => {
+      if (isLoaded && inputRefProvince.current) {
+        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+          inputRefProvince.current,
+          {
+            types: ["(regions)"],
+            componentRestrictions: { country: "PE" },
+          }
+        );
+  
+        autoCompleteInstance.addListener("place_changed", () => {
+          const place = autoCompleteInstance.getPlace();
+          if (place.address_components) {
+            const province = place.address_components.find((comp) =>
+              comp.types.includes("administrative_area_level_1")
+            )?.long_name;
+  
+            if (province) {
+              setFormData((prev) => ({
+                ...prev,
+                province,
+              }));
+            }
+          }
+        });
+  
+        return () => {
+          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+        };
+      }
+    }, [isLoaded]);
+  
+    // Autocompletado para el distrito
+    useEffect(() => {
+      if (isLoaded && inputRefDistrict.current) {
+        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+          inputRefDistrict.current,
+          {
+            types: ["(regions)"],
+            componentRestrictions: { country: "PE" },
+          }
+        );
+  
+        autoCompleteInstance.addListener("place_changed", () => {
+          const place = autoCompleteInstance.getPlace();
+          if (place.address_components) {
+            const district = place.address_components.find((comp) =>
+              comp.types.includes("sublocality_level_1")
+            )?.long_name;
+  
+            if (district) {
+              setFormData((prev) => ({
+                ...prev,
+                district,
+              }));
+            }
+          }
+        });
+  
+        return () => {
+          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+        };
+      }
+    }, [isLoaded]);
+  
+    // Autocompletado general (país)
+    const onLoad = (autocomplete) => {
+      autocompleteRef.current = autocomplete;
+      autocomplete.setTypes(["(regions)"]);
+      autocomplete.setComponentRestrictions({ country: [] });
+    };
+  
+    const onPlaceChanged = () => {
+      if (autocompleteRef.current) {
+        const place = autocompleteRef.current.getPlace();
+        if (place && place.address_components) {
+          const country = place.address_components.find((comp) =>
+            comp.types.includes("country")
+          );
+          if (country) {
+            setFormData((prevState) => ({
+              ...prevState,
+              country: country.long_name,
+            }));
+          }
+        }
+      }
+    };
     const [loading, setLoading] = useState(false);
     const [openAlertError, setOpenAlertError] = React.useState(false);
     const handleCloseAlertError = (event, reason) => {
@@ -368,135 +534,140 @@ const handleClickShowPassword = () => {
         </Select>
       </FormControl>
           </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                label="País"
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                fullWidth
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+             <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
+                     <Grid item xs={12} sm={3}>
+                       <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                         <TextField
+                           label="País"
+                           name="country"
+                           value={formData.country}
+                           onChange={handleChange}
+                           autoComplete="none"
+                           fullWidth
+                           sx={{
+                             "& .MuiOutlinedInput-root": {
+                               "&:hover fieldset": {
+                                 borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                               },
+                               "&.Mui-focused fieldset": {
+                                 borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                               },
+                             },
+                             "& .MuiInputLabel-root": {
+                               color: "#000", // Color del label por defecto
+                             },
+                             "& .MuiInputLabel-root.Mui-focused": {
+                               color: "#53676c", // Cambia el color del label cuando está enfocado
+                             },
+                           }}
+                         />
+                       </Autocomplete>
+                     </Grid>
+                   </LoadScript>
+         
+       <Grid item xs={12} sm={3}>
+                <TextField
+                  label="Departamento"
+                  name="department"
+            inputRef={inputRefDepartment} // Utilizamos el ref para manejar el autocompletado
+    
+                  value={formData.department}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
                     },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                label="Departamento"
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                fullWidth
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              />
-            </Grid>
+                  }}
+                />
+              </Grid>
             
             <Grid item xs={12} sm={3}>
-              <TextField
-                label="Provincia"
-                name="province"
-                value={formData.province}
-                onChange={handleChange}
-                fullWidth
-                autoComplete="off"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              />
-            </Grid>
+                       <TextField
+                         inputRef={inputRefProvince} // 🔹 Se corrigió la prop incorrecta
+                         label="Provincia"
+                         name="province"
+                         value={formData.province}
+                         onChange={handleChange}
+                         fullWidth
+                         autoComplete="off"
+                         sx={{
+                           "& .MuiOutlinedInput-root": {
+                             "&:hover fieldset": { borderColor: "#53676c" },
+                             "&.Mui-focused fieldset": { borderColor: "#53676c" },
+                           },
+                           "& .MuiInputLabel-root": { color: "#000" },
+                           "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
+                         }}
+                       />
+                     </Grid>
+          <Grid item xs={12} sm={3}>
+                   <TextField
+               inputRef={inputRefDistrict} // Utilizamos el ref para manejar el autocompletado
+       
+                     label="Distrito"
+                     name="district"
+                     value={formData.district}
+                     onChange={handleChange}
+                     fullWidth
+                     autoComplete="off"
+                     sx={{
+                       "& .MuiOutlinedInput-root": {
+                         "&:hover fieldset": {
+                           borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                         },
+                         "&.Mui-focused fieldset": {
+                           borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                         },
+                       },
+                       "& .MuiInputLabel-root": {
+                         color: "#000", // Color del label por defecto
+                       },
+                       "& .MuiInputLabel-root.Mui-focused": {
+                         color: "#53676c", // Cambia el color del label cuando está enfocado
+                       },
+                     }}
+                   />
+                 </Grid>
             <Grid item xs={12} sm={3}>
-              <TextField
-                label="Distrito"
-                name="district"
-                value={formData.district}
-                onChange={handleChange}
-                fullWidth
-                autoComplete="off"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                label="Dirección"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                fullWidth
-                autoComplete="off"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              />
-            </Grid>
+                       <TextField
+                   inputRef={inputRefAddress} // Usamos el ref para el autocompletado
+           
+                         label="Dirección"
+                         name="address"
+                         value={formData.address}
+                         onChange={handleChange}
+                         fullWidth
+                         autoComplete="off"
+                         sx={{
+                           "& .MuiOutlinedInput-root": {
+                             "&:hover fieldset": {
+                               borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                             },
+                             "&.Mui-focused fieldset": {
+                               borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                             },
+                           },
+                           "& .MuiInputLabel-root": {
+                             color: "#000", // Color del label por defecto
+                           },
+                           "& .MuiInputLabel-root.Mui-focused": {
+                             color: "#53676c", // Cambia el color del label cuando está enfocado
+                           },
+                         }}
+                       />
+                     </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
                 label="Teléfono"
