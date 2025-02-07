@@ -523,10 +523,11 @@ const RegisterEmpresa = () => {
         label="Provincia"
         name="province"
         value={formData.province}
-        onChange={(e) => setFormData({ province: e.target.value })}
+        onChange={handleChange}
+
 
         fullWidth
-        autoComplete="none"
+        autoComplete="off"
         sx={{
           "& .MuiOutlinedInput-root": {
             "&:hover fieldset": { borderColor: "#53676c" },
