@@ -18,7 +18,7 @@ const DistrictAutocomplete = () => {
       const autoCompleteInstance = new window.google.maps.places.Autocomplete(
         inputRefDistrict.current,
         {
-          types: ["(regions)"], // Buscará solo regiones (distritos o provincias)
+          types: ["(regions)"], // Solo buscará regiones (provincias o distritos)
           componentRestrictions: { country: "PE" }, // Restricción a Perú
         }
       );
@@ -26,16 +26,16 @@ const DistrictAutocomplete = () => {
       autoCompleteInstance.addListener("place_changed", () => {
         const place = autoCompleteInstance.getPlace();
         if (place.address_components) {
-          // Buscará el distrito en la dirección seleccionada
+          // Buscamos el distrito (sublocality_level_1) en la dirección seleccionada
           const district = place.address_components.find((comp) =>
-            comp.types.includes("sublocality_level_1") // Tipo específico para distrito
+            comp.types.includes("sublocality_level_1") // Busca el tipo de distrito
           )?.long_name;
 
           if (district) {
-            // Actualiza el estado de formData con el distrito seleccionado
+            // Actualiza el estado con el nombre del distrito
             setFormData((prev) => ({
               ...prev,
-              district: district, // Asigna solo el nombre del distrito al estado
+              district: district, // Asignamos solo el nombre del distrito
             }));
           }
         }
@@ -50,10 +50,10 @@ const DistrictAutocomplete = () => {
   return (
     <Grid item xs={12} sm={3}>
       <TextField
-        inputRef={inputRefDistrict} // Usamos el ref para autocompletar
+        inputRef={inputRefDistrict} // Utilizamos el ref para manejar el autocompletado
         label="Distrito"
         name="district"
-        value={formData.district} // Solo se mostrará el nombre del distrito aquí
+        value={formData.district} // Aquí solo se mostrará el nombre del distrito
         onChange={(e) => setFormData({ district: e.target.value })} // Permite cambios manuales si es necesario
         fullWidth
         autoComplete="off"

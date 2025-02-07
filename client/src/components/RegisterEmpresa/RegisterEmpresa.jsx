@@ -72,6 +72,7 @@ const RegisterEmpresa = () => {
   
   const autocompleteRef = useRef(null);
   const inputRefProvince = useRef(null);
+  const inputRefDistrict = useRef(null);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: API_KEY, 
@@ -106,6 +107,39 @@ const RegisterEmpresa = () => {
       };
     }
   }, [isLoaded]);
+    useEffect(() => {
+      if (isLoaded && inputRefDistrict.current) {
+        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+          inputRefDistrict.current,
+          {
+            types: ["(regions)"], // Solo buscará regiones (provincias o distritos)
+            componentRestrictions: { country: "PE" }, // Restricción a Perú
+          }
+        );
+  
+        autoCompleteInstance.addListener("place_changed", () => {
+          const place = autoCompleteInstance.getPlace();
+          if (place.address_components) {
+            // Buscamos el distrito (sublocality_level_1) en la dirección seleccionada
+            const district = place.address_components.find((comp) =>
+              comp.types.includes("sublocality_level_1") // Busca el tipo de distrito
+            )?.long_name;
+  
+            if (district) {
+              // Actualiza el estado con el nombre del distrito
+              setFormData((prev) => ({
+                ...prev,
+                district: district, // Asignamos solo el nombre del distrito
+              }));
+            }
+          }
+        });
+  
+        return () => {
+          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+        };
+      }
+    }, [isLoaded]);
 
   const onLoad = (autocomplete) => {
     autocompleteRef.current = autocomplete;
@@ -525,6 +559,8 @@ const RegisterEmpresa = () => {
 
           <Grid item xs={12} sm={3}>
             <TextField
+        inputRef={inputRefDistrict} // Utilizamos el ref para manejar el autocompletado
+
               label="Distrito"
               name="district"
               value={formData.district}
