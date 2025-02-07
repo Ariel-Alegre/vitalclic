@@ -4,9 +4,9 @@ import { useLoadScript } from "@react-google-maps/api";
 
 const libraries = ["places"];
 
-const DistrictAutocomplete = () => {
-  const [formData, setFormData] = useState({ district: "" });
-  const inputRefDistrict = useRef(null);
+const AddressAutocomplete = () => {
+  const [formData, setFormData] = useState({ address: "" });
+  const inputRefAddress = useRef(null);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA", // Reemplaza con tu clave de API válida
@@ -14,30 +14,20 @@ const DistrictAutocomplete = () => {
   });
 
   useEffect(() => {
-    if (isLoaded && inputRefDistrict.current) {
+    if (isLoaded && inputRefAddress.current) {
       const autoCompleteInstance = new window.google.maps.places.Autocomplete(
-        inputRefDistrict.current,
+        inputRefAddress.current,
         {
-          types: ["(regions)"], // Solo buscará regiones (provincias o distritos)
+          types: ["address"], // Busca direcciones completas
           componentRestrictions: { country: "PE" }, // Restricción a Perú
         }
       );
 
       autoCompleteInstance.addListener("place_changed", () => {
         const place = autoCompleteInstance.getPlace();
-        if (place.address_components) {
-          // Buscamos el distrito (sublocality_level_1) en la dirección seleccionada
-          const district = place.address_components.find((comp) =>
-            comp.types.includes("sublocality_level_1") // Busca el tipo de distrito
-          )?.long_name;
-
-          if (district) {
-            // Actualiza el estado con el nombre del distrito
-            setFormData((prev) => ({
-              ...prev,
-              district: district, // Asignamos solo el nombre del distrito
-            }));
-          }
+        if (place.formatted_address) {
+          // Si se seleccionó una dirección completa, actualiza el estado
+          setFormData({ address: place.formatted_address });
         }
       });
 
@@ -50,11 +40,11 @@ const DistrictAutocomplete = () => {
   return (
     <Grid item xs={12} sm={3}>
       <TextField
-        inputRef={inputRefDistrict} // Utilizamos el ref para manejar el autocompletado
-        label="Distrito"
-        name="district"
-        value={formData.district} // Aquí solo se mostrará el nombre del distrito
-        onChange={(e) => setFormData({ district: e.target.value })} // Permite cambios manuales si es necesario
+        inputRef={inputRefAddress} // Usamos el ref para el autocompletado
+        label="Dirección"
+        name="address"
+        value={formData.address} // El valor del campo de texto es la dirección seleccionada
+        onChange={(e) => setFormData({ address: e.target.value })} // Permite cambios manuales en el input
         fullWidth
         autoComplete="off"
         sx={{
@@ -70,4 +60,4 @@ const DistrictAutocomplete = () => {
   );
 };
 
-export default DistrictAutocomplete;
+export default AddressAutocomplete;

@@ -73,12 +73,69 @@ const RegisterEmpresa = () => {
   const autocompleteRef = useRef(null);
   const inputRefProvince = useRef(null);
   const inputRefDistrict = useRef(null);
+  const inputRefDepartment = useRef(null);
+  const inputRefAddress = useRef(null);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: API_KEY, 
     libraries,
   });
+   useEffect(() => {
+      if (isLoaded && inputRefAddress.current) {
+        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+          inputRefAddress.current,
+          {
+            types: ["address"], // Busca direcciones completas
+            componentRestrictions: { country: "PE" }, // Restricción a Perú
+          }
+        );
+  
+        autoCompleteInstance.addListener("place_changed", () => {
+          const place = autoCompleteInstance.getPlace();
+          if (place.formatted_address) {
+            // Si se seleccionó una dirección completa, actualiza el estado
+            setFormData({ address: place.formatted_address });
+          }
+        });
+  
+        return () => {
+          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+        };
+      }
+    }, [isLoaded]);
+ useEffect(() => {
+    if (isLoaded && inputRefDepartment.current) {
+      const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+        inputRefDepartment.current,
+        {
+          types: ["(regions)"], // Solo buscará regiones (departamentos, provincias)
+          componentRestrictions: { country: "PE" }, // Restricción a Perú
+        }
+      );
 
+      autoCompleteInstance.addListener("place_changed", () => {
+        const place = autoCompleteInstance.getPlace();
+        if (place.address_components) {
+          // Buscamos el departamento (administrative_area_level_1) en la dirección seleccionada
+          const department = place.address_components.find((comp) =>
+            comp.types.includes("administrative_area_level_1") // Busca el tipo de departamento
+          )?.long_name;
+
+          if (department) {
+            // Actualiza el estado con el nombre del departamento
+            setFormData((prev) => ({
+              ...prev,
+              department: department, // Asignamos solo el nombre del departamento
+            }));
+          }
+        }
+      });
+
+      return () => {
+        window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+      };
+    }
+  }, [isLoaded]);
   useEffect(() => {
     if (isLoaded && inputRefProvince.current) {
       const autoCompleteInstance = new window.google.maps.places.Autocomplete(
@@ -516,6 +573,8 @@ const RegisterEmpresa = () => {
             <TextField
               label="Departamento"
               name="department"
+        inputRef={inputRefDepartment} // Utilizamos el ref para manejar el autocompletado
+
               value={formData.department}
               onChange={handleChange}
               fullWidth
@@ -587,6 +646,8 @@ const RegisterEmpresa = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
+        inputRef={inputRefAddress} // Usamos el ref para el autocompletado
+
               label="Dirección"
               name="address"
               value={formData.address}
