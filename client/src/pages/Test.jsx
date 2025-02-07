@@ -9,16 +9,19 @@ const ProvinceAutocomplete = () => {
   const inputRefProvince = useRef(null);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA",
+    googleMapsApiKey: "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA", // 🔴 Reemplaza con tu clave de API válida
     libraries,
   });
 
   useEffect(() => {
     if (isLoaded && inputRefProvince.current) {
-      const autoCompleteInstance = new window.google.maps.places.Autocomplete(inputRefProvince.current, {
-        types: ["(regions)"], // Solo busca regiones (provincias/estados)
-        componentRestrictions: { country: "PE" }, // Restringe a Argentina (cambia según el país)
-      });
+      const autoCompleteInstance = new window.google.maps.places.Autocomplete(
+        inputRefProvince.current,
+        {
+          types: ["(regions)"], // Solo busca regiones (provincias/estados)
+          componentRestrictions: { country: "PE" }, // Restricción a Perú
+        }
+      );
 
       autoCompleteInstance.addListener("place_changed", () => {
         const place = autoCompleteInstance.getPlace();
@@ -32,13 +35,17 @@ const ProvinceAutocomplete = () => {
           }
         }
       });
+
+      return () => {
+        window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
+      };
     }
   }, [isLoaded]);
 
   return (
     <Grid item xs={12} sm={3}>
       <TextField
-        inputRefProvince={inputRefProvince}
+        inputRef={inputRefProvince} // 🔹 Se corrigió la prop incorrecta
         label="Provincia"
         name="province"
         value={formData.province}
