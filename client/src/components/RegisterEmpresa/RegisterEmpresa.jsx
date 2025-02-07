@@ -1,5 +1,5 @@
 // src/components/Form.js
-import React, { useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -22,8 +22,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import { Link, useNavigate } from "react-router-dom";
-import { LoadScript, Autocomplete, useLoadScript } from "@react-google-maps/api";
-
+import {
+  LoadScript,
+  Autocomplete,
+  useLoadScript,
+} from "@react-google-maps/api";
 
 const API_KEY = "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA"; // 🔹 Reemplaza con tu clave de Google Maps
 const libraries = ["places"];
@@ -47,7 +50,7 @@ const MenuProps = {
 };
 const RegisterEmpresa = () => {
   const navigate = useNavigate();
-
+  
   const [formData, setFormData] = useState({
     reason_social: "",
     name: "",
@@ -66,11 +69,12 @@ const RegisterEmpresa = () => {
     termsAccepted: false,
     termsAcceptedAt: null,
   });
+  
   const autocompleteRef = useRef(null);
   const inputRefProvince = useRef(null);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: API_KEY, // 🔴 Reemplaza con tu clave de API válida
+    googleMapsApiKey: API_KEY, 
     libraries,
   });
 
@@ -92,7 +96,7 @@ const RegisterEmpresa = () => {
           )?.long_name;
 
           if (province) {
-            setFormData({ province });
+            setFormData((prev) => ({ ...prev, province }));
           }
         }
       });
@@ -102,10 +106,11 @@ const RegisterEmpresa = () => {
       };
     }
   }, [isLoaded]);
+
   const onLoad = (autocomplete) => {
     autocompleteRef.current = autocomplete;
-    autocomplete.setTypes(["(regions)"]); // 🔹 Filtra regiones (países incluidos)
-    autocomplete.setComponentRestrictions({ country: []}); // 🔹 Permite todos los países
+    autocomplete.setTypes(["(regions)"]);
+    autocomplete.setComponentRestrictions({ country: [] });
   };
 
   const onPlaceChanged = () => {
@@ -116,7 +121,6 @@ const RegisterEmpresa = () => {
           comp.types.includes("country")
         );
         if (country) {
-          // Actualiza solo el campo country en formData
           setFormData((prevState) => ({
             ...prevState,
             country: country.long_name,
@@ -125,9 +129,42 @@ const RegisterEmpresa = () => {
       }
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.termsAccepted) {
+      alert("Debes aceptar los términos y condiciones");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/register-sede",
+        formData
+      );
+      if (response.status === 200) {
+        alert("Usuario registrado correctamente.");
+        navigate("/registro/sede-exitosa");
+      }
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "specialty") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: typeof value === "string" ? value.split(",") : value,
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
   const [loading, setLoading] = useState(false);
   const [openAlertError, setOpenAlertError] = React.useState(false);
-   
+
   const handleCloseAlertError = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -135,60 +172,12 @@ const RegisterEmpresa = () => {
 
     setOpenAlertError(false);
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "specialty") {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: typeof value === "string" ? value.split(",") : value, // Manejo múltiple
-      }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
   const handleCheckboxChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       termsAccepted: e.target.checked,
       termsAcceptedAt: e.target.checked ? new Date() : null,
     }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Previene el comportamiento predeterminado del formulario (recargar la página)
-    setLoading(true);
-    if (!formData.termsAccepted) {
-      alert("Debes aceptar los términos y condiciones");
-      return;
-    }
-
-    try {
-      // Envía una solicitud POST al backend
-      const response = await axios.post(
-        "http://localhost:3001/api/register-sede",
-        formData
-      );
-      console.log(response.status);
-      // Maneja la respuesta si la solicitud fue exitosa
-      if (response.status === 200) {
-        console.log("Usuario registrado correctamente:", response.data);
-        alert("Usuario registrado correctamente.");
-        // Puedes redirigir al usuario a otra página si es necesario
-      } else {
-        // Si el servidor responde con un error, puedes mostrar un mensaje
-        setOpenAlertError(true);
-      }
-    } catch (error) {
-      // Manejo de errores en caso de que falle la solicitud
-      setOpenAlertError(true);
-
-      console.error("Error al enviar el formulario:", error);
-    } finally {
-      setLoading(false);
-      navigate("/registro/sede-exitosa");
-    }
   };
 
   return (
@@ -459,37 +448,34 @@ const RegisterEmpresa = () => {
             </FormControl>
           </Grid>
           <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
-
-          <Grid item xs={12} sm={3}>
-                    <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-            
-            <TextField
-              label="País"
-              name="country"
-              value={formData.country}
-              onChange={handleChange}
-              autoComplete= 'none'
-              fullWidth
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}
-            />
-                    </Autocomplete>
-            
-          </Grid>
+            <Grid item xs={12} sm={3}>
+              <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                <TextField
+                  label="País"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  autoComplete="none"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                  }}
+                />
+              </Autocomplete>
+            </Grid>
           </LoadScript>
 
           <Grid item xs={12} sm={3}>
@@ -518,27 +504,25 @@ const RegisterEmpresa = () => {
             />
           </Grid>
           <Grid item xs={12} sm={3}>
-      <TextField
-        inputRef={inputRefProvince} // 🔹 Se corrigió la prop incorrecta
-        label="Provincia"
-        name="province"
-        value={formData.province}
-        onChange={handleChange}
+            <TextField
+              inputRef={inputRefProvince} // 🔹 Se corrigió la prop incorrecta
+              label="Provincia"
+              name="province"
+              value={formData.province}
+              onChange={handleChange}
+              fullWidth
+              autoComplete="off"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": { borderColor: "#53676c" },
+                  "&.Mui-focused fieldset": { borderColor: "#53676c" },
+                },
+                "& .MuiInputLabel-root": { color: "#000" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
+              }}
+            />
+          </Grid>
 
-
-        fullWidth
-        autoComplete="off"
-        sx={{
-          "& .MuiOutlinedInput-root": {
-            "&:hover fieldset": { borderColor: "#53676c" },
-            "&.Mui-focused fieldset": { borderColor: "#53676c" },
-          },
-          "& .MuiInputLabel-root": { color: "#000" },
-          "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
-        }}
-      />
-    </Grid>
-  
           <Grid item xs={12} sm={3}>
             <TextField
               label="Distrito"
