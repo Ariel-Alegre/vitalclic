@@ -523,7 +523,8 @@ const RegisterEmpresa = () => {
         label="Provincia"
         name="province"
         value={formData.province}
-        onChange={handleChange}
+        onChange={(e) => setFormData({ province: e.target.value })}
+
         fullWidth
         autoComplete="none"
         sx={{
