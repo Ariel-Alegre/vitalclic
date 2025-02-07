@@ -225,7 +225,7 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
       
     </div>
     <div className={styles.SearchForm_container}>
-      <h2>Encuentra tu especialista y agenda cita</h2>
+      <h2>Encuentra tu especialista y agenda una cita</h2>
       <div className={styles.modeToggle}>
         <button
           className={`${styles.button} ${mode === "Presencial" ? styles.active : ""}`}

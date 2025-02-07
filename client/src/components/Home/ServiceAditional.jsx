@@ -4,14 +4,14 @@ import { Modal, Box, Typography, Button } from '@mui/material';
 
 const ServiceAditional = () => {
   const servicios = [
-    'Medico de urgencias',
-    'Odontología de urgencias',
-    'Topico de emfermería',
+    'Médico de urgencias',
+    'Pediatra de urgencias',
+    'Odontólogo de urgencias',
+    'Tópico de enfermería',
     'Laboratorio clínico',
-    'Diagnostico por imágen',
+    'Diagnóstico por imágen',
     'Ambulancia',
     'Centro de vacunación',
-    'Pediatra de urgencias',
   ];
 
     const [emergencyDoctorTeleconsulta, setEmergencyDoctorTeleconsulta] = useState({
@@ -720,7 +720,8 @@ const ServiceAditional = () => {
                 ':hover': { backgroundColor: '#4a5b57' },
               }}
             >
-              Establecimiento
+              {`${selectedService} a Establecimiento`}
+              
             </Button>
             ): (
          
@@ -746,12 +747,12 @@ const ServiceAditional = () => {
                 ':hover': { backgroundColor: '#4a5b57' },
               }}
             >
-                   Médico a domicilio
+                   {`${selectedService === "Odontólogo de urgencias"?  "Odontólogo":  selectedService === "Médico de urgencias"? "Médico" : selectedService === "Tópico de enfermería" ? "emfermero" : selectedService === "Laboratorio clínico" ? "laboratorio" : selectedService === "Pediatra de urgencias" ? "pediatra" : selectedService} a domicilio`}
                    </Button>
           </Box>
         </Box>
       </Modal>
-      {formType === "teleconsulta" && selectedService === "Medico de urgencias" ? (
+      {formType === "teleconsulta" && selectedService === "Médico de urgencias" ? (
 
 
         <div id="formAditional" className={styles.formContainer} style={{ marginTop: '20px' }}>
@@ -816,7 +817,7 @@ const ServiceAditional = () => {
 
 
 
-{formType === "domicilio" && selectedService === "Medico de urgencias" ? (
+{formType === "domicilio" && selectedService === "Médico de urgencias" ? (
 
 
 <div id="formAditional" className={styles.formContainer} style={{ marginTop: '20px' }}>
@@ -901,8 +902,6 @@ required
   </form>
 </div>
 ): null}
-
-
 
 {formType === "teleconsulta" && selectedService === "Pediatra de urgencias" ? (
 
@@ -1070,7 +1069,9 @@ Solicitar atención
 
 
 
-{formType === "teleconsulta" && selectedService === "Odontología de urgencias" ? (
+
+
+{formType === "teleconsulta" && selectedService === "Odontólogo de urgencias" ? (
 
 
 <div id="formAditional" className={styles.formContainer} style={{ marginTop: '20px' }}>
@@ -1151,7 +1152,7 @@ required
 
 
 
-{formType === "domicilio" && selectedService === "Odontología de urgencias" ? (
+{formType === "domicilio" && selectedService === "Odontólogo de urgencias" ? (
 
 
 <div id="formAditional" className={styles.formContainer} style={{ marginTop: '20px' }}>

@@ -68,7 +68,7 @@ const TableProfessional = () => {
     }
     try {
       const res = await axios.get(
-        "https://vitalclic-production.up.railway.app/api/shift-reservates",
+        "http://localhost:3001/api/shift-reservates",
         {
           headers: {
             Authorization: tokenFromStorage,
@@ -109,7 +109,7 @@ const TableProfessional = () => {
 
     // Realiza la solicitud PUT al servidor
     const res = await axios.put(
-      `https://vitalclic-production.up.railway.app/api/online-shifts/${selectedShift.id}`,
+      `http://localhost:3001/api/online-shifts/${selectedShift.id}`,
       { status: newStatus },
       {
         headers: {

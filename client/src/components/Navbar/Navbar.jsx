@@ -37,7 +37,7 @@ function DrawerAppBar(props) {
   const [role, setRole] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  console.log(professional)
+  console.log(role)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -51,7 +51,7 @@ function DrawerAppBar(props) {
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `https://vitalclic-production.up.railway.app/api/datapersonal`,
+        `http://localhost:3001/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí
@@ -136,13 +136,13 @@ function DrawerAppBar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { sm: "block" } }}
           >
-            <Link to="/" className={[styles.optionsNavbar]}>
+            <a href="/" className={[styles.optionsNavbar]}>
               <img
                 src={require("../../assets/Images/logo.png")}
                 alt="Logo"
                 className={styles.logo}
               />
-            </Link>
+            </a>
           </Typography>
 
       
@@ -464,7 +464,7 @@ function DrawerAppBar(props) {
                 },
               }}
             >
-               <Link to="/registrar-sede" className={[styles.optionsNavbar]}>
+               <Link to="/registrar-empresa" className={[styles.optionsNavbar]}>
                 ¿Eres una empresa?
               </Link>
               <Link

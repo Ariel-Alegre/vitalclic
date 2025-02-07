@@ -12,8 +12,12 @@
     Select,
     InputLabel,
     OutlinedInput,
-    ListItemText
+    ListItemText,
+  IconButton, InputAdornment 
+
   } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+
   import { es } from "date-fns/locale"; // Puedes cambiar el idioma de fecha
   import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
   import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"; // Importar AdapterDateFns
@@ -38,6 +42,11 @@ import { Link, useNavigate } from "react-router-dom";
   };
   const RegisterSede = () => {
 const navigate =useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+
+const handleClickShowPassword = () => {
+  setShowPassword(!showPassword);
+};
 
     const [formData, setFormData] = useState({
       reason_social: "",
@@ -100,7 +109,7 @@ const navigate =useNavigate()
       try {
         // Envía una solicitud POST al backend
         const response = await axios.post(
-          "https://vitalclic-production.up.railway.app/api/register-sede",
+          "http://localhost:3001/api/register-sede",
           formData
         );
         console.log(response.status);
@@ -515,40 +524,43 @@ const navigate =useNavigate()
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                label="Contraseña"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                fullWidth
-                autoComplete="off"
-                required
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              />
-            </Grid>
+               <Grid item xs={12} sm={3}>
+             <TextField
+               label="Contraseña"
+               name="password"
+               type={showPassword ? "text" : "password"}
+               value={formData.password}
+               onChange={handleChange}
+               fullWidth
+               autoComplete="off"
+               required
+               InputProps={{
+                 endAdornment: (
+                   <InputAdornment position="end">
+                     <IconButton onClick={handleClickShowPassword} edge="end">
+                       {showPassword ? <VisibilityOff /> : <Visibility />}
+                     </IconButton>
+                   </InputAdornment>
+                 ),
+               }}
+               sx={{
+                 "& .MuiOutlinedInput-root": {
+                   "&:hover fieldset": { borderColor: "#53676c" },
+                   "&.Mui-focused fieldset": { borderColor: "#53676c" },
+                 },
+                 "& .MuiInputLabel-root": { color: "#000" },
+                 "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
+               }}
+             />
+           </Grid>; 
             <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Checkbox
                     checked={formData.termsAccepted}
                     onChange={handleCheckboxChange}
+                    sx={{ '&.Mui-checked': { color: '#53676c' } }}
+                    required
                   />
                 }
                 label="Acepto los términos y condiciones"

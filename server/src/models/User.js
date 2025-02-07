@@ -40,6 +40,9 @@ module.exports = (sequelize) => {
     district: {
       type: DataTypes.STRING,
     }, 
+    address: {
+      type: DataTypes.STRING,
+    }, 
     department: {
       type: DataTypes.STRING,
     }, 

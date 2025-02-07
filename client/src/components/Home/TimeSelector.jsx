@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 const TimeSelector = ({ selectedTime , setSelectedTime, mode}) => {
   const { pathname } = useLocation();
   React.useEffect(() => {
-    window.scrollTo(0, 200);
+    window.scrollTo(0, 0);
 
   }, [pathname]);
   const times = Array.from({ length: 24 }, (_, i) => i);
@@ -23,12 +23,12 @@ const TimeSelector = ({ selectedTime , setSelectedTime, mode}) => {
   const selectedDate = localStorage.getItem("selectedDate");
 
   return (
-    <div id="time">
+    <div >
    
       {selectedDate && mode === "Virtual" ? (
         <>
-          <div className={styles.container}>
-            <h2 className={styles.title}>Seleccionar hora</h2>
+          <div className={styles.container} id="time">
+            <h2 className={styles.title} >Seleccionar hora</h2>
             <div className={styles.grid}>
               {times.map((time) => (
                 <div

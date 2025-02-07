@@ -55,7 +55,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
   React.useEffect(() => {
     setFormData({
       date: selectedDateInPerson,
-      time: selectedTimeInPerson,
+      time: `${selectedTimeInPerson}: 00`,
       specialty: inpersonData &&  inpersonData?.specialty ,
     });
   }, [inpersonData?.specialty, selectedTimeInPerson, selectedDateInPerson]);
@@ -73,7 +73,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
 
     try {
       await axios.post(
-        "https://vitalclic-production.up.railway.app/api/inperson-shifts",
+        "http://localhost:3001/api/inperson-shifts",
         formData
       );
       setTimeout(() => {
@@ -111,7 +111,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `https://vitalclic-production.up.railway.app/api/datapersonal`,
+        `http://localhost:3001/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí
@@ -150,6 +150,18 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
 
         phone: user?.phone || "",
         document_number: user?.dni || "",
+        sedeId: selectedSede?.id || "",
+
+      }));
+    } else if(formData.shifts === "Otro") {
+      setFormData((prev) => ({
+        ...prev,
+        name:  "",
+        lastName:  "",
+        email:  "",
+
+        phone:  "",
+        document_number:  "",
         sedeId: selectedSede?.id || "",
 
       }));
@@ -198,6 +210,8 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                     {data.name}
                   </option>
                 ))}
+              <option value="Otro">Otro</option>
+
               </select>
 
               <label className={styles.label}>Especialidad</label>
@@ -207,7 +221,6 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 name="specialty"
                 value={formData.specialty}
                 onChange={handleChange}
-                disabled
                 required
               />
               <label className={styles.label}>Fecha</label>
@@ -239,8 +252,8 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                disabled
-                readOnly
+                required
+
               />
 
               <label className={styles.label}>Apellido</label>
@@ -250,8 +263,8 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                disabled
                 required
+
               />
 
               <label className={styles.label}>Email</label>
@@ -262,7 +275,8 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                disabled
+                required
+
               />
 
               <label className={styles.label}>Telefóno</label>
@@ -274,6 +288,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
                 value={formData.phone}
                 onChange={handleChange}
                 required
+
               />
 
               {/* Mostrar campos adicionales solo si se selecciona "Para un familiar" */}

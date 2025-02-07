@@ -51,7 +51,8 @@ const selectedTime = localStorage.getItem("selectedTime");
   React.useEffect(() => {
     setFormData({
       date: selectedDate,
-      time: selectedTime,
+         time: `${selectedTime}:00`,
+
       specialty: specialty,
     });
   }, [specialty, selectedTime, selectedDate]);
@@ -68,7 +69,7 @@ const selectedTime = localStorage.getItem("selectedTime");
     setOpenAlertError(null); // Resetea el estado de error
 
     try {
-      await axios.post("https://vitalclic-production.up.railway.app/api/online-shifts", formData);
+      await axios.post("http://localhost:3001/api/online-shifts", formData);
       setTimeout(() => {
         navigate("/reservación-exitosa")
 
@@ -93,7 +94,7 @@ const selectedTime = localStorage.getItem("selectedTime");
       if (!tokenFromStorage) {
         throw new Error("Token no encontrado en localStorage");
       }
-      const response = await axios.get(`https://vitalclic-production.up.railway.app/api/datapersonal`, {
+      const response = await axios.get(`http://localhost:3001/api/datapersonal`, {
         headers: {
           Authorization: tokenFromStorage, // Usa el token aquí
           "Content-Type": "application/json",
@@ -118,7 +119,6 @@ const selectedTime = localStorage.getItem("selectedTime");
     }
   }, [token]);
 
-  // Efecto para actualizar los campos según la selección
   React.useEffect(() => {
     if (formData.shifts === "Para mi") {
       // Rellenar datos con el usuario principal
@@ -130,7 +130,16 @@ const selectedTime = localStorage.getItem("selectedTime");
         phone: user?.phone || "",
         document_number: user?.dni || "",
 
-        
+      }));
+    } else if (formData.shifts === "Otro") {
+      // Dejar campos vacíos para completar manualmente
+      setFormData((prev) => ({
+        ...prev,
+        name: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        document_number: "",
       }));
     } else {
       // Rellenar datos con el dependiente seleccionado
@@ -143,22 +152,20 @@ const selectedTime = localStorage.getItem("selectedTime");
           name: selectedDependent.name,
           lastName: selectedDependent.lastName || "",
           phone: user?.phone || "",
-
           email: user?.email || "",
           document_number: selectedDependent?.dni || "",
-
         }));
       }
     }
   }, [formData.shifts, user]);
+  
 
 
   return (
-    <div id="patient">
-  
+    
+    <div id="patient" >
       {selectedTime && mode === "Virtual"  ? (
-        <>
-          <div className={styles.formContainer}>
+          <div  className={styles.formContainer}>
             <h2 className={styles.title}>Datos del paciente</h2>
             <form className={styles.form} onSubmit={handleSubmit}>
               <label className={styles.label}>¿Para quién es el turno?</label>
@@ -178,6 +185,9 @@ const selectedTime = localStorage.getItem("selectedTime");
                   {data.name}
                 </option>
               ))}
+              <option value="Otro">Otro</option>
+
+
             </select>
 
               <label className={styles.label}>Especialidad</label>
@@ -187,7 +197,7 @@ const selectedTime = localStorage.getItem("selectedTime");
                 name="specialty"
                 value={formData.specialty}
                 onChange={handleChange}
-                disabled
+                disabled 
                 required
               />
               <label className={styles.label}>Fecha</label>
@@ -222,9 +232,9 @@ const selectedTime = localStorage.getItem("selectedTime");
               name="name"
               value={formData.name}
               onChange={handleChange}
-              disabled
 
-              readOnly
+              required
+
             />
 
               <label className={styles.label}>Apellidos</label>
@@ -234,7 +244,7 @@ const selectedTime = localStorage.getItem("selectedTime");
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              disabled
+
 
               required
             />
@@ -249,7 +259,8 @@ const selectedTime = localStorage.getItem("selectedTime");
                  formData.email
                 }
                 onChange={handleChange}
-                disabled
+                required
+
               />
 
               <label className={styles.label}>Telefóno</label>
@@ -341,7 +352,6 @@ const selectedTime = localStorage.getItem("selectedTime");
               </Alert>
             </Snackbar>
           </div>
-        </>
       ):null}
     </div>
   );

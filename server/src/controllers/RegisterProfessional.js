@@ -14,7 +14,7 @@
 
   module.exports = {
     RegisterProfessional: async (req, res) => {
-      const { name, lastName, professional_college, registration_number, specialty_number_rne, genre, birthdate, email, country, province, district, specialty, phone, password, termsAccepted, termsAcceptedAt } = req.body;
+      const { name, lastName,dni, professional_college,emergencyServices, registration_number, specialty_number_rne, genre, birthdate, email, country, province, district, specialty, phone, password, termsAccepted, termsAcceptedAt } = req.body;
 
       try {
         // Validación de aceptación de términos
@@ -48,7 +48,7 @@
           email,
           password: hashedPassword,
           phone,
-          role,
+          dni,
           professional_college,
           registration_number,
           specialty_number_rne,
@@ -56,6 +56,7 @@
           birthdate,
           specialty,
           country,
+          emergencyServices,
           province,
           district,
           status: "pendiente",

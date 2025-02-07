@@ -29,8 +29,9 @@ module.exports = (sequelize) => {
     },
 
     specialty: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
+    
     
     
     genre: {
@@ -53,7 +54,9 @@ module.exports = (sequelize) => {
     district: {
       type: DataTypes.STRING,
     }, 
-    
+    role: {
+      type: DataTypes.STRING,
+    },  
     dni: {
       type: DataTypes.STRING,
     }, 
@@ -63,10 +66,11 @@ module.exports = (sequelize) => {
      password: {
       type: DataTypes.STRING,
     },
-    role: {
+    emergencyServices: {
       type: DataTypes.STRING,
     },
 
+    
     status: {
       type: DataTypes.STRING,
     },

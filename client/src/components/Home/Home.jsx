@@ -38,7 +38,7 @@ export default function Home() {
 
  const Professionals = async () => {
   try {
-    const res = await axios.get("https://vitalclic-production.up.railway.app/api/professionals");
+    const res = await axios.get("http://localhost:3001/api/professionals");
     setProfessional(res.data.data)
 
   } catch (error) {
@@ -48,7 +48,7 @@ export default function Home() {
 
  const allSede = async () => {
   try {
-    const res = await axios.get("https://vitalclic-production.up.railway.app/api/all-sede");
+    const res = await axios.get("http://localhost:3001/api/all-sede");
     setSede(res.data.data)
 
   } catch (error) {

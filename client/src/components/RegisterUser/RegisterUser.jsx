@@ -11,6 +11,7 @@ import {
   MenuItem,
   Select,
   InputLabel,
+  IconButton, InputAdornment 
 } from "@mui/material";
 import { es } from "date-fns/locale"; // Puedes cambiar el idioma de fecha
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -21,18 +22,20 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import styles from "../../styles/RegisterUser/RegisterUser.module.css";
-import { format, isValid, parse } from "date-fns"; // Importa la función format, isValid y parse
 import { Link, useNavigate } from "react-router-dom";
+
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 registerLocale("es", es);
 
-const adapter = new AdapterDateFns({
-  locale: es,
-  formats: {
-    normalDate: "dd/MM/yyyy", // Formato día/mes/año
-  },
-});
+
 const RegisterUser = () => {
   const navigate =useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+
+const handleClickShowPassword = () => {
+  setShowPassword(!showPassword);
+};
+
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
@@ -44,7 +47,9 @@ const RegisterUser = () => {
     district: "",
     department:"",
     dni:"",
+    address:"",
 
+    
     phone: "",
     password: "",
     termsAccepted: false,
@@ -132,7 +137,7 @@ const RegisterUser = () => {
   
       // Enviar datos al servidor
       const response = await axios.post(
-        "https://vitalclic-production.up.railway.app/api/register-user",
+        "http://localhost:3001/api/register-user",
         formData
       );
   
@@ -163,6 +168,7 @@ const RegisterUser = () => {
             <TextField
               label="DNI"
               name="dni"
+              required
               value={formData.dni}
               onChange={handleChange}
               fullWidth
@@ -188,10 +194,10 @@ const RegisterUser = () => {
             <TextField
               label="Nombres"
               name="name"
+              required
               value={formData.name}
               onChange={handleChange}
               fullWidth
-              required
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -242,6 +248,7 @@ const RegisterUser = () => {
           <Grid item xs={12} sm={3}>
             <FormControl
               fullWidth
+              required
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -261,6 +268,7 @@ const RegisterUser = () => {
             >
               <InputLabel htmlFor="genre">Género</InputLabel>
               <Select
+              required
                 label="Género"
                 name="genre"
                 value={formData.genre}
@@ -294,20 +302,24 @@ const RegisterUser = () => {
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={3} >
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
               adapterLocale={es}
+              
             >
               <DatePicker
-                label="Fecha de Nacimiento"
+                label="Fecha de nacimiento"
                 value={formData.birthdate}
+                
                 onChange={handleDateChange}
-                format="dd/MM/yyyy" // Configura el formato de fecha
+                format="dd/MM/yyyy" // Usa 'MM' en mayúsculas para el mes
+                slotProps={{ textField: { fullWidth: true, required: true } }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     fullWidth
+                    required
                     sx={{
                       "& .MuiOutlinedInput-root": {
                         "&:hover fieldset": {
@@ -331,7 +343,7 @@ const RegisterUser = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Email"
+              label="Correo electrónico"
               name="email"
               type="email"
               value={formData.email}
@@ -357,14 +369,16 @@ const RegisterUser = () => {
               }}
             />
           </Grid>
-         
           <Grid item xs={12} sm={3}>
             <TextField
-              label="País"
-              name="country"
-              value={formData.country}
+              label="Teléfono"
+              name="phone"
+              type="tel"
+              value={formData.phone}
               onChange={handleChange}
               fullWidth
+              required
+              autoComplete="off"
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -385,6 +399,33 @@ const RegisterUser = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
+              label="País"
+              name="country"
+              value={formData.country}
+              onChange={handleChange}
+              fullWidth
+              required
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <TextField
+            required
               label="Departamento"
               name="department"
               value={formData.department}
@@ -411,6 +452,7 @@ const RegisterUser = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
+            required
               label="Provincia"
               name="province"
               value={formData.province}
@@ -444,6 +486,7 @@ const RegisterUser = () => {
               value={formData.district}
               onChange={handleChange}
               fullWidth
+              required
               autoComplete="off"
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -466,41 +509,13 @@ const RegisterUser = () => {
 
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Teléfono"
-              name="phone"
-              type="tel"
-              value={formData.phone}
+              label="Dirección"
+              name="address"
+              value={formData.address}
               onChange={handleChange}
               fullWidth
-              autoComplete="off"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              label="Contraseña"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              fullWidth
-              autoComplete="off"
               required
+              autoComplete="off"
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -519,6 +534,37 @@ const RegisterUser = () => {
               }}
             />
           </Grid>
+
+         
+          <Grid item xs={12} sm={3}>
+  <TextField
+    label="Contraseña"
+    name="password"
+    type={showPassword ? "text" : "password"}
+    value={formData.password}
+    onChange={handleChange}
+    fullWidth
+    autoComplete="off"
+    required
+    InputProps={{
+      endAdornment: (
+        <InputAdornment position="end">
+          <IconButton onClick={handleClickShowPassword} edge="end">
+            {showPassword ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </InputAdornment>
+      ),
+    }}
+    sx={{
+      "& .MuiOutlinedInput-root": {
+        "&:hover fieldset": { borderColor: "#53676c" },
+        "&.Mui-focused fieldset": { borderColor: "#53676c" },
+      },
+      "& .MuiInputLabel-root": { color: "#000" },
+      "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
+    }}
+  />
+</Grid>;
 
           {/* Botón para agregar dependientes */}
           <Grid item xs={12}>
@@ -553,11 +599,13 @@ const RegisterUser = () => {
                     },
                   }}
                   fullWidth
+                  required
                 />
               </Grid>
 
               <Grid item xs={12} sm={3}>
                 <TextField
+                required
                   label={`Apellido Dependiente ${index + 1}`}
                   name="lastName"
                   value={formData.dependents[index].lastName}
@@ -583,8 +631,12 @@ const RegisterUser = () => {
               </Grid>
 
               <Grid item xs={12} sm={3}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}
+              adapterLocale={es}
+                
+                required>
                   <DatePicker
+                  
                     label={`Fecha de Nacimiento Dependiente ${index + 1}`}
                     value={formData.dependents[index].birthdate}
                     onChange={(date) =>
@@ -596,6 +648,7 @@ const RegisterUser = () => {
                       <TextField
                         {...params}
                         fullWidth
+                        required
                         sx={{
                           "& .MuiOutlinedInput-root": {
                             "&:hover fieldset": {
@@ -603,6 +656,9 @@ const RegisterUser = () => {
                             },
                             "&.Mui-focused fieldset": {
                               borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                            },
+                            "&.Mui-error fieldset": {
+                              borderColor: "#53676c !important", // Evita el borde rojo en caso de error
                             },
                           },
                           "& .MuiInputLabel-root": {
@@ -614,12 +670,14 @@ const RegisterUser = () => {
                         }}
                       />
                     )}
+                    
                   />
                 </LocalizationProvider>
               </Grid>
 
               <Grid item xs={12} sm={3}>
                 <FormControl
+                required
                   fullWidth
                   sx={{
                     "& .MuiOutlinedInput-root": {
@@ -675,6 +733,7 @@ const RegisterUser = () => {
                   name="dni"
                   value={formData.dependents[index].dni}
                   onChange={(e) => handleDependentChange(index, e)}
+                  required
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       "&:hover fieldset": {
@@ -699,12 +758,16 @@ const RegisterUser = () => {
               <Grid item xs={12}></Grid>
             </React.Fragment>
           ))}
+          
           <Grid item xs={12}>
             <FormControlLabel
+            required
               control={
                 <Checkbox
                   checked={formData.termsAccepted}
                   onChange={handleCheckboxChange}
+                  sx={{ '&.Mui-checked': { color: '#53676c' } }}
+                  required
                 />
               }
               label="Acepto los términos y condiciones"

@@ -11,7 +11,7 @@ registerLocale('es', es);
 const DatePickerComponent = ({ selectedDate, setSelectedDate, mode }) => {
   const { pathname } = useLocation();
   React.useEffect(() => {
-    window.scrollTo(0, 200);
+    window.scrollTo(0, 0);
   }, [pathname]);
 
   const handleFechaChange = (date) => {

@@ -34,7 +34,7 @@ console.log(professionals)
 
   const AllProfessional = async () => {
     try {
-      const res = await axios.get("https://vitalclic-production.up.railway.app/api/professionals");
+      const res = await axios.get("http://localhost:3001/api/professionals");
       setProfessionals(res.data.data);
     } catch (error) {
       console.log(error);
@@ -52,7 +52,7 @@ console.log(professionals)
 
     try {
       const res = await axios.put(
-        `https://vitalclic-production.up.railway.app/api/update-doctor-status/${selectedProfessional.id}`,
+        `http://localhost:3001/api/update-doctor-status/${selectedProfessional.id}`,
         { status: newStatus }
       );
 

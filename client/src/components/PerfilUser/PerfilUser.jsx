@@ -65,7 +65,7 @@ const PerfilUser = () => {
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `https://vitalclic-production.up.railway.app/api/datapersonal`,
+        `http://localhost:3001/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí
@@ -93,7 +93,7 @@ const PerfilUser = () => {
   
     try {
       const response = await axios.put(
-        `https://vitalclic-production.up.railway.app/api/user/${professional.id}`,
+        `http://localhost:3001/api/user/${professional.id}`,
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },

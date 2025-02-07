@@ -1,5 +1,5 @@
 // src/components/Form.js
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   TextField,
   Button,
@@ -12,24 +12,28 @@ import {
   Select,
   InputLabel,
   OutlinedInput,
-  ListItemText,Radio ,
-  FormLabel, RadioGroup,
-  IconButton, InputAdornment 
-
-
+  ListItemText,
 } from "@mui/material";
 import { es } from "date-fns/locale"; // Puedes cambiar el idioma de fecha
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"; // Importar AdapterDateFns
-import axios from 'axios';
+import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { Link, useNavigate } from "react-router-dom";
-const specialties = [
-  "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
-  "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogo","Clinico"
+import { LoadScript, Autocomplete, useLoadScript } from "@react-google-maps/api";
+
+
+const API_KEY = "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA"; // 🔹 Reemplaza con tu clave de Google Maps
+const libraries = ["places"];
+
+const services = [
+  "Tópico de enfermería",
+  "Laboratorio clínico",
+  "Diagnóstico por imágen",
+  "Ambulancia",
+  "Centro de vacunación",
 ];
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,39 +45,83 @@ const MenuProps = {
     },
   },
 };
-const ProfessionalRegistration = () => {
-  const navigate = useNavigate()
-    const [showPassword, setShowPassword] = useState(false);
-  
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+const RegisterEmpresa = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
+    reason_social: "",
     name: "",
-    lastName: "",
-    professional_college: "",
-    registration_number: "",
-    specialty_number_rne: "",
-    genre: "",
-    birthdate: null,
+    ruc: "",
+    address: "",
     email: "",
     country: "",
     province: "",
     district: "",
-    specialty: [],
     phone: "",
-    emergencyServices: "no",
+    specialty: [],
+    type_of_service: "",
+    contact_person: "",
+    charges: "",
     password: "",
     termsAccepted: false,
     termsAcceptedAt: null,
   });
+  const autocompleteRef = useRef(null);
+  const inputRefProvince = useRef(null);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA",
+    libraries,
+  });
+  React.useEffect(() => {
+    if (isLoaded && inputRefProvince.current) {
+      const autoCompleteInstance = new window.google.maps.places.Autocomplete(inputRefProvince.current, {
+        types: ["(regions)"], // Solo busca regiones (provincias/estados)
+        componentRestrictions: { country: "PE" }, // Restringe a Argentina (cambia según el país)
+      });
+
+      autoCompleteInstance.addListener("place_changed", () => {
+        const place = autoCompleteInstance.getPlace();
+        if (place.address_components) {
+          const province = place.address_components.find((comp) =>
+            comp.types.includes("administrative_area_level_1")
+          )?.long_name;
+
+          if (province) {
+            setFormData({ province });
+          }
+        }
+      });
+    }
+  }, [isLoaded]);
+  const onLoad = (autocomplete) => {
+    autocompleteRef.current = autocomplete;
+    autocomplete.setTypes(["(regions)"]); // 🔹 Filtra regiones (países incluidos)
+    autocomplete.setComponentRestrictions({ country: "PE" }); // 🔹 Permite todos los países
+  };
+
+  const onPlaceChanged = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
+      if (place && place.address_components) {
+        const country = place.address_components.find((comp) =>
+          comp.types.includes("country")
+        );
+        if (country) {
+          // Actualiza solo el campo country en formData
+          setFormData((prevState) => ({
+            ...prevState,
+            country: country.long_name,
+          }));
+        }
+      }
+    }
+  };
   const [loading, setLoading] = useState(false);
   const [openAlertError, setOpenAlertError] = React.useState(false);
-
- 
-
+   
   const handleCloseAlertError = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -81,16 +129,17 @@ const ProfessionalRegistration = () => {
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     if (name === "specialty") {
-      // Actualizar el array de especialidades
       setFormData((prev) => ({
         ...prev,
-        [name]: typeof value === "string" ? value.split(",") : value,
+        [name]: typeof value === "string" ? value.split(",") : value, // Manejo múltiple
       }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
+
   const handleCheckboxChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -99,60 +148,58 @@ const ProfessionalRegistration = () => {
     }));
   };
 
-  const handleDateChange = (date) => {
-    setFormData((prev) => ({ ...prev, birthdate: date }));
-  };
-
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita la recarga de la página
-    
-    setLoading(true); // Indica que la solicitud está en proceso
-  
+    e.preventDefault(); // Previene el comportamiento predeterminado del formulario (recargar la página)
+    setLoading(true);
+    if (!formData.termsAccepted) {
+      alert("Debes aceptar los términos y condiciones");
+      return;
+    }
+
     try {
-      // Envío de datos al backend
-      await axios.post("http://localhost:3001/api/register-professional", formData);
-  
-      // Redirige a la página de éxito
-      navigate("/registro/profesional-exitosa");
-  
-    } catch (error) {
-      console.error("Error al enviar el formulario:", error);
-  
-      // Verifica si el error es un 404 (email ya registrado)
-      if (error.response?.status === 404) {
-        alert("El email ya está registrado como profesional");
+      // Envía una solicitud POST al backend
+      const response = await axios.post(
+        "http://localhost:3001/api/register-sede",
+        formData
+      );
+      console.log(response.status);
+      // Maneja la respuesta si la solicitud fue exitosa
+      if (response.status === 200) {
+        console.log("Usuario registrado correctamente:", response.data);
+        alert("Usuario registrado correctamente.");
+        // Puedes redirigir al usuario a otra página si es necesario
+      } else {
+        // Si el servidor responde con un error, puedes mostrar un mensaje
+        setOpenAlertError(true);
       }
-  
+    } catch (error) {
+      // Manejo de errores en caso de que falle la solicitud
+      setOpenAlertError(true);
+
+      console.error("Error al enviar el formulario:", error);
     } finally {
-      setLoading(false); // Se ejecuta siempre, éxito o error
+      setLoading(false);
+      navigate("/registro/sede-exitosa");
     }
   };
-   const school = [
-    "Colegio médico del Perú",
-    "Colegio de enfermeros del Perú",
-    "Colegio de nutricionistas del Perú",
-    "Colegio de obstetras del Perú",
-    "Colegio odontológico del Perú",
-    "Colegio médico veterinario del Perú",
-    "Asociación de enfermeros técnicos del Perú",
-
-
-   ]
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={es}>
       {" "}
       {/* Cambié a AdapterDateFns */}
-      <form onSubmit={handleSubmit} style={{ padding: "2rem", marginTop: "5em" }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{ padding: "2rem", marginTop: "5em" }}
+      >
         <Typography variant="h4" gutterBottom>
-          Registro de profesional
+          Registro de empresa
         </Typography>
         <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={3}>
             <TextField
-              label="DNI"
-              name="dni"
-              value={formData.dni}
+              label="Razón social"
+              name="reason_social"
+              value={formData.reason_social}
               onChange={handleChange}
               fullWidth
               required
@@ -177,7 +224,7 @@ const ProfessionalRegistration = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Nombres"
+              label="Nombre comercial"
               name="name"
               value={formData.name}
               onChange={handleChange}
@@ -202,14 +249,14 @@ const ProfessionalRegistration = () => {
               autoComplete="off"
             />
           </Grid>
+
           <Grid item xs={12} sm={3}>
             <TextField
-              label="Apellidos"
-              name="lastName"
-              value={formData.lastName}
+              label="RUC"
+              name="ruc"
+              value={formData.ruc}
               onChange={handleChange}
               fullWidth
-              required
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -229,159 +276,14 @@ const ProfessionalRegistration = () => {
               autoComplete="off"
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <FormControl fullWidth required
-               sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}
-            >
-              <InputLabel htmlFor="professional_college">Colegio profesional</InputLabel>
-              <Select
-                label="Colegio profesional"
-                name="professional_college"
-                value={formData.professional_college}
-                onChange={handleChange}
-                inputProps={{ id: "professional_college" }}
-                autoComplete="off"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#000", // Color del borde por defecto
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Color del borde cuando está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              >
-                {school.map((data) => (
-
-                  <MenuItem value={data}>{data}</MenuItem>
-                ))}
-              
-              </Select>
-            </FormControl>
-          </Grid>
-        
-     
-          <Grid item xs={12} sm={3}>
-            <TextField
-              label="Número de colegio profesional"
-              name="registration_number"
-              value={formData.registration_number}
-              onChange={handleChange}
-              fullWidth
-              autoComplete="off"
-              required
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}
-            />
-          </Grid>
-          {formData.professional_college === "Colegio médico del Perú"  ? (
-          <>
 
           <Grid item xs={12} sm={3}>
-            <FormControl       sx={{
-              width: "100%",
-              "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}>
-        <InputLabel id="specialties-select-label">Especialidades</InputLabel>
-        <Select
-          labelId="specialties-select-label"
-          id="specialties-select"
-          multiple
-          name="specialty"
-         value={formData.specialty} 
-          onChange={handleChange}
-          input={<OutlinedInput label="Especialidades" />}
-          renderValue={(selected) => selected.join(', ')}
-          MenuProps={MenuProps}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#000", // Color del borde por defecto
-              },
-              "&:hover fieldset": {
-                borderColor: "#53676c", // Color del borde al pasar el mouse
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#53676c", // Color del borde cuando está enfocado
-              },
-            },
-            "& .MuiInputLabel-root": {
-              color: "#000", // Color del label por defecto
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "#53676c", // Cambia el color del label cuando está enfocado
-            },
-          }}
-        >
-          {specialties.map((specialty) => (
-            <MenuItem key={specialty} value={specialty}>
-              <Checkbox checked={formData.specialty.includes(specialty)}  />
-              <ListItemText primary={specialty} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={3}>
             <TextField
-              label="Número de especialidad RNE"
-              name="specialty_number_rne"
-              value={formData.specialty_number_rne}
+              label="Persona de contacto"
+              name="contact_person"
+              value={formData.contact_person}
               onChange={handleChange}
               fullWidth
-              required
               autoComplete={false}
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -401,12 +303,16 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          </>
-          ): null}
 
           <Grid item xs={12} sm={3}>
-            <FormControl fullWidth required
-               sx={{
+            <TextField
+              label="Cargo"
+              name="charges"
+              value={formData.charges}
+              onChange={handleChange}
+              fullWidth
+              autoComplete={false}
+              sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
                     borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
@@ -422,79 +328,14 @@ const ProfessionalRegistration = () => {
                   color: "#53676c", // Cambia el color del label cuando está enfocado
                 },
               }}
-            >
-              <InputLabel htmlFor="genre">Género</InputLabel>
-              <Select
-                label="Género"
-                name="genre"
-                value={formData.genre}
-                onChange={handleChange}
-                inputProps={{ id: "genre" }}
-                autoComplete="off"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#000", // Color del borde por defecto
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Color del borde cuando está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}
-              >
-                <MenuItem value="Masculino">Masculino</MenuItem>
-                <MenuItem value="Femenino">Femenino</MenuItem>
-                <MenuItem value="Otro">Otro</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={3}>
-            <DatePicker
-              label="Fecha de nacimiento"
-              value={formData.birthdate}
-              onChange={handleDateChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  required
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "&:hover fieldset": {
-                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "#000", // Color del label por defecto
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "#53676c", // Cambia el color del label cuando está enfocado
-                    },
-                  }}
-                  autoComplete="off"
-                />
-              )}
             />
           </Grid>
+
           <Grid item xs={12} sm={3}>
             <TextField
               label="Correo electrónico"
               name="email"
               type="email"
-              
               value={formData.email}
               onChange={handleChange}
               fullWidth
@@ -523,7 +364,6 @@ const ProfessionalRegistration = () => {
               label="Teléfono"
               name="phone"
               type="tel"
-              required
               value={formData.phone}
               onChange={handleChange}
               fullWidth
@@ -547,13 +387,81 @@ const ProfessionalRegistration = () => {
             />
           </Grid>
           <Grid item xs={12} sm={3}>
+            <FormControl
+              sx={{
+                width: "100%",
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            >
+              <InputLabel id="specialties-select-label">
+                Servicios que brinda
+              </InputLabel>
+              <Select
+                labelId="specialties-select-label"
+                id="specialties-select"
+                multiple
+                name="specialty"
+                value={formData.specialty}
+                onChange={handleChange}
+                input={<OutlinedInput label="Servicios que brinda" />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#000", // Color del borde por defecto
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#53676c", // Color del borde al pasar el mouse
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#53676c", // Color del borde cuando está enfocado
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000", // Color del label por defecto
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#53676c", // Cambia el color del label cuando está enfocado
+                  },
+                }}
+              >
+                {services.map((specialty) => (
+                  <MenuItem key={specialty} value={specialty}>
+                    <Checkbox
+                      checked={formData.specialty.includes(specialty)}
+                    />
+                    <ListItemText primary={specialty} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
+
+          <Grid item xs={12} sm={3}>
+                    <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+            
             <TextField
               label="País"
               name="country"
               value={formData.country}
               onChange={handleChange}
+              autoComplete= 'none'
               fullWidth
-              required
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -571,7 +479,10 @@ const ProfessionalRegistration = () => {
                 },
               }}
             />
+                    </Autocomplete>
+            
           </Grid>
+          </LoadScript>
 
           <Grid item xs={12} sm={3}>
             <TextField
@@ -580,7 +491,6 @@ const ProfessionalRegistration = () => {
               value={formData.department}
               onChange={handleChange}
               fullWidth
-              required
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
@@ -599,34 +509,26 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              label="Provincia"
-              name="province"
-              value={formData.province}
-              onChange={handleChange}
-              fullWidth
-              required
-              autoComplete="off"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}
-            />
-          </Grid>
-          
+<Grid item xs={12} sm={3}>
+      <TextField
+        inputRefProvince={inputRefProvince}
+        label="Provincia"
+        name="province"
+        value={formData.province}
+        onChange={handleChange}
+        fullWidth
+        autoComplete="none"
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            "&:hover fieldset": { borderColor: "#53676c" },
+            "&.Mui-focused fieldset": { borderColor: "#53676c" },
+          },
+          "& .MuiInputLabel-root": { color: "#000" },
+          "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
+        }}
+      />
+    </Grid>
+  
           <Grid item xs={12} sm={3}>
             <TextField
               label="Distrito"
@@ -634,7 +536,6 @@ const ProfessionalRegistration = () => {
               value={formData.district}
               onChange={handleChange}
               fullWidth
-              required
               autoComplete="off"
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -654,56 +555,32 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-        
-        
           <Grid item xs={12} sm={3}>
-  <TextField
-    label="Contraseña"
-    name="password"
-    type={showPassword ? "text" : "password"}
-    value={formData.password}
-    onChange={handleChange}
-    fullWidth
-    autoComplete="off"
-    required
-    InputProps={{
-      endAdornment: (
-        <InputAdornment position="end">
-          <IconButton onClick={handleClickShowPassword} edge="end">
-            {showPassword ? <VisibilityOff /> : <Visibility />}
-          </IconButton>
-        </InputAdornment>
-      ),
-    }}
-    sx={{
-      "& .MuiOutlinedInput-root": {
-        "&:hover fieldset": { borderColor: "#53676c" },
-        "&.Mui-focused fieldset": { borderColor: "#53676c" },
-      },
-      "& .MuiInputLabel-root": { color: "#000" },
-      "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
-    }}
-  />
-</Grid>;
-          {formData.professional_college === "Colegio médico del Perú" || formData.professional_college === "Colegio de enfermeros del Perú" || formData.professional_college === "Colegio odontológico del Perú"  ? (
-
-          <Grid item xs={12}>
-  <FormControl component="fieldset"
-  >
-    <span>¿Deseas atender consultas de urgencias de manera virtuales y a domicilio?(La solicitud te llegara por WhatsApp)</span>
-    <RadioGroup
-      row
-      name="emergencyServices"
-      value={formData.emergencyServices}
-      onChange={(e) => setFormData({ ...formData, emergencyServices: e.target.value })}
-    >
-      <FormControlLabel value="sí" control={<Radio sx={{ '&.Mui-checked': { color: '#53676c' } }} />}  label="Sí" />
-      <FormControlLabel value="no" control={<Radio sx={{ '&.Mui-checked': { color: '#53676c' } }} />} label="No" />
-    </RadioGroup>
-  </FormControl>
-  
-</Grid>
-          ): null }
+            <TextField
+              label="Dirección"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              fullWidth
+              autoComplete="off"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#000", // Color del label por defecto
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#53676c", // Cambia el color del label cuando está enfocado
+                },
+              }}
+            />
+          </Grid>
 
           <Grid item xs={12}>
             <FormControlLabel
@@ -711,14 +588,13 @@ const ProfessionalRegistration = () => {
                 <Checkbox
                   checked={formData.termsAccepted}
                   onChange={handleCheckboxChange}
+                  sx={{ "&.Mui-checked": { color: "#53676c" } }}
                   required
-                  sx={{ '&.Mui-checked': { color: '#53676c' } }}
                 />
               }
               label="Acepto los términos y condiciones"
             />
-                                     <Link to="/terminos-condiciones">términos y condiciones</Link>
-            
+            <Link to="/terminos-condiciones">términos y condiciones</Link>
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
             <Button
@@ -727,40 +603,40 @@ const ProfessionalRegistration = () => {
               color="primary"
               sx={{
                 width: 800,
-                height:40,
+                height: 40,
                 backgroundColor: "#53676c",
                 ":hover": { backgroundColor: "#8ca7a6" },
               }}
             >
-
-{loading ? (
-                  <CircularProgress
-                    size={25}
-                    thickness={5}
-                    sx={{ color: "#fff" }}
-                  />
-                ) : (
-                  "Registrarse"
-                )}
+              {loading ? (
+                <CircularProgress
+                  size={25}
+                  thickness={5}
+                  sx={{ color: "#fff" }}
+                />
+              ) : (
+                "Enviar información"
+              )}
             </Button>
           </Grid>
           <Snackbar
-          
-          open={openAlertError} autoHideDuration={4000} onClose={handleCloseAlertError}>
-        <Alert
-          onClose={handleCloseAlertError}
-          severity="error"
-          variant="filled"
-        >
-            El profesional ya está registrado. Por favor, intente con otro correo electrónico.
-        </Alert>
-      </Snackbar>
-
-
+            open={openAlertError}
+            autoHideDuration={4000}
+            onClose={handleCloseAlertError}
+          >
+            <Alert
+              onClose={handleCloseAlertError}
+              severity="error"
+              variant="filled"
+            >
+              La sede ya está registrado. Por favor, intente con otro correo
+              electrónico.
+            </Alert>
+          </Snackbar>
         </Grid>
       </form>
     </LocalizationProvider>
   );
 };
 
-export default ProfessionalRegistration;
+export default RegisterEmpresa;

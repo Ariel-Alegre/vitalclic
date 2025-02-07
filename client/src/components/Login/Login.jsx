@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography, Alert, CircularProgress } from '@mui/material';
+import { TextField, Button, Box, Typography, Alert, CircularProgress, IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -8,6 +9,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -16,13 +18,17 @@ const Login = () => {
     });
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     
     try {
-      const response = await axios.post('https://vitalclic-production.up.railway.app/api/login', formData);
+      const response = await axios.post('http://localhost:3001/api/login', formData);
       localStorage.setItem('token', response.data.token);
 
       navigate("/");
@@ -104,11 +110,20 @@ const Login = () => {
       <TextField
         label="Contraseña"
         name="password"
-        type="password"
+        type={showPassword ? "text" : "password"}
         value={formData.password}
         onChange={handleChange}
         required
         fullWidth
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={handleClickShowPassword} edge="end">
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
         sx={{
           "& .MuiOutlinedInput-root": {
             "&:hover fieldset": {

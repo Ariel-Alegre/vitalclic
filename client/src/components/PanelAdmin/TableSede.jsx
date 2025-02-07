@@ -34,7 +34,7 @@ const TableSede = () => {
 
   const AllSede = async () => {
     try {
-      const res = await axios.get("https://vitalclic-production.up.railway.app/api/all-sede");
+      const res = await axios.get("http://localhost:3001/api/all-sede");
       setSede(res.data.data);
     } catch (error) {
       console.log(error);
@@ -52,7 +52,7 @@ const TableSede = () => {
 
     try {
       const res = await axios.put(
-        `https://vitalclic-production.up.railway.app/api/update-sede-status/${selectedSede.id}`,
+        `http://localhost:3001/api/update-sede-status/${selectedSede.id}`,
         { status: newStatus }
       );
 
