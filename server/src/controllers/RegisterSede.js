@@ -35,7 +35,8 @@ module.exports = {
       email, 
       country, 
       province, 
-      district, 
+      district,
+      department, 
       phone, 
       type_of_service,
       contact_person,
@@ -71,47 +72,42 @@ module.exports = {
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
        
-   const emailContent = `
-      <html>
-     <body    style="
-     background-color: #f3f3f3;
-     display: grid;
-     justify-content: center;
-     max-width: 100%;
-   ">
-       <div     style="
-       background-color: #fff;
-       border: 8px solid #8ca7a6;
-       padding: 2em;
-       width: 600px;
-       max-width: 100%;
-       margin: 0 auto;
-       font-family: Arial, Helvetica, sans-serif;
-     " >
-         <div style="margin: 0 auto; text-align: center; padding: 20px";  background-color: #8ca7a6;>
-           <img src="https://vitalclic.com/static/media/logo.43cb5a9254f3543cf08c.png" alt="Logo de la empresa" style="display: block; max-width: 150px; margin: 0 auto;">
-         </div>
-   
-         <p style="color: black;">¡Hola ${name} !</p>
-         <p style="color: black;">¡Bienvenido a Vitalclic! Nos complace que te hayas registrado y formes parte de nuestra comunidad.</p>
-         <p style="color: black;">Aquí tienes algunos detalles importantes:</p>
-         <p style="color: black;"> <strong>Tu cuenta ha sido creada exitosamente.</strong> </p>
-         <p style="color: black;">Para comenzar, solo necesitas Iniciar sesión:</p>
-         
-         <a href= "https://vitalclic.com/iniciar-sesión" >https://vitalclic.com/iniciar-sesión</a>
-         <p style="color: black;">Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte.</p>
-   
-         <p style="color: black;">Gracias por unirte a nosotros. ¡Esperamos que disfrutes de nuestra plataforma!</p>
-         <p style="color: black;">Saludos cordiales,</p>
-         <p style="color: black;">El equipo de Vitalclic</p>
-   
-         
-         
-   
-      
-       </div>
-     </body>
-   </html>
+/*    const emailContent = `
+  <html>
+
+<body style="background-color: #f4f4f4; padding: 2em 0;">
+  <table style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #fff; border: 1px solid #ddd; border-radius: 10px; font-family: Arial, Helvetica, sans-serif; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <tr>
+      <td style=" width: 100%; border-radius: 10px; background-color: #53676c; text-align: center;margin: 0 auto;  padding: 1em;">
+        <img src="https://www.vitalclic.com/static/media/logo.43cb5a9254f3543cf08c.png" alt="logo" style="display: block; max-width: 150px; margin: 0 auto;">
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 2em; color: #333;">
+
+          <p style="color: black;">Hola ${name},
+        </p>
+          <p style="color: black;">Gracias por registrarte en VITALCLIC. Estamos emocionados y agradecidos por depositar tu confianza en nosotros. A partir de ahora eres parte de nuestra familia VITALCLIC, ayudando a miles de personas quienes forman parte de nuestra comunidad de salud digital.
+
+        </p>
+
+          <p style="color: black;">Ahora puedes acceder a nuestra plataforma y seleccionar todos los servicios que desees brindar como profesional o como empresa. Como profesional tendrás la facilidad de coordinar horarios, fechas y confirmación de citas médicas. Como empresa, podrás seleccionar de la lista de servicios que requerimos, aquellos que desees ofrecernos, adjuntando además, información adicional para ayudarnos a elegir la mejor opción tanto para tu empresa como para nuestra comunidad.
+
+        </p>
+          <p style="color: black;">Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos a través de [trabajemosjuntos@vitalclic.com] o [número de teléfono].
+        </p>
+          
+          <p style="color: black;">¡Tu salud es nuestra prioridad!
+        </p>
+        <p style="color: black;">Atentamente,
+            El equipo de VITALCLIC
+            
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
   `;
 await transporter.sendMail({
     from: process.env.EMAIL,
@@ -119,7 +115,7 @@ await transporter.sendMail({
     subject: '¡Bienvenido a nuestra plataforma!',
     html: emailContent,
   }); 
-
+ */
       const newUser = await UserSede.create({
         reason_social,
         name: capitalizedName,
@@ -133,6 +129,7 @@ await transporter.sendMail({
         contact_person,
         charges,
         country,
+        department, 
         specialty,
         province,
         district,
@@ -146,88 +143,6 @@ await transporter.sendMail({
       const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
 
       console.log('sede creado correctamente');
-
-      return res.json({ token });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error en el servidor' });
-    }
-  },
-};
-module.exports = {
-  RegisterSede: async (req, res) => {
-    const { 
-      reason_social, 
-      name, 
-      ruc, 
-      address, 
-      email, 
-      country, 
-      province, 
-      district, 
-      phone, 
-      type_of_service,
-      contact_person,
-      charges,
-      specialty,
-      password, 
-      termsAccepted, 
-      termsAcceptedAt, 
-      specialties, // Este es el nuevo campo
-    } = req.body;
-
-    try {
-      // Validación de aceptación de términos
-      if (!termsAccepted) {
-        return res.status(400).json({ message: 'Debes aceptar los términos y condiciones para registrarte' });
-      }
-
-      const existingUser = await UserSede.findOne({ where: { email } });
-
-      if (existingUser) {
-        console.log('La sede ya existe');
-        return res.status(404).json({ message: 'La sede ya existe' });
-      }
-
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-      let role = 'sede';
-      const adminEmails = ['admin1@gmail.com', 'admin2@fmail.com'];
-      if (adminEmails.includes(email)) {
-        role = 'admin';
-      }
-
-      const backgroundColor = getRandomColor();
-      const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-
-      const newUser = await UserSede.create({
-        reason_social,
-        name: capitalizedName,
-        ruc, 
-        address, 
-        email,
-        password: hashedPassword,
-        phone,
-        role,
-        type_of_service,
-        contact_person,
-        charges,
-        country,
-        province,
-        district,
-        specialty,
-        status: "pendiente",
-        backgroundColor,
-        specialties, // Guardamos el array de especialidades
-        termsAccepted,
-        termsAcceptedAt: termsAcceptedAt || new Date(),
-      });
-
-      const tokenPayload = { id: newUser.id, role: newUser.role };
-      const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
-
-      console.log('Sede creada correctamente');
 
       return res.json({ token });
     } catch (error) {

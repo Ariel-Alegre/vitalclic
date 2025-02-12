@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const UserSede = sequelize.define('UserSede', {
+  const UserBussines = sequelize.define('UserBussines', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -32,7 +32,8 @@ module.exports = (sequelize) => {
       },
 
       type_of_service: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
+
       },
       contact_person: {
         type: DataTypes.STRING,
@@ -43,9 +44,7 @@ module.exports = (sequelize) => {
       country: {
         type: DataTypes.STRING,
       },
-      specialty: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-      },
+
       
     province: {
       type: DataTypes.STRING,
@@ -53,14 +52,10 @@ module.exports = (sequelize) => {
     district: {
         type: DataTypes.STRING,
       },  
+   
       department: {
         type: DataTypes.STRING,
       },
-      
-        password: {
-        type: DataTypes.STRING,
-      },  
-   
       role: {
         type: DataTypes.STRING,
       },  
@@ -89,5 +84,5 @@ module.exports = (sequelize) => {
 
   
 
-  return UserSede;
+  return UserBussines;
 };

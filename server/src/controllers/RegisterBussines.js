@@ -1,4 +1,4 @@
-const { User } = require('../db');
+const { UserBussines } = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -26,43 +26,43 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports = {
-  RegisterUser: async (req, res) => {
+  RegisterBussines: async (req, res) => {
     const { 
+      reason_social, 
       name, 
-      lastName, 
-      genre, 
-      birthdate, 
+      ruc, 
+      address, 
       email, 
       country, 
       province, 
-      district, 
-      department,
-      dni,
-      address,
+      district,
+      department, 
       phone, 
-      password, 
+      type_of_service,
+      contact_person,
+      specialty,
+      charges,
       termsAccepted, 
       termsAcceptedAt, 
-      dependents // Añadido dependents
     } = req.body;
 
     try {
       // Validación de aceptación de términos
       if (!termsAccepted) {
+        console.log('Debes aceptar los términos y condiciones para registrarte')
         return res.status(400).json({ message: 'Debes aceptar los términos y condiciones para registrarte' });
       }
 
-      const existingUser = await User.findOne({ where: { email } });
+      const existingUser = await UserBussines.findOne({ where: { email } });
 
       if (existingUser) {
-        console.log('El usuario ya existe');
-        return res.status(404).json({ message: 'El usuario ya existe' });
+        console.log('La empresa ya existe');
+        return res.status(404).json({ message: 'La empresa ya existe' });
       }
 
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+ 
 
-      let role = 'personal';
+      let role = 'empresa';
       const adminEmails = ['admin1@gmail.com', 'admin2@fmail.com'];
       if (adminEmails.includes(email)) {
         role = 'admin';
@@ -70,34 +70,45 @@ module.exports = {
 
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-      const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
-/*   const emailContent = `
-     <html>
+       
+  /*  const emailContent = `
+    <html>
 
 <body style="background-color: #f4f4f4; padding: 2em 0;">
   <table style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #fff; border: 1px solid #ddd; border-radius: 10px; font-family: Arial, Helvetica, sans-serif; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
     <tr>
-      <td style=" width: 100%; border-radius: 10px; background-color: #53676c; text-align: center;margin: 0 auto;  padding: 1em;">
+      <td style=" width: 100%; border-radius: 10px; background-color: #53676c; text-align: center;margin: 0 auto; padding: 1em;">
         <img src="https://www.vitalclic.com/static/media/logo.43cb5a9254f3543cf08c.png" alt="logo" style="display: block; max-width: 150px; margin: 0 auto;">
       </td>
     </tr>
     <tr>
       <td style="padding: 2em; color: #333;">
 
-          <p style="color: black;">¡Hola ${name} ${capitalizedLastName},
-        </p>
-          <p style="color: black;">Gracias por registrarte en VITALCLIC. Estamos emocionados de tenerte como parte de nuestra comunidad de salud digital.
+        <p style="color: black; font-size: 18px; font-weight: bold; text-align: center;">
+          ¡Formulario enviado con éxito!
         </p>
 
-          <p style="color: black;">Ahora puedes acceder a todos nuestros servicios, como agendar citas médicas, consultar con especialistas y recibir atención personalizada desde la comodidad de tu hogar.
+        <p style="color: black;">Hola [Nombre del colaborador (profesional/proveedor)],</p>
+        
+        <p style="color: black;">
+          Gracias por registrarte en VITALCLIC. Hemos recibido tu formulario correctamente y estamos procesando tu información. 
+          Nos emociona que formes parte de nuestra comunidad de salud digital.
         </p>
-          <p style="color: black;">Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos a través de [ayudausuario@vitalclic.com] o [número de teléfono].</p>
-          
-          <p style="color: black;">¡Tu salud es nuestra prioridad!
+
+      
+
+        <p style="color: black;">
+          Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos a través de <a href="mailto:trabajemosjuntos@vitalclic.com">trabajemosjuntos@vitalclic.com</a> 
+          o al [número de teléfono].
         </p>
-        <p style="color: black;">Atentamente,
-            El equipo de VITALCLIC
-            
+        
+        <p style="color: black; text-align: center; font-weight: bold;">
+          ¡Tu salud es nuestra prioridad!
+        </p>
+        
+        <p style="color: black; text-align: center;">
+          Atentamente, <br>
+          El equipo de VITALCLIC
         </p>
       </td>
     </tr>
@@ -108,40 +119,41 @@ module.exports = {
 await transporter.sendMail({
     from: process.env.EMAIL,
     to: email,
-    subject: '¡Bienvenido/a a VITALCLIC!',
+    subject: '¡Formulario enviado con éxito!',
     html: emailContent,
-  });  */
-  const validatedDependents = Array.isArray(dependents) ? dependents : [];
-
-      const newUser = await User.create({
+  }); 
+ */
+      const newUser = await UserBussines.create({
+        reason_social,
         name: capitalizedName,
-        lastName: capitalizedLastName,
+        ruc, 
+        address, 
         email,
-        password: hashedPassword,
         phone,
         role,
-        genre,
-        birthdate,
+        type_of_service,
+        contact_person,
+        charges,
         country,
+        department, 
+        specialty,
         province,
-        department,
-        dni,
-        address,
         district,
-        status: "activo",
+        status: "pendiente",
         backgroundColor,
         termsAccepted,
         termsAcceptedAt: termsAcceptedAt || new Date(),
-        dependents: validatedDependents || [], // Si no se envían dependents, se guarda como un array vacío
       });
 
       const tokenPayload = { id: newUser.id, role: newUser.role };
-      const token = jwt.sign(tokenPayload, process.env.FIRMA_TOKEN);
+      const token = jwt.sign(tokenPayload);
 
-      console.log('Usuario creado correctamente');
+      console.log('empresa creado correctamente');
 
       return res.json({ token });
     } catch (error) {
+      console.log('Error en el servidor' );
+
       console.error(error);
       res.status(500).json({ message: 'Error en el servidor' });
     }

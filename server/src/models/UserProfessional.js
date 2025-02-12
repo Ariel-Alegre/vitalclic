@@ -54,9 +54,9 @@ module.exports = (sequelize) => {
     district: {
       type: DataTypes.STRING,
     }, 
-    role: {
+    department: {
       type: DataTypes.STRING,
-    },  
+    },
     dni: {
       type: DataTypes.STRING,
     }, 
@@ -70,7 +70,9 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
 
-    
+    role: {
+      type: DataTypes.STRING,
+    },  
     status: {
       type: DataTypes.STRING,
     },
