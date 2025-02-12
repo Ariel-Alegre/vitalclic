@@ -72,7 +72,7 @@ module.exports = {
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
        
-/*    const emailContent = `
+  const emailContent = `
   <html>
 
 <body style="background-color: #f4f4f4; padding: 2em 0;">
@@ -115,7 +115,6 @@ await transporter.sendMail({
     subject: '¡Bienvenido a nuestra plataforma!',
     html: emailContent,
   }); 
- */
       const newUser = await UserSede.create({
         reason_social,
         name: capitalizedName,

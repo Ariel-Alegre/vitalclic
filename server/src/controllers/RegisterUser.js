@@ -71,7 +71,7 @@ module.exports = {
       const backgroundColor = getRandomColor();
       const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
       const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
-/*   const emailContent = `
+  const emailContent = `
      <html>
 
 <body style="background-color: #f4f4f4; padding: 2em 0;">
@@ -110,7 +110,7 @@ await transporter.sendMail({
     to: email,
     subject: '¡Bienvenido/a a VITALCLIC!',
     html: emailContent,
-  });  */
+  });  
   const validatedDependents = Array.isArray(dependents) ? dependents : [];
 
       const newUser = await User.create({
