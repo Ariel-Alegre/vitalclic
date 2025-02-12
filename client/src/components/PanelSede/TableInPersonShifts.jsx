@@ -87,7 +87,7 @@ console.log(selectedShift)
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `http://localhost:3001/api/datapersonal`,
+        `https://vitalclic-production.up.railway.app/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí
@@ -128,7 +128,7 @@ console.log(selectedShift)
 
     // Realiza la solicitud PUT al servidor
     const res = await axios.put(
-      `http://localhost:3001/api/online-shifts/${selectedShift.id}`,
+      `https://vitalclic-production.up.railway.app/api/online-shifts/${selectedShift.id}`,
       { status: newStatus },
       {
         headers: {

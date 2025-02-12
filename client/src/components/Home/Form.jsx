@@ -1,8 +1,50 @@
 import React, { useState } from "react";
 import styles from "../../styles/Home/Form.module.css";
 import SearchIcon from "@mui/icons-material/Search";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInperson, districtInperson, provinceInperson, departmentInperson, setSpecialtyInperson, setProvinceInperson, setDepartmentInperson, setDistrictInperson}) {
+  const navigate = useNavigate()  
+  
+  const [token, setToken] = React.useState("");
+    const [role, setRole] = React.useState("");
+      const [user, setUser] = React.useState(null);
+    
+    console.log(role)
+    const dataPersonal = async () => {
+      try {
+        const tokenFromStorage = localStorage.getItem("token"); // Obtener el token directamente
+        if (!tokenFromStorage) {
+          throw new Error("Token no encontrado en localStorage");
+        }
+        const response = await axios.get(
+          `https://vitalclic-production.up.railway.app/api/datapersonal`,
+          {
+            headers: {
+              Authorization: tokenFromStorage, // Usa el token aquí
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        setUser(response.data);
+        setRole(response.data.role);
+      } catch (error) {
+        console.error("Error al obtener los detalles:", error);
+      } finally {
+      }
+    };
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    setToken(token);
+  }, []);
+      React.useEffect(() => {
+        if (token) {
+          dataPersonal();
+        }
+      }, [token]);
   const especialidades = [
     "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
     "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogo","Clinico"
@@ -144,15 +186,21 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
     e.preventDefault();
 
     try {
-      // Obtenemos la especialidad seleccionada
-      const selectedSpecialty = e.target[0].value; // El valor del primer select
 
-      setSpecialty(selectedSpecialty)
-      // Filtramos los profesionales por la especialidad seleccionada
-   
-      localStorage.setItem("specialty", selectedSpecialty); // Guarda la fecha formateada en localStorage
+      if(token) {
+
+        // Obtenemos la especialidad seleccionada
+        const selectedSpecialty = e.target[0].value; // El valor del primer select
+        
+        setSpecialty(selectedSpecialty)
+        // Filtramos los profesionales por la especialidad seleccionada
+        
+        localStorage.setItem("specialty", selectedSpecialty); // Guarda la fecha formateada en localStorage
         
         window.location.href = "#date"
+      } else {
+        navigate("/iniciar-sesión")
+      }
         
     
     } catch (error) {
@@ -166,7 +214,9 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
     e.preventDefault();
   
     try {
-      // Crear un objeto con las variables
+      if(token) {
+
+               // Crear un objeto con las variables
       const inpersonData = {
         specialty: specialtyInperson ,
         province: provinceInperson ,
@@ -184,6 +234,9 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
    } else {
     alert("Completar los campos")
    }
+  }  else {
+    navigate("/iniciar-sesión")
+  }
     } catch (error) {
       console.log(error);
     } finally {

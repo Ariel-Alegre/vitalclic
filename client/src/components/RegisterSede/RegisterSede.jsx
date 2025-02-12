@@ -275,7 +275,7 @@ const handleClickShowPassword = () => {
       try {
         // Envía una solicitud POST al backend
         const response = await axios.post(
-          "http://localhost:3001/api/register-sede",
+          "https://vitalclic-production.up.railway.app/api/register-sede",
           formData
         );
         console.log(response.status);

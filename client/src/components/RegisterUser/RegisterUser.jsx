@@ -303,7 +303,7 @@ const handleClickShowPassword = () => {
   
       // Enviar datos al servidor
       const response = await axios.post(
-        "http://localhost:3001/api/register-user",
+        "https://vitalclic-production.up.railway.app/api/register-user",
         formData
       );
   
@@ -480,30 +480,31 @@ const handleClickShowPassword = () => {
                 
                 onChange={handleDateChange}
                 format="dd/MM/yyyy" // Usa 'MM' en mayúsculas para el mes
-                slotProps={{ textField: { fullWidth: true, required: true } }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    required
-                    sx={{
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    required: true,
+                    sx: {
                       "& .MuiOutlinedInput-root": {
                         "&:hover fieldset": {
-                          borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                          borderColor: "#53676c", // Cambia el borde al pasar el mouse
                         },
                         "&.Mui-focused fieldset": {
-                          borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                          borderColor: "#53676c", // Cambia el borde cuando está enfocado
+                        },
+                        "&.Mui-error fieldset": {
+                          borderColor: "#53676c !important", // Evita el borde rojo en caso de error
                         },
                       },
                       "& .MuiInputLabel-root": {
                         color: "#000", // Color del label por defecto
                       },
                       "& .MuiInputLabel-root.Mui-focused": {
-                        color: "#53676c", // Cambia el color del label cuando está enfocado
+                        color: "#53676c", // Color del label cuando está enfocado
                       },
-                    }}
-                  />
-                )}
+                    },
+                  },
+                }}
               />
             </LocalizationProvider>
           </Grid>
@@ -771,7 +772,7 @@ const handleClickShowPassword = () => {
               <Grid item xs={12} sm={3}>
                 <TextField
                 required
-                  label={`Apellido Dependiente ${index + 1}`}
+                  label={`Apellidos Dependiente ${index + 1}`}
                   name="lastName"
                   value={formData.dependents[index].lastName}
                   onChange={(e) => handleDependentChange(index, e)}
@@ -796,49 +797,44 @@ const handleClickShowPassword = () => {
               </Grid>
 
               <Grid item xs={12} sm={3}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}
-              adapterLocale={es}
-                
-                required>
-                  <DatePicker
-                  
-                    label={`Fecha de Nacimiento Dependiente ${index + 1}`}
-                    value={formData.dependents[index].birthdate}
-                    onChange={(date) =>
-                      handleDependentChange(index, {
-                        target: { name: "birthdate", value: date },
-                      })
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        required
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "&:hover fieldset": {
-                              borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                            },
-                            "&.Mui-error fieldset": {
-                              borderColor: "#53676c !important", // Evita el borde rojo en caso de error
-                            },
-                          },
-                          "& .MuiInputLabel-root": {
-                            color: "#000", // Color del label por defecto
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#53676c", // Cambia el color del label cuando está enfocado
-                          },
-                        }}
-                      />
-                    )}
-                    
-                  />
-                </LocalizationProvider>
-              </Grid>
+  <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+    <DatePicker
+      label={`Fecha de Nacimiento Dependiente ${index + 1}`}
+      value={formData.dependents[index].birthdate}
+      onChange={(date) =>
+        handleDependentChange(index, {
+          target: { name: "birthdate", value: date },
+        })
+      }
+      slotProps={{
+        textField: {
+          fullWidth: true,
+          required: true,
+          sx: {
+            "& .MuiOutlinedInput-root": {
+              "&:hover fieldset": {
+                borderColor: "#53676c", // Cambia el borde al pasar el mouse
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#53676c", // Cambia el borde cuando está enfocado
+              },
+              "&.Mui-error fieldset": {
+                borderColor: "#53676c !important", // Evita el borde rojo en caso de error
+              },
+            },
+            "& .MuiInputLabel-root": {
+              color: "#000", // Color del label por defecto
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "#53676c", // Color del label cuando está enfocado
+            },
+          },
+        },
+      }}
+    />
+  </LocalizationProvider>
+</Grid>
+
 
               <Grid item xs={12} sm={3}>
                 <FormControl

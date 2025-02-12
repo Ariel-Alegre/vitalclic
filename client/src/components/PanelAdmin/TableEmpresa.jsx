@@ -20,46 +20,46 @@ const style = {
   p: 4,
 };
 
-const TableProfessional = () => {
+const TableEmpresa = () => {
   const [open, setOpen] = React.useState(false);
-  const [selectedProfessional, setSelectedProfessional] = React.useState(null);
-  const [professionals, setProfessionals] = React.useState([]);
-console.log(professionals)
+  const [selectedSede, setSelectedSede] = React.useState(null);
+  const [sede, setSede] = React.useState([]);
+console.log(sede)
   const handleOpen = (professional) => {
-    setSelectedProfessional(professional); // Establece el profesional seleccionado
+    setSelectedSede(professional); // Establece el profesional seleccionado
     setOpen(true);
   };
   
   const handleClose = () => setOpen(false);
 
-  const AllProfessional = async () => {
+  const AllSede = async () => {
     try {
-      const res = await axios.get("https://vitalclic-production.up.railway.app/api/professionals");
-      setProfessionals(res.data.data);
+      const res = await axios.get("https://vitalclic-production.up.railway.app/api/all-bussines");
+      setSede(res.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   React.useEffect(() => {
-    AllProfessional();
+    AllSede();
   }, []);
 
   const updateAccount = async () => {
-    if (!selectedProfessional) return;
+    if (!selectedSede) return;
 
-    const newStatus = selectedProfessional.status === "pendiente" ? "activo" : "pendiente";
+    const newStatus = selectedSede.status === "pendiente" ? "activo" : "pendiente";
 
     try {
       const res = await axios.put(
-        `https://vitalclic-production.up.railway.app/api/update-doctor-status/${selectedProfessional.id}`,
+        `https://vitalclic-production.up.railway.app/api/update-sede-status/${selectedSede.id}`,
         { status: newStatus }
       );
 
       // Actualiza la lista de profesionales con el estado modificado
-      setProfessionals((prevProfessionals) =>
-        prevProfessionals.map((prof) =>
-          prof.id === selectedProfessional.id ? { ...prof, status: newStatus } : prof
+      setSede((prevSede) =>
+        prevSede.map((prof) =>
+          prof.id === selectedSede.id ? { ...prof, status: newStatus } : prof
         )
       );
       
@@ -71,7 +71,7 @@ console.log(professionals)
 
   return (
     <div className={styles.container}>
-      <h1>Profesionales</h1>
+      <h1>Empresas</h1>
 
       <table className={styles.table}>
         <thead>
@@ -82,12 +82,14 @@ console.log(professionals)
             <th>País</th>
             <th>Provincia</th>
             <th>Distrito</th>
-            <th>Ver toda la información</th>
-            <th>Estado de la cuenta</th>
-            <th>Cambiar estado de la cuenta</th>
+            <th>Servicios</th>
+
+         {/*    <th>Ver toda la información</th> */}
+         {/*    <th>Estado de la cuenta</th>
+            <th>Cambiar estado de la cuenta</th> */}
           </tr>
         </thead>
-        {professionals.map((data, index) => (
+        {sede && sede.map((data, index) => (
           <tbody key={index}>
             <tr>
               <td>{data.name} {data.lastName}</td>
@@ -96,14 +98,16 @@ console.log(professionals)
               <td>{data.country}</td>
               <td>{data.province}</td>
               <td>{data.district}</td>
-              <td className={styles.viewInformation}>Ver información</td>
-              <td>{data.status}</td>
+              <td>{data.district}</td>
 
-              <td>
+            {/*   <td className={styles.viewInformation}>Ver información</td> */}
+           {/*    <td>{data.status}</td> */}
+
+          {/*     <td>
                 <button className={styles.button} onClick={() => handleOpen(data)}>
                   {data.status === "pendiente" ? "Activar la cuenta" : "Poner en pendiente"}
                 </button>
-              </td>
+              </td> */}
             </tr>
           </tbody>
         ))}
@@ -123,13 +127,13 @@ console.log(professionals)
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              ¿Estás seguro de que deseas {selectedProfessional?.status === "pendiente" ? "activar" : "poner en pendiente"} la cuenta?
+              ¿Estás seguro de que deseas {selectedSede?.status === "pendiente" ? "activar" : "poner en pendiente"} la cuenta?
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2, display: "flex", gap: "2em" }}>
-              <Button variant="contained" onClick={updateAccount}  sx={{ backgroundColor: "#53676c"}}>
+              <Button variant="contained" onClick={updateAccount} sx={{ backgroundColor: "#53676c"}}>
                 Sí
               </Button>
-              <Button variant="contained" onClick={handleClose} sx={{ backgroundColor: "red"}}>
+              <Button variant="contained" onClick={handleClose}>
                 No
               </Button>
             </Typography>
@@ -140,4 +144,4 @@ console.log(professionals)
   );
 };
 
-export default TableProfessional;
+export default TableEmpresa;

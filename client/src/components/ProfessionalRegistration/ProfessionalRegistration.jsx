@@ -277,7 +277,7 @@ const ProfessionalRegistration = () => {
   
     try {
       // Envío de datos al backend
-      await axios.post("http://localhost:3001/api/register-professional", formData);
+      await axios.post("https://vitalclic-production.up.railway.app/api/register-professional", formData);
   
       // Redirige a la página de éxito
       navigate("/registro/profesional-exitosa");
@@ -630,30 +630,31 @@ const ProfessionalRegistration = () => {
     label="Fecha de nacimiento"
     value={formData.birthdate}
     onChange={handleDateChange}
-    renderInput={(params) => (
-      <TextField
-        {...params}
-        fullWidth
-        required
-        sx={{
+    slotProps={{
+      textField: {
+        fullWidth: true,
+        required: true,
+        sx: {
           "& .MuiOutlinedInput-root": {
             "&:hover fieldset": {
-              borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+              borderColor: "#53676c", // Cambia el borde al pasar el mouse
             },
             "&.Mui-focused fieldset": {
-              borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+              borderColor: "#53676c", // Cambia el borde cuando está enfocado
+            },
+            "&.Mui-error fieldset": {
+              borderColor: "#53676c !important", // Evita el borde rojo en caso de error
             },
           },
           "& .MuiInputLabel-root": {
             color: "#000", // Color del label por defecto
           },
           "& .MuiInputLabel-root.Mui-focused": {
-            color: "#53676c", // Cambia el color del label cuando está enfocado
+            color: "#53676c", // Color del label cuando está enfocado
           },
-        }}
-        autoComplete="off"
-      />
-    )}
+        },
+      },
+    }}
   />
 </Grid>
 

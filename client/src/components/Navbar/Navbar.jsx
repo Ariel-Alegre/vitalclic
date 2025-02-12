@@ -51,7 +51,7 @@ function DrawerAppBar(props) {
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `http://localhost:3001/api/datapersonal`,
+        `https://vitalclic-production.up.railway.app/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí

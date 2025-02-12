@@ -30,7 +30,7 @@ const Login = () => {
     setError(null);
     
     try {
-      const response = await axios.post('http://localhost:3001/api/login', formData);
+      const response = await axios.post('https://vitalclic-production.up.railway.app/api/login', formData);
       localStorage.setItem('token', response.data.token);
 
       navigate("/");

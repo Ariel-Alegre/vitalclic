@@ -6,7 +6,7 @@ const RegisterProfessionalSuccess = () => {
   const navigate = useNavigate();
 
   const handleVolverInicio = () => {
-    navigate("/"); // Ruta para volver al inicio
+    navigate("/iniciar-sesión"); // Ruta para volver al inicio
   };
 
   return (

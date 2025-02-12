@@ -73,7 +73,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
 
     try {
       await axios.post(
-        "http://localhost:3001/api/inperson-shifts",
+        "https://vitalclic-production.up.railway.app/api/inperson-shifts",
         formData
       );
       setTimeout(() => {
@@ -111,7 +111,7 @@ const PatientFormInperson = ({ mode, allSede, setProvinceInperson, setSpecialtyI
         throw new Error("Token no encontrado en localStorage");
       }
       const response = await axios.get(
-        `http://localhost:3001/api/datapersonal`,
+        `https://vitalclic-production.up.railway.app/api/datapersonal`,
         {
           headers: {
             Authorization: tokenFromStorage, // Usa el token aquí

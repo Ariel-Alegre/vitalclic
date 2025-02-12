@@ -61,11 +61,9 @@ const RegisterEmpresa = () => {
     province: "",
     district: "",
     phone: "",
-    specialty: [],
-    type_of_service: "",
+    type_of_service: [],
     contact_person: "",
     charges: "",
-    password: "",
     termsAccepted: false,
     termsAcceptedAt: null,
     department: "",
@@ -241,7 +239,7 @@ const RegisterEmpresa = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/register-sede",
+        "https://vitalclic-production.up.railway.app/api/register-bussines",
         formData
       );
       if (response.status === 200) {
@@ -255,7 +253,7 @@ const RegisterEmpresa = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "specialty") {
+    if (name === "type_of_service") {
       setFormData((prev) => ({
         ...prev,
         [name]: typeof value === "string" ? value.split(",") : value,
@@ -512,8 +510,8 @@ const RegisterEmpresa = () => {
                 labelId="specialties-select-label"
                 id="specialties-select"
                 multiple
-                name="specialty"
-                value={formData.specialty}
+                name="type_of_service"
+                value={formData.type_of_service}
                 onChange={handleChange}
                 input={<OutlinedInput label="Servicios que brinda" />}
                 renderValue={(selected) => selected.join(", ")}
@@ -541,7 +539,7 @@ const RegisterEmpresa = () => {
                 {services.map((specialty) => (
                   <MenuItem key={specialty} value={specialty}>
                     <Checkbox
-                      checked={formData.specialty.includes(specialty)}
+                      checked={formData.type_of_service.includes(specialty)}
                     />
                     <ListItemText primary={specialty} />
                   </MenuItem>

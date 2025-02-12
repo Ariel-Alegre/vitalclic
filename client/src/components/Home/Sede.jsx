@@ -56,7 +56,7 @@ const Sede = ({ mode, sede, allSede, specialtyInperson, provinceInperson, depart
 
   const DetailsSede = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/sede/${sedelId}`);
+      const res = await axios.get(`https://vitalclic-production.up.railway.app/api/sede/${sedelId}`);
       setDetailsSede(res.data.data);
     } catch (error) {
       console.log(error);

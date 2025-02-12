@@ -34,7 +34,7 @@ const TableSede = () => {
 
   const AllSede = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/all-sede");
+      const res = await axios.get("https://vitalclic-production.up.railway.app/api/all-sede");
       setSede(res.data.data);
     } catch (error) {
       console.log(error);
@@ -52,7 +52,7 @@ const TableSede = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:3001/api/update-sede-status/${selectedSede.id}`,
+        `https://vitalclic-production.up.railway.app/api/update-sede-status/${selectedSede.id}`,
         { status: newStatus }
       );
 
@@ -71,7 +71,7 @@ const TableSede = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Tabla con Modal de Confirmación</h1>
+      <h1>Sedes</h1>
 
       <table className={styles.table}>
         <thead>
@@ -126,10 +126,10 @@ const TableSede = () => {
               ¿Estás seguro de que deseas {selectedSede?.status === "pendiente" ? "activar" : "poner en pendiente"} la cuenta?
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2, display: "flex", gap: "2em" }}>
-              <Button variant="contained" onClick={updateAccount}>
+              <Button variant="contained" onClick={updateAccount} sx={{ backgroundColor: "#53676c"}}>
                 Sí
               </Button>
-              <Button variant="contained" onClick={handleClose}>
+              <Button variant="contained" onClick={handleClose} sx={{ backgroundColor: "red"}}>
                 No
               </Button>
             </Typography>

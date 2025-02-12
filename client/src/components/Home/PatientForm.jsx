@@ -69,7 +69,7 @@ const selectedTime = localStorage.getItem("selectedTime");
     setOpenAlertError(null); // Resetea el estado de error
 
     try {
-      await axios.post("http://localhost:3001/api/online-shifts", formData);
+      await axios.post("https://vitalclic-production.up.railway.app/api/online-shifts", formData);
       setTimeout(() => {
         navigate("/reservación-exitosa")
 
@@ -94,7 +94,7 @@ const selectedTime = localStorage.getItem("selectedTime");
       if (!tokenFromStorage) {
         throw new Error("Token no encontrado en localStorage");
       }
-      const response = await axios.get(`http://localhost:3001/api/datapersonal`, {
+      const response = await axios.get(`https://vitalclic-production.up.railway.app/api/datapersonal`, {
         headers: {
           Authorization: tokenFromStorage, // Usa el token aquí
           "Content-Type": "application/json",

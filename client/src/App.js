@@ -6,6 +6,8 @@ import ProfessionalRegistration from './pages/ProfessionalRegistration';
 import Login from './pages/Login';
 import PanelAdmin from './pages/PanelAdmin';
 import TableProfessional from './components/PanelAdmin/TableProfessional';
+import TableEmpresa from './components/PanelAdmin/TableEmpresa';
+
 import Test from './pages/Test';
 import DetailsProfessional from './pages/DetailsProfessional';
 import RegisterUser from './pages/RegisterUser';
@@ -70,6 +72,8 @@ function App() {
 
             <Route path="profesionales" element={<TableProfessional />} />
             <Route path="sedes" element={<TableSede />} />
+            <Route path="empresas" element={<TableEmpresa />} />
+
 
 
           </Route>

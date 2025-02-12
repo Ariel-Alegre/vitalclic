@@ -16,14 +16,19 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate,Link, useLocation } from 'react-router-dom';
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
+import DashboardIcon from "@mui/icons-material/Dashboard";
 const drawerWidth = 240;
 
 function PanelAdmin(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+  const navigate = useNavigate();
+  const location = useLocation(); // Hook para obtener la ruta actual
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -39,36 +44,152 @@ function PanelAdmin(props) {
       setMobileOpen(!mobileOpen);
     }
   };
-
+  const handleLogout = async () => {
+    try {
+      await localStorage.removeItem("token");
+      navigate("/iniciar-sesión");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        <Link
+          to="profesionales"
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <ListItem
+            disablePadding
+            sx={{
+              backgroundColor:
+                location.pathname === "/administrar/profesionales"
+                  ? "#e0f7fa"
+                  : "transparent",
+            }}
+          >
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <DashboardIcon
+                  sx={{
+                    color:
+                      location.pathname === "/administrar/profesionales"
+                        ? "#53676c"
+                        : "black",
+                  }}
+                />
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText
+                primary={"Profesionales"}
+                sx={{
+                  color:
+                    location.pathname === "/administrar/profesionales"
+                      ? "#53676c"
+                      : "black",
+                }}
+              />
             </ListItemButton>
           </ListItem>
-        ))}
+        </Link>
+
+        <Link
+          to="sedes"
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <ListItem
+            disablePadding
+            sx={{
+              backgroundColor:
+                location.pathname === "/administrar/sedes"
+                  ? "#e0f7fa"
+                  : "transparent",
+            }}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <EventAvailableIcon
+                  sx={{
+                    color:
+                      location.pathname === "/administrar/sedes"
+                        ? "#53676c"
+                        : "black",
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary={"Sedes"}
+                sx={{
+                  color:
+                    location.pathname === "/administrar/sedes"
+                      ? "#53676c"
+                      : "black",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link
+          to="empresas"
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <ListItem
+            disablePadding
+            sx={{
+              backgroundColor:
+                location.pathname === "/administrar/empresas"
+                  ? "#e0f7fa"
+                  : "transparent",
+            }}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <EventAvailableIcon
+                  sx={{
+                    color:
+                      location.pathname === "/administrar/empresas"
+                        ? "#53676c"
+                        : "black",
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary={"Empresas"}
+                sx={{
+                  color:
+                    location.pathname === "/administrar/empresas"
+                      ? "#53676c"
+                      : "black",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        
+        <Toolbar />
+        <Divider />
+        <ListItem
+            disablePadding
+            sx={{
+           backgroundColor: "red"
+            }}
+            onClick={handleLogout}
+          >
+            <ListItemButton>
+         
+              <ListItemText
+                primary={"Cerrar sesión"}
+                sx={{
+                color: "white",
+                textAlign: "center"
+               
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
       </List>
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
     </div>
   );
 
@@ -83,6 +204,8 @@ function PanelAdmin(props) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          backgroundColor: "#53676c",
+
         }}
       >
         <Toolbar>
@@ -96,7 +219,7 @@ function PanelAdmin(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+            Administrar
           </Typography>
         </Toolbar>
       </AppBar>
