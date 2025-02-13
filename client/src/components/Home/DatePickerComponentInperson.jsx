@@ -45,6 +45,18 @@ const DatePickerComponentInperson = ({  allSede,selectedDateInPerson, setSelecte
               dropdownMode="select"
               inline
               className="calendar"
+              style={{
+                fontSize: '18px', // Aumenta el tamaño de la fuente
+              }}
+              calendarContainerStyle={{
+                fontSize: '18px', // Aumenta el tamaño de la fuente en el calendario
+              }}
+              popperModifiers={{
+                offset: {
+                  enabled: true,
+                  offset: '0, 5px',
+                },
+              }}
             />
           </div>
           <div className="hr"></div>

@@ -103,13 +103,37 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+        <Link to="/registrar-empresa" style={{textDecoration: "none", color: "black"}}>
+          <ListItem disablePadding>
+            <ListItemButton >
+              <ListItemText primary={"¿Eres una empresa?"} />
             </ListItemButton>
           </ListItem>
-        ))}
+        </Link>
+        <Link to="/registrar-profesional"  style={{textDecoration: "none", color: "black"}}>
+
+          <ListItem disablePadding>
+            <ListItemButton >
+              <ListItemText primary={"¿Eres un personal de salud?"} />
+            </ListItemButton>
+          </ListItem>
+          </Link>
+          <Link to="/registrar-sede"  style={{textDecoration: "none", color: "black"}}>
+
+          <ListItem disablePadding>
+            <ListItemButton >
+              <ListItemText primary={"¿Eres una clínica?"} />
+            </ListItemButton>
+          </ListItem>
+
+          </Link>
+
+
+          <ListItem >
+            <ListItemButton sx={{ textAlign: "center" }}>
+              <ListItemText primary={"INICIAR SESIÓN"} />
+            </ListItemButton>
+          </ListItem>
       </List>
     </Box>
   );

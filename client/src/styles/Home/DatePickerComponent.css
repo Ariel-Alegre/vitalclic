@@ -1,10 +1,16 @@
 .date-picker-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 2em auto;
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }  
+  width: 100%;
+  max-width: 800px;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
   
   .date-picker-container h2 {
     font-size: 1.5rem;
@@ -26,11 +32,13 @@
     color: #4a5b57;
     font-weight: bold;
 
+
   }
   
   .react-datepicker__day--selected {
     background-color: #4a5b57;
     color: #ffffff;
+
   }
   
   .react-datepicker__day:hover {

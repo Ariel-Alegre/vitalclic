@@ -18,7 +18,6 @@ const TimeSelectorInperson = ({allSede, selectedTimeInPerson , setSelectedTimeIn
     setSelectedTimeInperson(time);
     localStorage.setItem("selectedTimeInPerson", time); // Guarda la hora seleccionada en localStorage
     window.location.href = "#patientInPerson"
-    allSede()
 
   };
   

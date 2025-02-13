@@ -1,7 +1,13 @@
 .container_sede {
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
+  width: 80%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+
   }
   
   .container_sede h1 {

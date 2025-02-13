@@ -19,9 +19,29 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+const styleInfo = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "100%", // Asegura que el modal ocupe el 100% del ancho disponible
+  maxWidth: 800, // Limita el tamaño máximo a 800px
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: "8px", // Bordes redondeados
+};
 
 const TableSede = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false); 
+   const [selectedShift, setSelectedShift] = React.useState(null);
+  console.log(selectedShift)
+    const [openInfo, setOpenInfo] = React.useState(false);
+    const handleOpenInfo = (shift) => {
+      setSelectedShift(shift); // Establece el turno seleccionado
+      setOpenInfo(true); // Abre el modal
+    };
   const [selectedSede, setSelectedSede] = React.useState(null);
   const [sede, setSede] = React.useState([]);
 
@@ -29,6 +49,7 @@ const TableSede = () => {
     setSelectedSede(professional); // Establece el profesional seleccionado
     setOpen(true);
   };
+  const handleCloseInfo = () => setOpenInfo(false);
   
   const handleClose = () => setOpen(false);
 
@@ -96,7 +117,8 @@ const TableSede = () => {
               <td>{data.country}</td>
               <td>{data.province}</td>
               <td>{data.district}</td>
-              <td className={styles.viewInformation}>Ver información</td>
+                  
+                  <td className={styles.viewInformation}onClick={() => handleOpenInfo(data)} >Ver información</td>
               <td>{data.status}</td>
 
               <td>
@@ -133,6 +155,130 @@ const TableSede = () => {
                 No
               </Button>
             </Typography>
+          </Box>
+        </Fade>
+      </Modal>
+
+
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openInfo}
+        onClose={handleCloseInfo}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openInfo}>
+          <Box sx={styleInfo}>
+            {/* Información detallada */}
+            <Typography
+              id="transition-modal-title"
+              variant="h6"
+              component="h2"
+              sx={{
+                textAlign: "center",
+                fontWeight: "bold",
+                color: "#53676c",
+                mb: 2,
+              }}
+            >
+              Información del turno
+            </Typography>
+
+            {/* Contenido del turno */}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Nombre: </strong>
+    {selectedShift?.name}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Razón Social: </strong>
+    {selectedShift?.reason_social}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>RUC: </strong>
+    {selectedShift?.ruc}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Correo: </strong>
+    {selectedShift?.email}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Teléfono: </strong>
+    {selectedShift?.phone}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Dirección: </strong>
+    {selectedShift?.address}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>País: </strong>
+    {selectedShift?.country}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Departamento: </strong>
+    {selectedShift?.department}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Provincia: </strong>
+    {selectedShift?.province}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Distrito: </strong>
+    {selectedShift?.district}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Persona de Contacto: </strong>
+    {selectedShift?.contact_person}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Cargo: </strong>
+    {selectedShift?.charges}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Especialidades: </strong>
+    {selectedShift?.specialty?.join(", ")}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Rol: </strong>
+    {selectedShift?.role}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Estado: </strong>
+    <span className={styles.status_bg}>{selectedShift?.status}</span>
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Términos Aceptados: </strong>
+    {selectedShift?.termsAccepted ? "Sí" : "No"}
+  </Typography>
+  <Typography variant="body1" sx={{ fontSize: "18px" }}>
+    <strong>Fecha de Aceptación de Términos: </strong>
+    {new Date(selectedShift?.termsAcceptedAt).toLocaleString()}
+  </Typography>
+</Box>
+
+
+            {/* Botones de acción */}
+            <Box
+              sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleCloseInfo()}
+                sx={{
+                  width: "45%",
+                  backgroundColor: "#53676c",
+                  ":hover": { backgroundColor: "#3e5852" },
+                }}
+              >
+                Cerrar
+              </Button>
+            </Box>
           </Box>
         </Fade>
       </Modal>

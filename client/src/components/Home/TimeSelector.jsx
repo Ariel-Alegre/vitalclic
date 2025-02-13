@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Home/TimeSelector.module.css';
 import { useLocation } from "react-router-dom";
 
-const TimeSelector = ({ selectedTime , setSelectedTime, mode}) => {
+const TimeSelector = ({  selectedTime , setSelectedTime, mode}) => {
   const { pathname } = useLocation();
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,11 +23,11 @@ const TimeSelector = ({ selectedTime , setSelectedTime, mode}) => {
   const selectedDate = localStorage.getItem("selectedDate");
 
   return (
-    <div >
+    <div id="time" >
    
       {selectedDate && mode === "Virtual" ? (
         <>
-          <div className={styles.container} id="time">
+          <div className={styles.container} >
             <h2 className={styles.title} >Seleccionar hora</h2>
             <div className={styles.grid}>
               {times.map((time) => (

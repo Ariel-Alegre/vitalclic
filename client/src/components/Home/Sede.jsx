@@ -81,17 +81,16 @@ const Sede = ({ mode, sede, allSede, specialtyInperson, provinceInperson, depart
 
     try {
       localStorage.setItem("selectedSede", JSON.stringify(sede));
+      window.location.href = "#dateInperson"
+    setOpen(false);
+     
       allSede()
 
 
     } catch (error) {
       console.log(error)
       
-    } finally {
-    setOpen(false);
-
-      window.location.href = "#timeInperson"
-    }
+    } 
   
   };
 

@@ -158,7 +158,7 @@ const ServiceAditional = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [formType, setFormType] = useState(null); // 'teleconsulta' o 'domicilio'
   const handleServiceClick = (servicio) => {
-    if (servicio === "Topico de emfermería" || servicio === "Ambulancia" ||servicio === "Centro de vacunación" || servicio === "Diagnostico por imágen") {
+    if (servicio === "Topico de emfermería" || servicio === "Ambulancia" ||servicio === "Centro de vacunación" || servicio === "Diagnóstico por imágen") {
       setSelectedService(servicio);
       setFormType(null); // Resetear el formulario al abrir el modal
       setTimeout(() => {
@@ -1260,7 +1260,7 @@ Solicitar atención
 
 
 
-{selectedService === "Diagnostico por imágen" ? (
+{selectedService === "Diagnóstico por imágen" ? (
 
 
 <div id="formAditional" className={styles.formContainer} style={{ marginTop: '20px' }}>
