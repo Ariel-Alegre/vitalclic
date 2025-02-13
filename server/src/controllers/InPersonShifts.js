@@ -1,6 +1,18 @@
 const { InPersonShifts } = require('../db');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
 require('dotenv').config();
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
 
 module.exports = {
   InpersonShifts: async (req, res) => {
@@ -36,7 +48,7 @@ module.exports = {
      <tr>
        <td style="padding: 2em; color: #333;">
  
-           <p style="color: black;">¡Hola [Nombre del Usuario (persona natural/empresa)],
+           <p style="color: black;">¡Hola ${name} ${lastName},
          </p>
            <p style="color: black;">Gracias por registrarte en VITALCLIC. Estamos emocionados de tenerte como parte de nuestra comunidad de salud digital.
          </p>

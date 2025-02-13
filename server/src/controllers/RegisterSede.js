@@ -112,7 +112,7 @@ module.exports = {
 await transporter.sendMail({
     from: process.env.EMAIL,
     to: email,
-    subject: '¡Bienvenido a nuestra plataforma!',
+    subject: '¡Bienvenido/a a VITALCLIC!',
     html: emailContent,
   }); 
       const newUser = await UserSede.create({
