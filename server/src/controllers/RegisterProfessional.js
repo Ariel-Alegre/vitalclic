@@ -1,6 +1,8 @@
   const { UserProfessional } = require('../db');
   const bcrypt = require('bcrypt');
   const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
   require('dotenv').config();
 
   function getRandomColor() {
@@ -11,7 +13,16 @@
     }
     return color;
   }
-
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
   module.exports = {
     RegisterProfessional: async (req, res) => {
       const { name, lastName,dni, professional_college,emergencyServices,department, registration_number, specialty_number_rne, genre, birthdate, email, country, province, district, specialty, phone, password, termsAccepted, termsAcceptedAt } = req.body;
