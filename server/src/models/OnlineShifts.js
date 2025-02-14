@@ -72,7 +72,9 @@ module.exports = (sequelize) => {
   }
   );
 
-
+  OnlineShifts.associate = (models) => {
+    OnlineShifts.belongsTo(models.User, { foreignKey: 'userId' }); // <-- Asegurar esta relación
+  };
 
   return OnlineShifts;
 };

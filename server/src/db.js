@@ -47,6 +47,12 @@ InPersonShifts.belongsTo(UserSede, { foreignKey: 'sedeId' });
 // Agregar relación entre User y InPersonShifts
 User.hasMany(InPersonShifts, { foreignKey: 'userId' });
 InPersonShifts.belongsTo(User, { foreignKey: 'userId' });
+
+
+// Relacionar User con OnlineShifts
+User.hasMany(OnlineShifts, { foreignKey: 'userId' });
+OnlineShifts.belongsTo(User, { foreignKey: 'userId' });
+
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importar la conexión { conn } = require('./db.js');
