@@ -242,10 +242,9 @@ const RegisterEmpresa = () => {
         "https://vitalclic-production.up.railway.app/api/register-bussines",
         formData
       );
-      if (response.status === 200) {
-        alert("Usuario registrado correctamente.");
-        navigate("/registro/sede-exitosa");
-      }
+     
+        navigate("/formulario-enviado");
+ 
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
     }

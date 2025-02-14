@@ -625,38 +625,46 @@ const ProfessionalRegistration = () => {
             </FormControl>
           </Grid>
 
-      <Grid item xs={12} sm={3}>
-  <DatePicker
-    label="Fecha de nacimiento"
-    value={formData.birthdate}
-    onChange={handleDateChange}
-    slotProps={{
-      textField: {
-        fullWidth: true,
-        required: true,
-        sx: {
-          "& .MuiOutlinedInput-root": {
-            "&:hover fieldset": {
-              borderColor: "#53676c", // Cambia el borde al pasar el mouse
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#53676c", // Cambia el borde cuando está enfocado
-            },
-            "&.Mui-error fieldset": {
-              borderColor: "#53676c !important", // Evita el borde rojo en caso de error
-            },
-          },
-          "& .MuiInputLabel-root": {
-            color: "#000", // Color del label por defecto
-          },
-          "& .MuiInputLabel-root.Mui-focused": {
-            color: "#53676c", // Color del label cuando está enfocado
-          },
-        },
-      },
-    }}
-  />
-</Grid>
+        <Grid item xs={12} sm={3} >
+                 <LocalizationProvider
+                   dateAdapter={AdapterDateFns}
+                   adapterLocale={es}
+                   
+                 >
+                   <DatePicker
+                     label="Fecha de nacimiento"
+                     value={formData.birthdate}
+                     
+                     onChange={handleDateChange}
+                     format="dd/MM/yyyy" // Usa 'MM' en mayúsculas para el mes
+                     slotProps={{
+                       textField: {
+                         fullWidth: true,
+                         required: true,
+                         sx: {
+                           "& .MuiOutlinedInput-root": {
+                             "&:hover fieldset": {
+                               borderColor: "#53676c", // Cambia el borde al pasar el mouse
+                             },
+                             "&.Mui-focused fieldset": {
+                               borderColor: "#53676c", // Cambia el borde cuando está enfocado
+                             },
+                             "&.Mui-error fieldset": {
+                               borderColor: "#53676c !important", // Evita el borde rojo en caso de error
+                             },
+                           },
+                           "& .MuiInputLabel-root": {
+                             color: "#000", // Color del label por defecto
+                           },
+                           "& .MuiInputLabel-root.Mui-focused": {
+                             color: "#53676c", // Color del label cuando está enfocado
+                           },
+                         },
+                       },
+                     }}
+                   />
+                 </LocalizationProvider>
+               </Grid>
 
           <Grid item xs={12} sm={3}>
             <TextField

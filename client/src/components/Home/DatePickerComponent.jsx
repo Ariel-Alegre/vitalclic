@@ -35,28 +35,17 @@ const DatePickerComponent = ({ selectedDate, setSelectedDate, mode }) => {
           <div className="date-picker-container">
             <h2>Seleccionar fecha</h2>
             <DatePicker
-              selected={parsedDate} // Pasa el objeto Date al DatePicker
-              onChange={handleFechaChange} // Usa el manejador corregido
-              dateFormat="dd 'de' MMMM 'de' yyyy"
-              locale="es" // Aplica la localización en español
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
-              inline
-              className="calendar"
-              style={{
-                fontSize: '18px', // Aumenta el tamaño de la fuente
-              }}
-              calendarContainerStyle={{
-                fontSize: '18px', // Aumenta el tamaño de la fuente en el calendario
-              }}
-              popperModifiers={{
-                offset: {
-                  enabled: true,
-                  offset: '0, 5px',
-                },
-              }}
-            />
+  selected={parsedDate}
+  onChange={handleFechaChange}
+  dateFormat="dd 'de' MMMM 'de' yyyy"
+  locale="es"
+  showMonthDropdown
+  showYearDropdown
+  dropdownMode="select"
+  inline
+  className="custom-calendar"
+/>
+
           </div>
           <div className="hr"></div>
         </>

@@ -106,7 +106,7 @@ function DrawerAppBar(props) {
         <Link to="/registrar-empresa" style={{textDecoration: "none", color: "black"}}>
           <ListItem disablePadding>
             <ListItemButton >
-              <ListItemText primary={"¿Eres una empresa?"} />
+              <ListItemText primary={"¿Eres un proveedor?"} />
             </ListItemButton>
           </ListItem>
         </Link>
@@ -489,7 +489,7 @@ function DrawerAppBar(props) {
               }}
             >
                <Link to="/registrar-empresa" className={[styles.optionsNavbar]}>
-                ¿Eres una empresa?
+                ¿Eres un proveedor?
               </Link>
               <Link
                 to="/registrar-profesional"

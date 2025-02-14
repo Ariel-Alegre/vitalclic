@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/Home/ServiceAditional.module.css'; // Importando CSS Module
-import { Modal, Box, Typography, Button } from '@mui/material';
-
+import { Modal, Box, Typography, Button, IconButton  } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 const ServiceAditional = () => {
   const servicios = [
     'Médico de urgencias',
@@ -158,7 +158,7 @@ const ServiceAditional = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [formType, setFormType] = useState(null); // 'teleconsulta' o 'domicilio'
   const handleServiceClick = (servicio) => {
-    if (servicio === "Topico de emfermería" || servicio === "Ambulancia" ||servicio === "Centro de vacunación" || servicio === "Diagnóstico por imágen") {
+    if (servicio === "Tópico de enfermería" || servicio === "Ambulancia" ||servicio === "Centro de vacunación" || servicio === "Diagnóstico por imágen") {
       setSelectedService(servicio);
       setFormType(null); // Resetear el formulario al abrir el modal
       setTimeout(() => {
@@ -684,35 +684,51 @@ const ServiceAditional = () => {
       </div>
 
       <Modal
-        open={modalVisible}
-        onClose={closeModal}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
+      open={modalVisible}
+      onClose={closeModal}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+    >
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 600,
+          maxWidth: "100%",
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+          borderRadius: 2,
+          position: 'relative', // Necesario para posicionar la X
+        }}
       >
-        <Box
+        {/* Icono de cierre en la esquina superior derecha */}
+        <IconButton
+          onClick={closeModal}
           sx={{
             position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 600,
-            maxWidth: "100%",
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
+            top: 10,
+            right: 10,
+            color: '#000',
+            '&:hover': {
+              backgroundColor: 'transparent',
+            },
           }}
         >
-          <Typography id="modal-title" variant="h6" component="h2">
-            {`Seleccionaste: ${selectedService}`}
-          </Typography>
-          <Typography id="modal-description" sx={{ mt: 2 }}>
-            ¿Cómo deseas continuar?
-          </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: "1em",  mt: 3, flexWrap: "wrap" }}>
-           {selectedService === "Laboratorio clínico" ? (
+          <CloseIcon />
+        </IconButton>
 
-          <Button
+        <Typography id="modal-title" variant="h6" component="h2">
+          {`Seleccionaste: ${selectedService}`}
+        </Typography>
+        <Typography id="modal-description" sx={{ mt: 2 }}>
+          ¿Cómo deseas continuar?
+        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: "1em", mt: 3, flexWrap: "wrap" }}>
+          {selectedService === "Laboratorio clínico" ? (
+            <Button
               variant="contained"
               onClick={() => handleOptionClick('establecimiento')}
               sx={{
@@ -720,11 +736,9 @@ const ServiceAditional = () => {
                 ':hover': { backgroundColor: '#4a5b57' },
               }}
             >
-              {`${selectedService} a Establecimiento`}
-              
+              {`Laboratorio en Establecimiento`}
             </Button>
-            ): (
-         
+          ) : (
             <Button
               variant="contained"
               onClick={() => handleOptionClick('teleconsulta')}
@@ -735,23 +749,21 @@ const ServiceAditional = () => {
             >
               Teleconsulta
             </Button>
-        
-
-                 )
-                }
-             <Button
-              variant="contained"
-              onClick={() => handleOptionClick('domicilio')}
-              sx={{
-                backgroundColor: '#4a5b57',
-                ':hover': { backgroundColor: '#4a5b57' },
-              }}
-            >
-                   {`${selectedService === "Odontólogo de urgencias"?  "Odontólogo":  selectedService === "Médico de urgencias"? "Médico" : selectedService === "Tópico de enfermería" ? "emfermero" : selectedService === "Laboratorio clínico" ? "laboratorio" : selectedService === "Pediatra de urgencias" ? "pediatra" : selectedService} a domicilio`}
-                   </Button>
-          </Box>
+          )}
+          <Button
+            variant="contained"
+            onClick={() => handleOptionClick('domicilio')}
+            sx={{
+              backgroundColor: '#4a5b57',
+              ':hover': { backgroundColor: '#4a5b57' },
+            }}
+          >
+            {`${selectedService === "Odontólogo de urgencias" ? "Odontólogo" : selectedService === "Médico de urgencias" ? "Médico" : selectedService === "Tópico de enfermería" ? "enfermero" : selectedService === "Laboratorio clínico" ? "laboratorio" : selectedService === "Pediatra de urgencias" ? "pediatra" : selectedService} a domicilio`}
+          </Button>
         </Box>
-      </Modal>
+      </Box>
+    </Modal>
+
       {formType === "teleconsulta" && selectedService === "Médico de urgencias" ? (
 
 
@@ -1360,7 +1372,7 @@ Solicitar atención
 
 
 
-{selectedService === "Topico de emfermería" ? (
+{selectedService === "Tópico de enfermería" ? (
 
 
 <div id="formAditional" className={styles.formContainer} style={{ marginTop: '20px' }}>

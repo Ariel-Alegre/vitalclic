@@ -168,7 +168,7 @@ const selectedTime = localStorage.getItem("selectedTime");
           <div  className={styles.formContainer}>
             <h2 className={styles.title}>Datos del paciente</h2>
             <form className={styles.form} onSubmit={handleSubmit}>
-              <label className={styles.label}>¿Para quién es el turno?</label>
+              <label className={styles.label}>¿Para quién es la consulta?</label>
               <select
               className={styles.input}
               name="shifts"

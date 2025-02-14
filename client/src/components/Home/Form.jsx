@@ -372,7 +372,7 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
             ))}
           </select>
           <button type="submit" className={styles.searchButton}>
-            Seleccionar {" "}
+            Buscar {" "}
             <span className={styles.searchIcon}>
               <SearchIcon />
             </span>

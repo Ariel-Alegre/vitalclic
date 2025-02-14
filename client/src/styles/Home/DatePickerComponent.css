@@ -22,31 +22,44 @@
    margin-top: 2em;
    margin-bottom: 2em;
   }
-  .react-datepicker__header {
-    background-color: #ffffff;
-    border-bottom: none;
-  }
   
-  .react-datepicker__current-month,
-  .react-datepicker__day-name {
-    color: #4a5b57;
-    font-weight: bold;
+/* Para las celdas de los días de la semana */
+.react-datepicker__day-name {
+  display: inline-flex;
+  justify-content: center;
+  width: 3rem;  /* Asegura que los nombres de los días de la semana tengan el mismo tamaño que las celdas de los días */
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.react-datepicker__navigation {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+}
 
 
-  }
-  
-  .react-datepicker__day--selected {
-    background-color: #4a5b57;
-    color: #ffffff;
+.react-datepicker {
+  font-size: 1.5rem; /* Aumenta el tamaño del calendario */
+}
 
-  }
-  
-  .react-datepicker__day:hover {
-    background-color: #a0b7b1;
-    color: #ffffff;
-  }
-  
-  .react-datepicker__triangle {
-    display: none;
-  }
-      
+.react-datepicker__day {
+  width: 3rem; /* Aumenta el tamaño de los días */
+  height: 3rem;
+  font-size: 1.5rem;
+}
+
+.react-datepicker__header {
+  font-size: 1.5rem;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  font-size: 1.5rem;
+}
+
+.react-datepicker__navigation {
+  width: 3rem;
+  height: 3rem;
+}

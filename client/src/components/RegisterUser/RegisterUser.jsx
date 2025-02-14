@@ -798,40 +798,41 @@ const handleClickShowPassword = () => {
 
               <Grid item xs={12} sm={3}>
   <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
-    <DatePicker
-      label={`Fecha de Nacimiento Dependiente ${index + 1}`}
-      value={formData.dependents[index].birthdate}
-      onChange={(date) =>
-        handleDependentChange(index, {
-          target: { name: "birthdate", value: date },
-        })
-      }
-      slotProps={{
-        textField: {
-          fullWidth: true,
-          required: true,
-          sx: {
-            "& .MuiOutlinedInput-root": {
-              "&:hover fieldset": {
-                borderColor: "#53676c", // Cambia el borde al pasar el mouse
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#53676c", // Cambia el borde cuando está enfocado
-              },
-              "&.Mui-error fieldset": {
-                borderColor: "#53676c !important", // Evita el borde rojo en caso de error
-              },
-            },
-            "& .MuiInputLabel-root": {
-              color: "#000", // Color del label por defecto
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "#53676c", // Color del label cuando está enfocado
-            },
+  <DatePicker
+  label={`Fecha de Nacimiento Dependiente ${index + 1}`}
+  value={formData.dependents[index].birthdate}
+  onChange={(date) =>
+    handleDependentChange(index, {
+      target: { name: "birthdate", value: date },
+    })
+  }
+  slotProps={{
+    textField: {
+      fullWidth: true,
+      required: true,
+      sx: {
+        "& .MuiOutlinedInput-root": {
+          "&:hover fieldset": {
+            borderColor: "#53676c", // Cambia el borde al pasar el mouse
+          },
+          "&.Mui-focused fieldset": {
+            borderColor: "#53676c", // Cambia el borde cuando está enfocado
+          },
+          "&.Mui-error fieldset": {
+            borderColor: "#53676c !important", // Evita el borde rojo en caso de error
           },
         },
-      }}
-    />
+        "& .MuiInputLabel-root": {
+          color: "#000", // Color del label por defecto
+        },
+        "& .MuiInputLabel-root.Mui-focused, & .MuiInputLabel-root.MuiFormLabel-filled": {
+          color: "#53676c", // Cambia el color cuando está enfocado o tiene un valor
+        },
+      },
+    },
+  }}
+/>
+
   </LocalizationProvider>
 </Grid>
 

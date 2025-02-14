@@ -2,15 +2,11 @@ import React from "react";
 import { Alert, Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const MessageSuccess = () => {
+const RegisterBisnessSuccess = () => {
   const navigate = useNavigate();
 
-  const handleVerReservas = () => {
-    navigate("/mis-reservas"); // Ruta para ver las reservas
-  };
-
   const handleVolverInicio = () => {
-    navigate("/"); // Ruta para volver al inicio
+    navigate("/iniciar-sesión"); // Ruta para volver al inicio
   };
 
   return (
@@ -24,23 +20,22 @@ const MessageSuccess = () => {
       textAlign="center"
       p={2}
     >
-      <Alert severity="success" sx={{ fontSize: "18px", padding: "20px", mb: 3 }}>
-        ¡Reserva realizada exitosamente! 🎉
+      <Alert severity="info" sx={{ fontSize: "18px", padding: "20px", mb: 3 }}>
+        Espere a que verifiquemos su solicitud para poder prestar sus servicios. Esto
+        puede tardar entre 24 y 48 horas. ⏳
       </Alert>
       <Stack direction="row" spacing={2}>
         <Button
-     
-        variant="contained" color="primary" onClick={handleVerReservas}>
-          Ver mis consultas
-        </Button>
-        <Button 
-           sx={{
+          sx={{
             backgroundColor: "#53676c",
             ":hover": { backgroundColor: "#3e5852" },
             margin: "auto",
-            color: "white"
+            color: "white",
           }}
-        variant="contained" color="secondary" onClick={handleVolverInicio}>
+          variant="contained"
+          color="primary"
+          onClick={handleVolverInicio}
+        >
           Volver al inicio
         </Button>
       </Stack>
@@ -48,4 +43,4 @@ const MessageSuccess = () => {
   );
 };
 
-export default MessageSuccess;
+export default RegisterBisnessSuccess;
