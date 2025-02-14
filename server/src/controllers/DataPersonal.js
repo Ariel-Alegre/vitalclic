@@ -27,6 +27,15 @@ module.exports = {
       if (!user) {
         user = await User.findOne({
           where: { id: payload.id },
+          include: [{
+            model: InPersonShifts,  // Incluye los datos del UserProfessional relacionado
+  
+        },
+       {
+        model: OnlineShifts,  // Incluye los datos del UserProfessional relacionado
+
+       }
+      ]
         });
 
         // Si no está en User, buscar en UserSede
