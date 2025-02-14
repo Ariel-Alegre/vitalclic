@@ -72,6 +72,9 @@ module.exports = (sequelize) => {
   }
   );
 
+  InPersonShifts.associate = (models) => {
+    InPersonShifts.belongsTo(models.User, { foreignKey: 'userId' });
+  };
 
 
   return InPersonShifts;
