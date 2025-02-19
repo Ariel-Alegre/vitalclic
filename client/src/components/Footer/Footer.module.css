@@ -1,52 +1,112 @@
 .footer {
-    background-color: #000;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-  }
-  
-  .container {
-    display: flex;
+  background-color: #000;
+  color: #fff;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  text-align: center;
+
+}
+
+.footerColumn {
+  width: 30%;
+  margin-bottom: 20px;
+}
+
+.footerColumn h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.footerColumn ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footerColumn li {
+  margin-bottom: 8px;
+}
+
+.footerColumn a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footerColumn a:hover {
+  text-decoration: underline;
+}
+
+.reclamosSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.reclamosContent {
+  max-width: 300px;
+}
+
+.reclamosContent h3 {
+  font-size: 18px;
+}
+
+.reclamosContent ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.reclamosContent li {
+  margin-bottom: 8px;
+}
+
+.reclamosContent a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.reclamosContent a:hover {
+  text-decoration: underline;
+}
+
+.container_logos {
+display: flex;
+justify-content: flex-end;
+text-align: end;
+margin-right: 20px;
+place-items: center;
+}
+
+.logoSection img {
+  width: 50px; /* Ajusta el tamaño del logo */
+  height: auto;
+}
+
+.textSection p {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .footerLinks {
     flex-direction: column;
     align-items: center;
+  }
+
+  .footerColumn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .reclamosSection {
     justify-content: center;
-    gap: 10px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding-left: 0;
   }
-  
-  .logoSection {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .logo {
-    width: 80px; /* Ajusta el tamaño del logo */
-    height: auto;
-  }
-  
-  .textSection {
-    font-size: 16px;
-  }
-  
-  .contactSection {
-    margin-top: 10px;
-  }
-  
-  .contactButton {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #ff5722;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-  
-  .contactButton:hover {
-    background-color: #e64a19;
-  }
-  
+}
