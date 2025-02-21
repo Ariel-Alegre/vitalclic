@@ -1,5 +1,5 @@
 // src/components/Form.js
-import React, { useState,useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -12,9 +12,9 @@ import {
   Select,
   InputLabel,
   OutlinedInput,
-  ListItemText,Radio ,
+  ListItemText, Radio,
   FormLabel, RadioGroup,
-  IconButton, InputAdornment 
+  IconButton, InputAdornment
 
 
 } from "@mui/material";
@@ -68,8 +68,8 @@ const API_KEY = "AIzaSyBMqv1fgtsDEQQgm4kmLBRtZI7zu-wSldA"; // 🔹 Reemplaza con
 const libraries = ["places"];
 const ProfessionalRegistration = () => {
   const navigate = useNavigate()
-    const [showPassword, setShowPassword] = useState(false);
-  
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -94,55 +94,51 @@ const ProfessionalRegistration = () => {
   });
   const autocompleteRef = useRef(null);
 
-    const onPlaceChanged = () => {
-      if (autocompleteRef.current) {
-        const place = autocompleteRef.current.getPlace();
-  
-        if (place?.geometry) {
-          const addressComponents = place.address_components;
-          if (addressComponents) {
-            // Extraer el país (country)
-            const country = addressComponents.find((component) =>
-              component.types.includes("country")
-            );
-  
-            // Filtrar todos los departamentos/estados (administrative_area_level_1)
-            const departments = addressComponents.filter((component) =>
-              component.types.includes("administrative_area_level_1")
-            );
-  
-            // Filtrar todas las provincias (administrative_area_level_1)
-            const provinces = addressComponents.filter((component) =>
-              component.types.includes("administrative_area_level_1")
-            );
-  
-            // Filtrar todos los distritos (administrative_area_level_2)
-            const districts = addressComponents.filter((component) =>
-              component.types.includes("administrative_area_level_2")
-            );
-  
-    
-  
-            // Actualizar el estado con las listas de componentes
-            setFormData({
-              ...formData,
-              country: country ? country.long_name : "",
-              departments: departments.map((dep) => dep.long_name), // Múltiples departamentos
-              provinces: provinces.map((prov) => prov.long_name), // Múltiples provincias
-              districts: districts.map((dist) => dist.long_name), // Múltiples distritos
-            });
-          } else {
-            console.error("No se pudo obtener los componentes de la dirección.");
-          }
-        } else {
-          console.error("No se pudo obtener la información de geometría.");
-        }
+  const onPlaceChanged = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
+      console.log("PLACE OBJECT:", place); // Debug
+
+      if (place) {
+        const addressComponents = place.address_components;
+
+        // Obtener el país
+        const country = addressComponents?.find((component) =>
+          component.types.includes("country")
+        )?.long_name || place.name || "";
+
+        // Obtener departamentos, provincias y distritos (si aplica)
+        const departments = addressComponents?.filter((component) =>
+          component.types.includes("administrative_area_level_1")
+        ).map((dep) => dep.long_name) || [];
+
+        const provinces = addressComponents?.filter((component) =>
+          component.types.includes("administrative_area_level_1")
+        ).map((prov) => prov.long_name) || [];
+
+        const districts = addressComponents?.filter((component) =>
+          component.types.includes("administrative_area_level_2")
+        ).map((dist) => dist.long_name) || [];
+
+        // Actualizar el estado
+        setFormData((prev) => ({
+          ...prev,
+          country,
+          departments,
+          provinces,
+          districts,
+        }));
+      } else {
+        console.warn("⚠️ No se pudo obtener el lugar seleccionado.");
       }
-    };
+    }
+  };
+
+
   const [loading, setLoading] = useState(false);
   const [openAlertError, setOpenAlertError] = React.useState(false);
 
- 
+
 
   const handleCloseAlertError = (event, reason) => {
     if (reason === 'clickaway') {
@@ -177,29 +173,29 @@ const ProfessionalRegistration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita la recarga de la página
-    
+
     setLoading(true); // Indica que la solicitud está en proceso
-  
+
     try {
       // Envío de datos al backend
       await axios.post("https://vitalclic-production.up.railway.app/api/register-professional", formData);
-  
+
       // Redirige a la página de éxito
       navigate("/registro/profesional-exitosa");
-  
+
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
-  
+
       // Verifica si el error es un 404 (email ya registrado)
       if (error.response?.status === 404) {
         alert("El email ya está registrado como profesional");
       }
-  
+
     } finally {
       setLoading(false); // Se ejecuta siempre, éxito o error
     }
   };
-   const school = [
+  const school = [
     "Colegio médico del Perú",
     "Colegio de enfermeros del Perú",
     "Colegio de nutricionistas del Perú",
@@ -209,7 +205,7 @@ const ProfessionalRegistration = () => {
     "Asociación de enfermeros técnicos del Perú",
 
 
-   ]
+  ]
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={es}>
@@ -220,7 +216,7 @@ const ProfessionalRegistration = () => {
           Registro de profesional
         </Typography>
         <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={3}>
             <TextField
               label="DNI"
               name="dni"
@@ -303,7 +299,7 @@ const ProfessionalRegistration = () => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <FormControl fullWidth required
-               sx={{
+              sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
                     borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
@@ -352,12 +348,12 @@ const ProfessionalRegistration = () => {
 
                   <MenuItem value={data}>{data}</MenuItem>
                 ))}
-              
+
               </Select>
             </FormControl>
           </Grid>
-        
-     
+
+
           <Grid item xs={12} sm={3}>
             <TextField
               label="Número de colegio profesional"
@@ -385,100 +381,100 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          {formData.professional_college === "Colegio médico del Perú"  ? (
-          <>
+          {formData.professional_college === "Colegio médico del Perú" ? (
+            <>
 
-          <Grid item xs={12} sm={3}>
-            <FormControl       sx={{
-              width: "100%",
-              "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+              <Grid item xs={12} sm={3}>
+                <FormControl sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-root": {
+                    "&:hover fieldset": {
+                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                    },
                   },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                  "& .MuiInputLabel-root": {
+                    color: "#000", // Color del label por defecto
                   },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}>
-        <InputLabel id="specialties-select-label">Especialidades</InputLabel>
-        <Select
-          labelId="specialties-select-label"
-          id="specialties-select"
-          multiple
-          name="specialty"
-         value={formData.specialty} 
-          onChange={handleChange}
-          input={<OutlinedInput label="Especialidades" />}
-          renderValue={(selected) => selected.join(', ')}
-          MenuProps={MenuProps}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#000", // Color del borde por defecto
-              },
-              "&:hover fieldset": {
-                borderColor: "#53676c", // Color del borde al pasar el mouse
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#53676c", // Color del borde cuando está enfocado
-              },
-            },
-            "& .MuiInputLabel-root": {
-              color: "#000", // Color del label por defecto
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "#53676c", // Cambia el color del label cuando está enfocado
-            },
-          }}
-        >
-          {specialtiesMedica.map((specialty) => (
-            <MenuItem key={specialty} value={specialty}>
-              <Checkbox checked={formData.specialty.includes(specialty)}  />
-              <ListItemText primary={specialty} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              label="Número de especialidad RNE"
-              name="specialty_number_rne"
-              value={formData.specialty_number_rne}
-              onChange={handleChange}
-              fullWidth
-              required
-              autoComplete={false}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#53676c", // Cambia el color del label cuando está enfocado
                   },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000", // Color del label por defecto
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#53676c", // Cambia el color del label cuando está enfocado
-                },
-              }}
-            />
-          </Grid>
-          </>
-          ): null}
+                }}>
+                  <InputLabel id="specialties-select-label">Especialidades</InputLabel>
+                  <Select
+                    labelId="specialties-select-label"
+                    id="specialties-select"
+                    multiple
+                    name="specialty"
+                    value={formData.specialty}
+                    onChange={handleChange}
+                    input={<OutlinedInput label="Especialidades" />}
+                    renderValue={(selected) => selected.join(', ')}
+                    MenuProps={MenuProps}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "#000", // Color del borde por defecto
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#53676c", // Color del borde al pasar el mouse
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#53676c", // Color del borde cuando está enfocado
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "#000", // Color del label por defecto
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#53676c", // Cambia el color del label cuando está enfocado
+                      },
+                    }}
+                  >
+                    {specialtiesMedica.map((specialty) => (
+                      <MenuItem key={specialty} value={specialty}>
+                        <Checkbox checked={formData.specialty.includes(specialty)} />
+                        <ListItemText primary={specialty} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  label="Número de especialidad RNE"
+                  name="specialty_number_rne"
+                  value={formData.specialty_number_rne}
+                  onChange={handleChange}
+                  fullWidth
+                  required
+                  autoComplete={false}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                  }}
+                />
+              </Grid>
+            </>
+          ) : null}
 
           <Grid item xs={12} sm={3}>
             <FormControl fullWidth required
-               sx={{
+              sx={{
                 "& .MuiOutlinedInput-root": {
                   "&:hover fieldset": {
                     borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
@@ -530,53 +526,53 @@ const ProfessionalRegistration = () => {
             </FormControl>
           </Grid>
 
-        <Grid item xs={12} sm={3} >
-                 <LocalizationProvider
-                   dateAdapter={AdapterDateFns}
-                   adapterLocale={es}
-                   
-                 >
-                   <DatePicker
-                     label="Fecha de nacimiento"
-                     value={formData.birthdate}
-                     
-                     onChange={handleDateChange}
-                     format="dd/MM/yyyy" // Usa 'MM' en mayúsculas para el mes
-                     slotProps={{
-                       textField: {
-                         fullWidth: true,
-                         required: true,
-                         sx: {
-                           "& .MuiOutlinedInput-root": {
-                             "&:hover fieldset": {
-                               borderColor: "#53676c", // Cambia el borde al pasar el mouse
-                             },
-                             "&.Mui-focused fieldset": {
-                               borderColor: "#53676c", // Cambia el borde cuando está enfocado
-                             },
-                             "&.Mui-error fieldset": {
-                               borderColor: "#53676c !important", // Evita el borde rojo en caso de error
-                             },
-                           },
-                           "& .MuiInputLabel-root": {
-                             color: "#000", // Color del label por defecto
-                           },
-                           "& .MuiInputLabel-root.Mui-focused": {
-                             color: "#53676c", // Color del label cuando está enfocado
-                           },
-                         },
-                       },
-                     }}
-                   />
-                 </LocalizationProvider>
-               </Grid>
+          <Grid item xs={12} sm={3} >
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={es}
+
+            >
+              <DatePicker
+                label="Fecha de nacimiento"
+                value={formData.birthdate}
+
+                onChange={handleDateChange}
+                format="dd/MM/yyyy" // Usa 'MM' en mayúsculas para el mes
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    required: true,
+                    sx: {
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#53676c", // Cambia el borde al pasar el mouse
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#53676c", // Cambia el borde cuando está enfocado
+                        },
+                        "&.Mui-error fieldset": {
+                          borderColor: "#53676c !important", // Evita el borde rojo en caso de error
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "#000", // Color del label por defecto
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#53676c", // Color del label cuando está enfocado
+                      },
+                    },
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </Grid>
 
           <Grid item xs={12} sm={3}>
             <TextField
               label="Correo electrónico"
               name="email"
               type="email"
-              
+
               value={formData.email}
               onChange={handleChange}
               fullWidth
@@ -628,181 +624,178 @@ const ProfessionalRegistration = () => {
               }}
             />
           </Grid>
-          <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
-                    <Grid item xs={12} sm={3}>
-                      <Autocomplete    onLoad={(autocomplete) =>
-                            (autocompleteRef.current = autocomplete)
-                          } onPlaceChanged={onPlaceChanged}>
-                        <TextField
-                          label="País"
-                          name="country"
-                          autoComplete={false}
-                          value={formData.country}
-                          onChange={handleChange}
-                          autoComplete="none"
-                          fullWidth
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              "&:hover fieldset": {
-                                borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                              },
-                            },
-                            "& .MuiInputLabel-root": {
-                              color: "#000", // Color del label por defecto
-                            },
-                            "& .MuiInputLabel-root.Mui-focused": {
-                              color: "#53676c", // Cambia el color del label cuando está enfocado
-                            },
-                          }}
-                        />
-                      </Autocomplete>
-                    </Grid>
-                  </LoadScript>
-        
-                  <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
-                    <Grid item xs={12} sm={3}>
-                      <Autocomplete    onLoad={(autocomplete) =>
-                            (autocompleteRef.current = autocomplete)
-                          } onPlaceChanged={onPlaceChanged}>
-                    <TextField
-                      label="Departamento"
-                      name="department"
-                      autoComplete={false}
-                      value={formData.department}
-                      onChange={handleChange}
-                      fullWidth
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&:hover fieldset": {
-                            borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "#000", // Color del label por defecto
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "#53676c", // Cambia el color del label cuando está enfocado
-                        },
-                      }}
-                    />
-                   </Autocomplete>
-                    </Grid>
-                  </LoadScript>
-                  <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
-                    <Grid item xs={12} sm={3}>
-                      <Autocomplete    onLoad={(autocomplete) =>
-                            (autocompleteRef.current = autocomplete)
-                          } onPlaceChanged={onPlaceChanged}>
-                    <TextField
-                      label="Provincia"
-                      name="province"
-                      autoComplete={false}
-                      value={formData.province}
-                      onChange={handleChange}
-                      fullWidth
-                      autoComplete="off"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "&:hover fieldset": { borderColor: "#53676c" },
-                          "&.Mui-focused fieldset": { borderColor: "#53676c" },
-                        },
-                        "& .MuiInputLabel-root": { color: "#000" },
-                        "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
-                      }}
-                    />
-                 </Autocomplete>
-                    </Grid>
-                  </LoadScript>
-        
-                  <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
-                    <Grid item xs={12} sm={3}>
-                      <Autocomplete    onLoad={(autocomplete) =>
-                            (autocompleteRef.current = autocomplete)
-                          } onPlaceChanged={onPlaceChanged}>
-                        <TextField
-            
-                          label="Distrito"
-                          name="district"
-                          autoComplete={false}
-                          value={formData.district}
-                          onChange={handleChange}
-                          fullWidth
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              "&:hover fieldset": {
-                                borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                              },
-                            },
-                            "& .MuiInputLabel-root": {
-                              color: "#000", // Color del label por defecto
-                            },
-                            "& .MuiInputLabel-root.Mui-focused": {
-                              color: "#53676c", // Cambia el color del label cuando está enfocado
-                            },
-                          }}
-                        />
-                     </Autocomplete>
-                    </Grid>
-                  </LoadScript>
-        
-        
-          <Grid item xs={12} sm={3}>
-  <TextField
-    label="Contraseña"
-    name="password"
-    type={showPassword ? "text" : "password"}
-    value={formData.password}
-    onChange={handleChange}
-    fullWidth
-    autoComplete="off"
-    required
-    InputProps={{
-      endAdornment: (
-        <InputAdornment position="end">
-          <IconButton onClick={handleClickShowPassword} edge="end">
-            {showPassword ? <VisibilityOff /> : <Visibility />}
-          </IconButton>
-        </InputAdornment>
-      ),
-    }}
-    sx={{
-      "& .MuiOutlinedInput-root": {
-        "&:hover fieldset": { borderColor: "#53676c" },
-        "&.Mui-focused fieldset": { borderColor: "#53676c" },
-      },
-      "& .MuiInputLabel-root": { color: "#000" },
-      "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
-    }}
-  />
-</Grid>;
-          {formData.professional_college === "Colegio médico del Perú" || formData.professional_college === "Colegio de enfermeros del Perú" || formData.professional_college === "Colegio odontológico del Perú"  ? (
+          <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
+            <Grid item xs={12} sm={3}>
+              <Autocomplete
+                onLoad={(autocomplete) => {
+                  autocompleteRef.current = autocomplete;
+                }}
+                onPlaceChanged={onPlaceChanged}
+              >
+                <TextField
+                  label="País"
+                  name="country"
+                  autoComplete="off"  // Desactivar autocompletado del navegador
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                  }}
+                />
+              </Autocomplete>
+            </Grid>
+          </LoadScript>
 
-          <Grid item xs={12}>
-  <FormControl component="fieldset"
-  >
-    <span>¿Deseas atender consultas de urgencias de manera virtuales y a domicilio?(La solicitud te llegara por WhatsApp)</span>
-    <RadioGroup
-      row
-      name="emergencyServices"
-      value={formData.emergencyServices}
-      onChange={(e) => setFormData({ ...formData, emergencyServices: e.target.value })}
-    >
-      <FormControlLabel value="sí" control={<Radio sx={{ '&.Mui-checked': { color: '#53676c' } }} />}  label="Sí" />
-      <FormControlLabel value="no" control={<Radio sx={{ '&.Mui-checked': { color: '#53676c' } }} />} label="No" />
-    </RadioGroup>
-  </FormControl>
-  
-</Grid>
-          ): null }
+          <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
+            <Grid item xs={12} sm={3}>
+              <Autocomplete onLoad={(autocomplete) =>
+                (autocompleteRef.current = autocomplete)
+              } onPlaceChanged={onPlaceChanged}>
+                <TextField
+                  label="Departamento"
+                  name="department"
+                  autoComplete={false}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                  }}
+                />
+              </Autocomplete>
+            </Grid>
+          </LoadScript>
+          <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
+            <Grid item xs={12} sm={3}>
+              <Autocomplete onLoad={(autocomplete) =>
+                (autocompleteRef.current = autocomplete)
+              } onPlaceChanged={onPlaceChanged}>
+                <TextField
+                  label="Provincia"
+                  name="province"
+                  autoComplete={false}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": { borderColor: "#53676c" },
+                      "&.Mui-focused fieldset": { borderColor: "#53676c" },
+                    },
+                    "& .MuiInputLabel-root": { color: "#000" },
+                    "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
+                  }}
+                />
+              </Autocomplete>
+            </Grid>
+          </LoadScript>
+
+          <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
+            <Grid item xs={12} sm={3}>
+              <Autocomplete onLoad={(autocomplete) =>
+                (autocompleteRef.current = autocomplete)
+              } onPlaceChanged={onPlaceChanged}>
+                <TextField
+
+                  label="Distrito"
+                  name="district"
+                  autoComplete={false}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000", // Color del label por defecto
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#53676c", // Cambia el color del label cuando está enfocado
+                    },
+                  }}
+                />
+              </Autocomplete>
+            </Grid>
+          </LoadScript>
+
+
+          <Grid item xs={12} sm={3}>
+            <TextField
+              label="Contraseña"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={formData.password}
+              onChange={handleChange}
+              fullWidth
+              autoComplete="off"
+              required
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleClickShowPassword} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": { borderColor: "#53676c" },
+                  "&.Mui-focused fieldset": { borderColor: "#53676c" },
+                },
+                "& .MuiInputLabel-root": { color: "#000" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
+              }}
+            />
+          </Grid>;
+          {formData.professional_college === "Colegio médico del Perú" || formData.professional_college === "Colegio de enfermeros del Perú" || formData.professional_college === "Colegio odontológico del Perú" ? (
+
+            <Grid item xs={12}>
+              <FormControl component="fieldset"
+              >
+                <span>¿Deseas atender consultas de urgencias de manera virtuales y a domicilio?(La solicitud te llegara por WhatsApp)</span>
+                <RadioGroup
+                  row
+                  name="emergencyServices"
+                  value={formData.emergencyServices}
+                  onChange={(e) => setFormData({ ...formData, emergencyServices: e.target.value })}
+                >
+                  <FormControlLabel value="sí" control={<Radio sx={{ '&.Mui-checked': { color: '#53676c' } }} />} label="Sí" />
+                  <FormControlLabel value="no" control={<Radio sx={{ '&.Mui-checked': { color: '#53676c' } }} />} label="No" />
+                </RadioGroup>
+              </FormControl>
+
+            </Grid>
+          ) : null}
 
           <Grid item xs={12}>
             <FormControlLabel
@@ -816,8 +809,8 @@ const ProfessionalRegistration = () => {
               }
               label="Acepto los términos y condiciones"
             />
-                                     <Link to="/terminos-condiciones">términos y condiciones</Link>
-            
+            <Link to="/terminos-condiciones">términos y condiciones</Link>
+
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
             <Button
@@ -826,34 +819,34 @@ const ProfessionalRegistration = () => {
               color="primary"
               sx={{
                 width: 800,
-                height:40,
+                height: 40,
                 backgroundColor: "#53676c",
                 ":hover": { backgroundColor: "#8ca7a6" },
               }}
             >
 
-{loading ? (
-                  <CircularProgress
-                    size={25}
-                    thickness={5}
-                    sx={{ color: "#fff" }}
-                  />
-                ) : (
-                  "Registrarse"
-                )}
+              {loading ? (
+                <CircularProgress
+                  size={25}
+                  thickness={5}
+                  sx={{ color: "#fff" }}
+                />
+              ) : (
+                "Registrarse"
+              )}
             </Button>
           </Grid>
           <Snackbar
-          
-          open={openAlertError} autoHideDuration={4000} onClose={handleCloseAlertError}>
-        <Alert
-          onClose={handleCloseAlertError}
-          severity="error"
-          variant="filled"
-        >
-            El profesional ya está registrado. Por favor, intente con otro correo electrónico.
-        </Alert>
-      </Snackbar>
+
+            open={openAlertError} autoHideDuration={4000} onClose={handleCloseAlertError}>
+            <Alert
+              onClose={handleCloseAlertError}
+              severity="error"
+              variant="filled"
+            >
+              El profesional ya está registrado. Por favor, intente con otro correo electrónico.
+            </Alert>
+          </Snackbar>
 
 
         </Grid>
