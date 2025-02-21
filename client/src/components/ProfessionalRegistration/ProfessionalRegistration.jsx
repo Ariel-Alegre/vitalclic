@@ -32,9 +32,27 @@ import {
   Autocomplete,
   useLoadScript,
 } from "@react-google-maps/api";
-const specialties = [
-  "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
-  "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogo","Clinico"
+const specialtiesMedica = [
+  "Cardiología",
+  "Dermatología",
+  "Endocrinología",
+  "Gastroenterología",
+  "Genética",
+  "Geriatría",
+  "Ginecología y Obstetricia",
+  "Hematología",
+  "Inmunología y Alergia",
+  "Medicina de Enfermedades Infecciosas y Tropicales",
+  "Medicina Física y de Rehabilitación",
+  "Medicina Interna",
+  "Medicina Oncologica",
+  "Nefrología",
+  "Neonatología",
+  "Neumología",
+  "Neurología",
+  "Pediatría",
+  "Psiquiatría",
+  "Reumatología"
 ];
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -122,28 +140,32 @@ const ProfessionalRegistration = () => {
             componentRestrictions: { country: "PE" },
           }
         );
-  
+    
         autoCompleteInstance.addListener("place_changed", () => {
           const place = autoCompleteInstance.getPlace();
           if (place.address_components) {
             const department = place.address_components.find((comp) =>
               comp.types.includes("administrative_area_level_1")
             )?.long_name;
-  
+    
             if (department) {
               setFormData((prev) => ({
                 ...prev,
                 department,
               }));
+    
+              // 👉 Mostrar solo el nombre seleccionado en el input
+              inputRefDepartment.current.value = department;
             }
           }
         });
-  
+    
         return () => {
           window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
         };
       }
     }, [isLoaded]);
+    
   
     // Autocompletado para la provincia
     useEffect(() => {
@@ -532,7 +554,7 @@ const ProfessionalRegistration = () => {
             },
           }}
         >
-          {specialties.map((specialty) => (
+          {specialtiesMedica.map((specialty) => (
             <MenuItem key={specialty} value={specialty}>
               <Checkbox checked={formData.specialty.includes(specialty)}  />
               <ListItemText primary={specialty} />
