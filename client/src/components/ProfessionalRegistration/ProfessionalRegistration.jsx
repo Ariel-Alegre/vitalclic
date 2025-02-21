@@ -636,6 +636,7 @@ const ProfessionalRegistration = () => {
                         <TextField
                           label="País"
                           name="country"
+                          autoComplete={false}
                           value={formData.country}
                           onChange={handleChange}
                           autoComplete="none"
@@ -669,7 +670,7 @@ const ProfessionalRegistration = () => {
                     <TextField
                       label="Departamento"
                       name="department"
-        
+                      autoComplete={false}
                       value={formData.department}
                       onChange={handleChange}
                       fullWidth
@@ -701,6 +702,7 @@ const ProfessionalRegistration = () => {
                     <TextField
                       label="Provincia"
                       name="province"
+                      autoComplete={false}
                       value={formData.province}
                       onChange={handleChange}
                       fullWidth
@@ -727,10 +729,10 @@ const ProfessionalRegistration = () => {
             
                           label="Distrito"
                           name="district"
+                          autoComplete={false}
                           value={formData.district}
                           onChange={handleChange}
                           fullWidth
-                          autoComplete="off"
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               "&:hover fieldset": {
