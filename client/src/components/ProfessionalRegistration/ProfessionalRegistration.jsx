@@ -92,26 +92,8 @@ const ProfessionalRegistration = () => {
     termsAccepted: false,
     termsAcceptedAt: null,
   });
-  const inputRefAddress = useRef(null);
-  const inputRefProvince = useRef(null);
-  const inputRefDistrict = useRef(null);
-  const inputRefDepartment = useRef(null);
   const autocompleteRef = useRef(null);
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: API_KEY,
-    libraries,
-  });
 
-  // Autocompletado para la dirección
-
-
-    // Autocompletado general (país)
-    const onLoad = (autocomplete) => {
-      autocompleteRef.current = autocomplete;
-      autocomplete.setTypes(["(regions)"]);
-      autocomplete.setComponentRestrictions({ country: "PE" });
-    };
-  
     const onPlaceChanged = () => {
       if (autocompleteRef.current) {
         const place = autocompleteRef.current.getPlace();
@@ -687,7 +669,6 @@ const ProfessionalRegistration = () => {
                     <TextField
                       label="Departamento"
                       name="department"
-                inputRef={inputRefDepartment} // Utilizamos el ref para manejar el autocompletado
         
                       value={formData.department}
                       onChange={handleChange}
@@ -718,7 +699,6 @@ const ProfessionalRegistration = () => {
                             (autocompleteRef.current = autocomplete)
                           } onPlaceChanged={onPlaceChanged}>
                     <TextField
-                      inputRef={inputRefProvince} // 🔹 Se corrigió la prop incorrecta
                       label="Provincia"
                       name="province"
                       value={formData.province}
@@ -744,7 +724,6 @@ const ProfessionalRegistration = () => {
                             (autocompleteRef.current = autocomplete)
                           } onPlaceChanged={onPlaceChanged}>
                         <TextField
-                    inputRef={inputRefDistrict} // Utilizamos el ref para manejar el autocompletado
             
                           label="Distrito"
                           name="district"
