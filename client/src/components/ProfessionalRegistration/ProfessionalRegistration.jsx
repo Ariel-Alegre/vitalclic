@@ -104,155 +104,56 @@ const ProfessionalRegistration = () => {
 
   // Autocompletado para la dirección
 
-    useEffect(() => {
-      if (isLoaded && inputRefAddress.current) {
-        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
-          inputRefAddress.current,
-          {
-            types: ["address"],
-            componentRestrictions: { country: "PE" },
-          }
-        );
-  
-        autoCompleteInstance.addListener("place_changed", () => {
-          const place = autoCompleteInstance.getPlace();
-          if (place.formatted_address) {
-            setFormData((prev) => ({
-              ...prev,
-              address: place.formatted_address,
-            }));
-          }
-        });
-  
-        return () => {
-          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
-        };
-      }
-    }, [isLoaded]);
-  
-    // Autocompletado para el departamento
-    useEffect(() => {
-      if (isLoaded && inputRefDepartment.current) {
-        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
-          inputRefDepartment.current,
-          {
-            types: ["(regions)"],
-            componentRestrictions: { country: "PE" },
-          }
-        );
-    
-        autoCompleteInstance.addListener("place_changed", () => {
-          const place = autoCompleteInstance.getPlace();
-          if (place.address_components) {
-            const department = place.address_components.find((comp) =>
-              comp.types.includes("administrative_area_level_1")
-            )?.long_name;
-    
-            if (department) {
-              setFormData((prev) => ({
-                ...prev,
-                department,
-              }));
-    
-              // 👉 Mostrar solo el nombre seleccionado en el input
-              inputRefDepartment.current.value = department;
-            }
-          }
-        });
-    
-        return () => {
-          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
-        };
-      }
-    }, [isLoaded]);
-    
-  
-    // Autocompletado para la provincia
-    useEffect(() => {
-      if (isLoaded && inputRefProvince.current) {
-        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
-          inputRefProvince.current,
-          {
-            types: ["(regions)"],
-            componentRestrictions: { country: "PE" },
-          }
-        );
-  
-        autoCompleteInstance.addListener("place_changed", () => {
-          const place = autoCompleteInstance.getPlace();
-          if (place.address_components) {
-            const province = place.address_components.find((comp) =>
-              comp.types.includes("administrative_area_level_1")
-            )?.long_name;
-  
-            if (province) {
-              setFormData((prev) => ({
-                ...prev,
-                province,
-              }));
-            }
-          }
-        });
-  
-        return () => {
-          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
-        };
-      }
-    }, [isLoaded]);
-  
-    // Autocompletado para el distrito
-    useEffect(() => {
-      if (isLoaded && inputRefDistrict.current) {
-        const autoCompleteInstance = new window.google.maps.places.Autocomplete(
-          inputRefDistrict.current,
-          {
-            types: ["(regions)"],
-            componentRestrictions: { country: "PE" },
-          }
-        );
-  
-        autoCompleteInstance.addListener("place_changed", () => {
-          const place = autoCompleteInstance.getPlace();
-          if (place.address_components) {
-            const district = place.address_components.find((comp) =>
-              comp.types.includes("sublocality_level_1")
-            )?.long_name;
-  
-            if (district) {
-              setFormData((prev) => ({
-                ...prev,
-                district,
-              }));
-            }
-          }
-        });
-  
-        return () => {
-          window.google.maps.event.clearInstanceListeners(autoCompleteInstance);
-        };
-      }
-    }, [isLoaded]);
-  
+
     // Autocompletado general (país)
     const onLoad = (autocomplete) => {
       autocompleteRef.current = autocomplete;
       autocomplete.setTypes(["(regions)"]);
-      autocomplete.setComponentRestrictions({ country: [] });
+      autocomplete.setComponentRestrictions({ country: "PE" });
     };
   
     const onPlaceChanged = () => {
       if (autocompleteRef.current) {
         const place = autocompleteRef.current.getPlace();
-        if (place && place.address_components) {
-          const country = place.address_components.find((comp) =>
-            comp.types.includes("country")
-          );
-          if (country) {
-            setFormData((prevState) => ({
-              ...prevState,
-              country: country.long_name,
-            }));
+  
+        if (place?.geometry) {
+          const addressComponents = place.address_components;
+          if (addressComponents) {
+            // Extraer el país (country)
+            const country = addressComponents.find((component) =>
+              component.types.includes("country")
+            );
+  
+            // Filtrar todos los departamentos/estados (administrative_area_level_1)
+            const departments = addressComponents.filter((component) =>
+              component.types.includes("administrative_area_level_1")
+            );
+  
+            // Filtrar todas las provincias (administrative_area_level_1)
+            const provinces = addressComponents.filter((component) =>
+              component.types.includes("administrative_area_level_1")
+            );
+  
+            // Filtrar todos los distritos (administrative_area_level_2)
+            const districts = addressComponents.filter((component) =>
+              component.types.includes("administrative_area_level_2")
+            );
+  
+    
+  
+            // Actualizar el estado con las listas de componentes
+            setFormData({
+              ...formData,
+              country: country ? country.long_name : "",
+              departments: departments.map((dep) => dep.long_name), // Múltiples departamentos
+              provinces: provinces.map((prov) => prov.long_name), // Múltiples provincias
+              districts: districts.map((dist) => dist.long_name), // Múltiples distritos
+            });
+          } else {
+            console.error("No se pudo obtener los componentes de la dirección.");
           }
+        } else {
+          console.error("No se pudo obtener la información de geometría.");
         }
       }
     };
@@ -747,7 +648,9 @@ const ProfessionalRegistration = () => {
           </Grid>
           <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
                     <Grid item xs={12} sm={3}>
-                      <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                      <Autocomplete    onLoad={(autocomplete) =>
+                            (autocompleteRef.current = autocomplete)
+                          } onPlaceChanged={onPlaceChanged}>
                         <TextField
                           label="País"
                           name="country"
@@ -776,7 +679,11 @@ const ProfessionalRegistration = () => {
                     </Grid>
                   </LoadScript>
         
-                  <Grid item xs={12} sm={3}>
+                  <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
+                    <Grid item xs={12} sm={3}>
+                      <Autocomplete    onLoad={(autocomplete) =>
+                            (autocompleteRef.current = autocomplete)
+                          } onPlaceChanged={onPlaceChanged}>
                     <TextField
                       label="Departamento"
                       name="department"
@@ -802,8 +709,14 @@ const ProfessionalRegistration = () => {
                         },
                       }}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={3}>
+                   </Autocomplete>
+                    </Grid>
+                  </LoadScript>
+                  <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
+                    <Grid item xs={12} sm={3}>
+                      <Autocomplete    onLoad={(autocomplete) =>
+                            (autocompleteRef.current = autocomplete)
+                          } onPlaceChanged={onPlaceChanged}>
                     <TextField
                       inputRef={inputRefProvince} // 🔹 Se corrigió la prop incorrecta
                       label="Provincia"
@@ -821,9 +734,15 @@ const ProfessionalRegistration = () => {
                         "& .MuiInputLabel-root.Mui-focused": { color: "#53676c" },
                       }}
                     />
-                  </Grid>
+                 </Autocomplete>
+                    </Grid>
+                  </LoadScript>
         
-              <Grid item xs={12} sm={3}>
+                  <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
+                    <Grid item xs={12} sm={3}>
+                      <Autocomplete    onLoad={(autocomplete) =>
+                            (autocompleteRef.current = autocomplete)
+                          } onPlaceChanged={onPlaceChanged}>
                         <TextField
                     inputRef={inputRefDistrict} // Utilizamos el ref para manejar el autocompletado
             
@@ -850,7 +769,9 @@ const ProfessionalRegistration = () => {
                             },
                           }}
                         />
-                      </Grid>
+                     </Autocomplete>
+                    </Grid>
+                  </LoadScript>
         
         
           <Grid item xs={12} sm={3}>
