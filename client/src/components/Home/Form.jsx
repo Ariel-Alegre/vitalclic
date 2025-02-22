@@ -46,8 +46,40 @@ export default function Form({ allSede,setMode, mode ,setSpecialty, specialtyInp
         }
       }, [token]);
   const especialidades = [
-    "Cardiología", "Dermatología", "Gastroenterología", "Neurología",
-    "Pediatría", "Psiquiatría", "Ginecología", "Oftalmología", "Ortopedia", "Urología", "Traumatólogo","Clinico"
+    "Cardiología",
+    "Dermatología",
+    "Endocrinología",
+    "Gastroenterología",
+    "Genética",
+    "Geriatría",
+    "Ginecología y Obstetricia",
+    "Hematología",
+    "Inmunología y Alergia",
+    "Medicina de Enfermedades Infecciosas y Tropicales",
+    "Medicina Física y de Rehabilitación",
+    "Medicina Interna",
+    "Medicina Oncologica",
+    "Nefrología",
+    "Neonatología",
+    "Neumología",
+    "Neurología",
+    "Pediatría",
+    "Psiquiatría",
+    "Reumatología",
+    "Anestesiología / Terapia del Dolor",
+    "Cirugía de Cabeza, Cuello y Maxilofacial",
+    "Cirugía de Tórax y Cardiovascular",
+    "Cirugía General",
+    "Cirugía Oncológica",
+    "Cirugía Pediátrica",
+    "Cirugía Plástica",
+    "Ginecología y Obstetricia",
+    "Neurocirugía",
+    "Oftalmología",
+    "Ortopedia y Traumatología",
+    "Otorrinolaringología",
+    "Radiología Intervencionista",
+    "Urología"
   ];
 
   const departamentos = [
