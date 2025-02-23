@@ -136,7 +136,7 @@ const TableProfessional = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Turnos disponibles</h1>
+      <h1>Consultas disponibles</h1>
 
       <table className={styles.table}>
         <thead>

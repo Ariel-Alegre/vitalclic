@@ -340,7 +340,7 @@ function DrawerAppBar(props) {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-            {/*   <Link
+            <Link
                 to={"/mi-perfil"}
                 style={{ textDecoration: "none", color: "#000" }}
               >
@@ -348,9 +348,9 @@ function DrawerAppBar(props) {
                   <ListItemIcon>
                     <PersonAdd fontSize="small" />
                   </ListItemIcon>
-                  Perfil
+                  Mi Perfil
                 </MenuItem>
-              </Link> */}
+              </Link> 
               <Link
                 to={"/panel/turnos/disponibles"}
                 style={{ textDecoration: "none", color: "#000" }}

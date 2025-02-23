@@ -56,22 +56,7 @@ const specialtiesMedica = [
 ];
 
 
-const specialtiesNoMedica = [
-  "Anestesiología / Terapia del Dolor",
-  "Cirugía de Cabeza, Cuello y Maxilofacial",
-  "Cirugía de Tórax y Cardiovascular",
-  "Cirugía General",
-  "Cirugía Oncológica",
-  "Cirugía Pediátrica",
-  "Cirugía Plástica",
-  "Ginecología y Obstetricia",
-  "Neurocirugía",
-  "Oftalmología",
-  "Ortopedia y Traumatología",
-  "Otorrinolaringología",
-  "Radiología Intervencionista",
-  "Urología"
-];
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -219,10 +204,10 @@ const ProfessionalRegistration = () => {
     "Colegio de nutricionistas del Perú",
     "Colegio de obstetras del Perú",
     "Colegio odontológico del Perú",
-    "Colegio psicológico del Perú",
+    "Colegio de psicológo del Perú",
 
     "Colegio médico veterinario del Perú",
-    "Colegio Tecnólogico Médico Del Perú",
+    "Colegio Tecnólogo Del Perú",
 
     "Asociación de enfermeros técnicos del Perú",
 
@@ -496,96 +481,7 @@ const ProfessionalRegistration = () => {
 
 
 
-{formData.professional_college === "Colegio Tecnólogico Médico Del Perú" ? (
-            <>
 
-              <Grid item xs={12} sm={3}>
-                <FormControl sx={{
-                  width: "100%",
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000", // Color del label por defecto
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#53676c", // Cambia el color del label cuando está enfocado
-                  },
-                }}>
-                  <InputLabel id="specialties-select-label">Especialidades</InputLabel>
-                  <Select
-                    labelId="specialties-select-label"
-                    id="specialties-select"
-                    multiple
-                    name="specialty"
-                    value={formData.specialty}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Especialidades" />}
-                    renderValue={(selected) => selected.join(', ')}
-                    MenuProps={MenuProps}
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#000", // Color del borde por defecto
-                        },
-                        "&:hover fieldset": {
-                          borderColor: "#53676c", // Color del borde al pasar el mouse
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#53676c", // Color del borde cuando está enfocado
-                        },
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "#000", // Color del label por defecto
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "#53676c", // Cambia el color del label cuando está enfocado
-                      },
-                    }}
-                  >
-                    {specialtiesNoMedica.map((specialty) => (
-                      <MenuItem key={specialty} value={specialty}>
-                        <Checkbox checked={formData.specialty.includes(specialty)} />
-                        <ListItemText primary={specialty} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={3}>
-                <TextField
-                  label="Número de especialidad RNE"
-                  name="specialty_number_rne"
-                  value={formData.specialty_number_rne}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  autoComplete={false}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "&:hover fieldset": {
-                        borderColor: "#53676c", // Cambia el color del borde al pasar el mouse
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#53676c", // Cambia el color del borde cuando el campo está enfocado
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "#000", // Color del label por defecto
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "#53676c", // Cambia el color del label cuando está enfocado
-                    },
-                  }}
-                />
-              </Grid>
-            </>
-          ) : null}
           <Grid item xs={12} sm={3}>
             <FormControl fullWidth required
               sx={{

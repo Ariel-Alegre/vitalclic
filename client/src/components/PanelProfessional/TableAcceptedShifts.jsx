@@ -123,7 +123,7 @@ const TableAcceptedShifts = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Turnos aceptados</h1>
+      <h1>Consultas aceptadas</h1>
 
       <table className={styles.table}>
         <thead>

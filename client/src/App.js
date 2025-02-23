@@ -85,8 +85,8 @@ function App() {
 
             <Route index element={<TableShift />} />
 
-            <Route path="turnos/disponibles" element={<TableShift />} />
-            <Route path="turnos/aceptados" element={<TableAcceptedShifts />} />
+            <Route path="consulta/disponibles" element={<TableShift />} />
+            <Route path="consulta/aceptados" element={<TableAcceptedShifts />} />
             <Route path="perfil" element={<PerfilProfessional />} />
 
 

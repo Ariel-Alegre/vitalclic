@@ -57,14 +57,14 @@ function PanelAdmin(props) {
       <Divider />
       <List>
         <Link
-          to="turnos/disponibles"
+          to="consulta/disponibles"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem
             disablePadding
             sx={{
               backgroundColor:
-                location.pathname === "/panel/turnos/disponibles"
+                location.pathname === "/panel/consulta/disponibles"
                   ? "#e0f7fa"
                   : "transparent",
             }}
@@ -74,17 +74,17 @@ function PanelAdmin(props) {
                 <DashboardIcon
                   sx={{
                     color:
-                      location.pathname === "/panel/turnos/disponibles"
+                      location.pathname === "/panel/consulta/disponibles"
                         ? "#53676c"
                         : "black",
                   }}
                 />
               </ListItemIcon>
               <ListItemText
-                primary={"Turnos disponibles"}
+                primary={"Consulta disponibles"}
                 sx={{
                   color:
-                    location.pathname === "/panel/turnos/disponibles"
+                    location.pathname === "/panel/consulta/disponibles"
                       ? "#53676c"
                       : "black",
                 }}
@@ -94,14 +94,14 @@ function PanelAdmin(props) {
         </Link>
 
         <Link
-          to="turnos/aceptados"
+          to="consulta/aceptados"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem
             disablePadding
             sx={{
               backgroundColor:
-                location.pathname === "/panel/turnos/aceptados"
+                location.pathname === "/panel/consulta/aceptados"
                   ? "#e0f7fa"
                   : "transparent",
             }}
@@ -111,17 +111,17 @@ function PanelAdmin(props) {
                 <EventAvailableIcon
                   sx={{
                     color:
-                      location.pathname === "/panel/turnos/aceptados"
+                      location.pathname === "/panel/consulta/aceptados"
                         ? "#53676c"
                         : "black",
                   }}
                 />
               </ListItemIcon>
               <ListItemText
-                primary={"Turnos aceptados"}
+                primary={"Consulta aceptados"}
                 sx={{
                   color:
-                    location.pathname === "/panel/turnos/aceptados"
+                    location.pathname === "/panel/consulta/aceptados"
                       ? "#53676c"
                       : "black",
                 }}
@@ -130,7 +130,7 @@ function PanelAdmin(props) {
           </ListItem>
         </Link>
 
-        <Link to="perfil" style={{ textDecoration: "none", color: "black" }}>
+    {/*     <Link to="perfil" style={{ textDecoration: "none", color: "black" }}>
           <ListItem
             disablePadding
             sx={{
@@ -160,7 +160,7 @@ function PanelAdmin(props) {
               />
             </ListItemButton>
           </ListItem>
-        </Link>
+        </Link> */}
         <Toolbar />
         <Divider />
         <ListItem
