@@ -25,6 +25,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import axios from "axios";
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 
 const drawerWidth = 240;
 const navItems = ["Home", "About", "Contact"];
@@ -71,7 +72,7 @@ function DrawerAppBar(props) {
     if (token) {
       dataPersonal();
     }
-  }, [token, professional]);
+  }, [token]);
   const handleLogout = async () => {
     try {
       await localStorage.removeItem("token");
@@ -253,10 +254,21 @@ function DrawerAppBar(props) {
                     <ListItemIcon>
                       <PersonAdd fontSize="small" />
                     </ListItemIcon>
-                    Mi Perfil
+                    Mi perfil
                   </MenuItem>
                 </Link> 
-               
+                <Link
+                  to={"/mis-consultas"}
+                  style={{ textDecoration: "none", color: "#000" }}
+                >
+
+                  <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                      <VerifiedUserIcon fontSize="small" />
+                    </ListItemIcon>
+                    Mis consultas
+                  </MenuItem>
+                </Link> 
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
@@ -351,9 +363,10 @@ function DrawerAppBar(props) {
                   Mi Perfil
                 </MenuItem>
               </Link> 
-              <Link
-                to={"/panel/consulta/disponibles"}
+              <a
+                href={"/panel/consultas/disponibles"}
                 style={{ textDecoration: "none", color: "#000" }}
+                target="_blanck"
               >
               <MenuItem onClick={handleClose}>
                 <ListItemIcon>
@@ -361,7 +374,7 @@ function DrawerAppBar(props) {
                 </ListItemIcon>
                 Mi consultorio
               </MenuItem>
-              </Link>
+              </a>
 
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>

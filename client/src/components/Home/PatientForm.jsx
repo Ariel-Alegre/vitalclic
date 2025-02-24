@@ -9,7 +9,8 @@ const PatientForm = ({  specialty, selectedDate, mode }) => {
   const { pathname } = useLocation();
 const selectedTime = localStorage.getItem("selectedTime");
   const navigate = useNavigate()
-
+  const [user, setUser] = React.useState(null);
+console.log(user)
   const [formData, setFormData] = useState({
     communication: "Llamada",
     shifts: "Para mi",
@@ -23,14 +24,16 @@ const selectedTime = localStorage.getItem("selectedTime");
     date: selectedDate,
     time: selectedTime,
     specialty: specialty,
+    userId: user?.id || "" ,
+
+
+
   }); // Estado para manejar los datos del formulario
   const [loading, setLoading] = useState(false); // Estado de carga
   const [openAlertError, setOpenAlertError] = React.useState(false);
   const [openAlertSuccess, setOpenAlertSuccess] = React.useState(false);
-  const [user, setUser] = React.useState(null);
   const [role, setRole] = React.useState("");
   const [token, setToken] = React.useState("");
-  console.log(user)
   const handleCloseAlertError = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -55,6 +58,9 @@ const selectedTime = localStorage.getItem("selectedTime");
          time: `${selectedTime}:00`,
 
       specialty: specialty,
+      userId: user?.id || "" ,
+
+
     });
   }, [specialty, selectedTime, selectedDate]);
 
@@ -130,6 +136,7 @@ const selectedTime = localStorage.getItem("selectedTime");
         email: user?.email || "",
         phone: user?.phone || "",
         document_number: user?.dni || "",
+        userId:user?.id || "" ,
 
       }));
     } else if (formData.shifts === "Otro") {
@@ -141,6 +148,9 @@ const selectedTime = localStorage.getItem("selectedTime");
         email: "",
         phone: "",
         document_number: "",
+        userId:user?.id || "" ,
+
+
       }));
     } else {
       // Rellenar datos con el dependiente seleccionado
@@ -155,6 +165,9 @@ const selectedTime = localStorage.getItem("selectedTime");
           phone: user?.phone || "",
           email: user?.email || "",
           document_number: selectedDependent?.dni || "",
+          userId:user?.id || "" ,
+
+
         }));
       }
     }

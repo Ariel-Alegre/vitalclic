@@ -15,6 +15,8 @@ const ServiceAditional = () => {
   ];
 
   const [emergencyDoctorTeleconsulta, setEmergencyDoctorTeleconsulta] = useState({
+    communication: "",
+    
     name_complete: '',
     age: '',
     gender: '',
@@ -36,6 +38,8 @@ const ServiceAditional = () => {
 
 
   const [emergencyDentistryTeleconsulta, setEmergencyDentistryTeleconsulta] = useState({
+    communication: "",
+    
     name_complete: '',
     age: '',
     gender: '',
@@ -47,6 +51,7 @@ const ServiceAditional = () => {
 
 
   const [emergencyDentistryPresencial, setEmergencyDentistryPresencial] = useState({
+   
     name_complete: '',
     age: '',
     gender: '',
@@ -132,6 +137,8 @@ const ServiceAditional = () => {
   });
 
   const [emergencyPediatricianTeleconsulta, setEmergencyPediatricianTeleconsulta] = useState({
+    communication: "",
+   
     name_complete: '',
     age: '',
     gender: '',
@@ -206,6 +213,8 @@ const ServiceAditional = () => {
       *Servicio:*  ${selectedService} - ${formType}
 
       *Datos del paciente:*
+      *Consulta por:* ${emergencyDoctorTeleconsulta.communication}
+      *Apellidos y Nombres:* ${emergencyDoctorTeleconsulta.name_complete}
       *Apellidos y Nombres:* ${emergencyDoctorTeleconsulta.name_complete}
       *Edad:* ${emergencyDoctorTeleconsulta.age}
       *Género:* ${emergencyDoctorTeleconsulta.gender}
@@ -287,6 +296,7 @@ const ServiceAditional = () => {
       *Servicio:*  ${selectedService} - ${formType}
 
       *Datos del paciente:*
+      *Consulta por:* ${emergencyDentistryTeleconsulta.communication}
       *Apellidos y Nombres:* ${emergencyDentistryTeleconsulta.name_complete}
       *Edad:* ${emergencyDentistryTeleconsulta.age}
       *Género:* ${emergencyDentistryTeleconsulta.gender}
@@ -605,6 +615,7 @@ const ServiceAditional = () => {
       *Servicio:*  ${selectedService} ${formType ? "-" : ""} ${formType ? formType : ""}
 
       *Datos del paciente:*
+      *Consulta por:* ${emergencyPediatricianTeleconsulta.communication}
       *Apellidos y Nombres:* ${emergencyPediatricianTeleconsulta.name_complete}
       *Edad:* ${emergencyPediatricianTeleconsulta.age}
       *Genéro:* ${emergencyPediatricianTeleconsulta.gender}
@@ -772,6 +783,28 @@ const ServiceAditional = () => {
             Datos del paciente
           </h2>
           <form className={styles.form} onSubmit={handleSubmitEmergencyDoctorTeleconsulta}>
+            
+            
+               <label className={styles.label}>¿Por qué medio te gustaría que te contacte?
+                        </label>
+                          <select
+                          className={styles.input}
+                          name="communication"
+                          onChange={handleChangeEmergencyDoctorTeleconsulta}
+                          required
+                        >
+                          <option value="">Seleccionar medio de contacto</option>
+                            <option value="Llamada">
+                            Llamada
+                          </option>
+                          <option value="Video llamada">Video llamada</option>
+                          <option value="Zoom">Zoom</option>
+                          <option value="Meet">Meet</option>
+                       
+            
+            
+                        </select>
+            
             <label className={styles.label}> Apellidos y Nombres</label>
             <input
               type="text"
@@ -925,6 +958,26 @@ const ServiceAditional = () => {
             DATOS DEL PACIENTE
           </h2>
           <form className={styles.form} onSubmit={handleSubmitEmergencyPediatricianTleconsulta}>
+          <label className={styles.label}>¿Por qué medio te gustaría que te contacte?
+                        </label>
+                          <select
+                          className={styles.input}
+                          name="communication"
+                          onChange={handleChangeEmergencyPediatricianTleconsulta}
+                          required
+                        >
+                          <option value="">Seleccionar medio de contacto</option>
+                            <option value="Llamada">
+                            Llamada
+                          </option>
+                          <option value="Video llamada">Video llamada</option>
+                          <option value="Zoom">Zoom</option>
+                          <option value="Meet">Meet</option>
+                       
+            
+            
+                        </select>
+           
             <label className={styles.label}> Apellidos y nombres</label>
             <input
               type="text"
@@ -1095,6 +1148,28 @@ const ServiceAditional = () => {
             Datos del paciente
           </h2>
           <form className={styles.form} onSubmit={handleSubmitEmergencyDentistryTeleconsulta}>
+          
+          <label className={styles.label}>¿Por qué medio te gustaría que te contacte?
+                        </label>
+                          <select
+                          className={styles.input}
+                          name="communication"
+                          onChange={handleChangeEmergencyDentistryTeleconsulta}
+                          required
+                        >
+                          <option value="">Seleccionar medio de contacto</option>
+                            <option value="Llamada">
+                            Llamada
+                          </option>
+                          <option value="Video llamada">Video llamada</option>
+                          <option value="Zoom">Zoom</option>
+                          <option value="Meet">Meet</option>
+                       
+            
+            
+                        </select>
+           
+          
             <label className={styles.label}> Apellidos y nombres</label>
             <input
               type="text"

@@ -30,6 +30,7 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import RegisterEmpresa from './pages/RegisterEmpresa';
 import RegisterBisnessSuccess from './pages/RegisterBisnessSuccess';
 import DetailsUser from './pages/DetailsUser';
+import HistorialUser from './pages/HistorialUser';
 
 
 
@@ -67,6 +68,7 @@ function App() {
           <Route path="/formulario-enviado" element={<RegisterBisnessSuccess />} />
 
           <Route path="/terminos-condiciones" element={<TermsAndConditions />} />
+          <Route path="/mis-consultas" element={<HistorialUser />} />
 
 
           <Route path="/test" element={<Test />} />
@@ -88,8 +90,8 @@ function App() {
 
             <Route index element={<TableShift />} />
 
-            <Route path="consulta/disponibles" element={<TableShift />} />
-            <Route path="consulta/aceptados" element={<TableAcceptedShifts />} />
+            <Route path="consultas/disponibles" element={<TableShift />} />
+            <Route path="consultas/aceptadas" element={<TableAcceptedShifts />} />
             <Route path="perfil" element={<PerfilProfessional />} />
 
 

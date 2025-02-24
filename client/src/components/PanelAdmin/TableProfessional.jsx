@@ -183,7 +183,7 @@ console.log(professionals)
                 mb: 2,
               }}
             >
-              Información del turno
+              Información general
             </Typography>
 
             {/* Contenido del turno */}

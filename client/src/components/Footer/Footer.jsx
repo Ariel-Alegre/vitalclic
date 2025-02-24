@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Footer.module.css';
 import axios from "axios";
 
+import {Link} from "react-router-dom"
 const Footer = () => {
   const [user, setUser] = React.useState("");
 
@@ -44,77 +45,87 @@ const Footer = () => {
   }, [token]);
   return (
     <footer className={styles.footer}>
-      {/* Sección de enlaces para diferentes tipos de usuarios */}
-      <div className={styles.footerLinks}>
+      <hr />
+      <br />
+      <div className={styles.footer_container}>
+      
+        
       {token && role === "personal" ? (
+  <div>
+    <h3>PARA PACIENTES</h3>
+        <div className={styles.footer_links}>
+          {/* <Link to="/faq" className={styles.footer_link}>Preguntas Frecuentes</Link> */}
+          <Link to="/#" className={styles.footer_link}>Términos y Condiciones</Link>
+          <Link to="/#" className={styles.footer_link}>Preguntas frecuentes</Link>
+          <Link to="/#" className={styles.footer_link}>Privacidad y cookies</Link>
 
-        <div className={styles.footerColumn}>
-          <h3>PARA PACIENTES</h3>
-          <ul>
-            <li><a href="#">Términos y condiciones</a></li>
-            <li><a href="#">Preguntas frecuentes</a></li>
-            <li><a href="#">Quiénes somos</a></li>
-            <li><a href="#">Privacidad y cookies</a></li>
-            <li><a href="#">Políticas de privacidad</a></li>
-            <li><a href="#">Contacto</a></li>
-            <li><a href="#">Ayuda en línea</a></li>
-          </ul>
+          <Link to="/#" className={styles.footer_link_mobile}>Políticas de privacidad</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Contacto</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Ayuda en línea</Link>
+
+          
         </div>
+        </div>
+
       ) : null}
 
-        {token && role === "profesional" ? (
+{token && role === "profesional" ? (
+<div>
+<h3>PARA PROFESIONALES</h3>
+<div className={styles.footer_links}>
+  {/* <Link to="/faq" className={styles.footer_link}>Preguntas Frecuentes</Link> */}
+  <Link to="/#" className={styles.footer_link}>Términos y Condiciones</Link>
+          <Link to="/#" className={styles.footer_link}>Preguntas frecuentes</Link>
+          <Link to="/#" className={styles.footer_link}>Privacidad y cookies</Link>
 
-        <div className={styles.footerColumn}>
-          <h3>PARA PROFESIONALES</h3>
-          <ul>
-            <li><a href="#">Términos y condiciones</a></li>
-            <li><a href="#">Preguntas frecuentes</a></li>
-            <li><a href="#">Información general</a></li>
-            <li><a href="#">Servicios que se brindan</a></li>
-            <li><a href="#">Privacidad y cookies</a></li>
-            <li><a href="#">Políticas de privacidad</a></li>
-            <li><a href="#">Ayuda en línea</a></li>
-          </ul>
-        </div>
-        ) : null}
-        {token && role === "sede" ? (
-        
-        <div className={styles.footerColumn}>
-          <h3>PARA EMPRESAS</h3>
-          <ul>
-            <li><a href="#">Términos y condiciones</a></li>
-            <li><a href="#">Información general</a></li>
-            <li><a href="#">Preguntas frecuentes</a></li>
-            <li><a href="#">Servicios que se brindan</a></li>
-            <li><a href="#">Privacidad y cookies</a></li>
-            <li><a href="#">Políticas de privacidad</a></li>
-            <li><a href="#">Ayuda en línea</a></li>
-          </ul>
-        </div>
-    ) : null}
-      </div>
+          <Link to="/#" className={styles.footer_link_mobile}>Políticas de privacidad</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Contacto</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Ayuda en línea</Link>
 
-      {/* Sección del Libro de Reclamos */}
-      <div className={styles.reclamosSection}>
-        <div className={styles.reclamosContent}>
-          <h3>LIBRO DE RECLAMOS</h3>
-          <div className={styles.logoSection}>
-          <img
-            src="https://images.deliveryhero.io/image/pedidosya/care/complaint_book_1.png?width=99&dpi=2" // Reemplaza con la ruta de tu logo
-            alt="elaritech logo"
-            className={styles.logo}
-          />
-        </div>
-        </div>
-      </div>
+</div>
+  
+</div>
+) : null}
 
-      {/* Logo y créditos */}
-      <div className={styles.container_logos}>
-   
-        <div className={styles.textSection}>
+{token && role === "sede" ? (
+    <div>
+    <h3>PARA EMPRESAS</h3>
+<div className={styles.footer_links}>
+  {/* <Link to="/faq" className={styles.footer_link}>Preguntas Frecuentes</Link> */}
+  <Link to="/#" className={styles.footer_link}>Términos y Condiciones</Link>
+          <Link to="/#" className={styles.footer_link}>Preguntas frecuentes</Link>
+          <Link to="/#" className={styles.footer_link}>Privacidad y cookies</Link>
+
+          <Link to="/#" className={styles.footer_link_mobile}>Políticas de privacidad</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Contacto</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Ayuda en línea</Link>
+
+  
+</div>
+</div>
+
+) : null}
+
+        <div className={styles.book_reclam}>
+          <Link to="/libro-de-quejas">
+          <img src="https://images.deliveryhero.io/image/pedidosya/care/complaint_book_1.png?width=99&dpi=2" alt="Libro de reclamaciones" />
+          </Link>
+        </div>
+
+        <div className={styles.container_logos}>
+           
+             
+              </div>
+              <div className={styles.footer_text}>
+         
+              <p>
+                    Web creada por <a href="https://www.elaritech.com/" target="_blank" rel="noopener noreferrer"><strong>elaritech.com</strong></a>
+                  </p>
           <p>
-            Web creada por <a href="https://www.elaritech.com/" target="_blank" rel="noopener noreferrer"><strong>elaritech.com</strong></a>
+            © {new Date().getFullYear()} Tu Mesa en Una. Todos los derechos
+            reservados.
           </p>
+        
         </div>
       </div>
     </footer>

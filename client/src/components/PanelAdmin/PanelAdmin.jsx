@@ -130,7 +130,7 @@ function PanelAdmin(props) {
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link
+      {/*   <Link
           to="empresas"
           style={{ textDecoration: "none", color: "black" }}
         >
@@ -166,7 +166,7 @@ function PanelAdmin(props) {
             </ListItemButton>
           </ListItem>
         </Link>
-        
+         */}
         <Toolbar />
         <Divider />
         <ListItem

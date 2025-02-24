@@ -20,7 +20,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 function PanelAdmin(props) {
   const navigate = useNavigate();
@@ -57,14 +57,14 @@ function PanelAdmin(props) {
       <Divider />
       <List>
         <Link
-          to="consulta/disponibles"
+          to="consultas/disponibles"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem
             disablePadding
             sx={{
               backgroundColor:
-                location.pathname === "/panel/consulta/disponibles"
+                location.pathname === "/panel/consultas/disponibles"
                   ? "#e0f7fa"
                   : "transparent",
             }}
@@ -74,17 +74,17 @@ function PanelAdmin(props) {
                 <DashboardIcon
                   sx={{
                     color:
-                      location.pathname === "/panel/consulta/disponibles"
+                      location.pathname === "/panel/consultas/disponibles"
                         ? "#53676c"
                         : "black",
                   }}
                 />
               </ListItemIcon>
               <ListItemText
-                primary={"Consulta disponibles"}
+                primary={"Consultas disponibles"}
                 sx={{
                   color:
-                    location.pathname === "/panel/consulta/disponibles"
+                    location.pathname === "/panel/consultas/disponibles"
                       ? "#53676c"
                       : "black",
                 }}
@@ -94,14 +94,14 @@ function PanelAdmin(props) {
         </Link>
 
         <Link
-          to="consulta/aceptados"
+          to="consultas/aceptadas"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem
             disablePadding
             sx={{
               backgroundColor:
-                location.pathname === "/panel/consulta/aceptados"
+                location.pathname === "/panel/consultas/aceptadas"
                   ? "#e0f7fa"
                   : "transparent",
             }}
@@ -111,17 +111,17 @@ function PanelAdmin(props) {
                 <EventAvailableIcon
                   sx={{
                     color:
-                      location.pathname === "/panel/consulta/aceptados"
+                      location.pathname === "/panel/consultas/aceptadas"
                         ? "#53676c"
                         : "black",
                   }}
                 />
               </ListItemIcon>
               <ListItemText
-                primary={"Consulta aceptados"}
+                primary={"Consultas aceptadas"}
                 sx={{
                   color:
-                    location.pathname === "/panel/consulta/aceptados"
+                    location.pathname === "/panel/consultas/aceptadas"
                       ? "#53676c"
                       : "black",
                 }}

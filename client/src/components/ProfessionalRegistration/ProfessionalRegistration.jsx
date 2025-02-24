@@ -52,7 +52,21 @@ const specialtiesMedica = [
   "Neurología",
   "Pediatría",
   "Psiquiatría",
-  "Reumatología"
+  "Reumatología",
+  "Anestesiología / Terapia del Dolor",
+  "Cirugía de Cabeza, Cuello y Maxilofacial",
+  "Cirugía de Tórax y Cardiovascular",
+  "Cirugía General",
+  "Cirugía Oncológica",
+  "Cirugía Pediátrica",
+  "Cirugía Plástica",
+  "Ginecología y Obstetricia",
+  "Neurocirugía",
+  "Oftalmología",
+  "Ortopedia y Traumatología",
+  "Otorrinolaringología",
+  "Radiología Intervencionista",
+  "Urología"
 ];
 
 const specialtiesTecnologos= [
@@ -121,8 +135,7 @@ const ProfessionalRegistration = () => {
         : prevFormData.professional_college === "Asociación de enfermeros técnicos del Perú" 
         ? ["Enfermería"] 
      
-        : prevFormData.professional_college === "Colegio de neumólogos del Perú" 
-        ? ["Neumología"] 
+        
         : []
     }));
   }, [formData.professional_college]);
@@ -237,7 +250,6 @@ const ProfessionalRegistration = () => {
     "Colegio de obstetras del Perú",
     "Colegio de odontólogos del Perú",
     "Colegio de psicólogos del Perú",
- "Colegio de neumólogos del Perú",    
     "Colegio médico veterinario del Perú",
     "Colegio de tecnólogos médicos del Perú",
 
