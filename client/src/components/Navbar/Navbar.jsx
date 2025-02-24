@@ -24,6 +24,7 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import axios from "axios";
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 
 const drawerWidth = 240;
 const navItems = ["Home", "About", "Contact"];
@@ -37,7 +38,6 @@ function DrawerAppBar(props) {
   const [role, setRole] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  console.log(role)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -71,7 +71,7 @@ function DrawerAppBar(props) {
     if (token) {
       dataPersonal();
     }
-  }, [token]);
+  }, [token, professional]);
   const handleLogout = async () => {
     try {
       await localStorage.removeItem("token");
@@ -245,7 +245,7 @@ function DrawerAppBar(props) {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-             {/*    <Link
+               <Link
                   to={"/mi-perfil"}
                   style={{ textDecoration: "none", color: "#000" }}
                 >
@@ -253,9 +253,9 @@ function DrawerAppBar(props) {
                     <ListItemIcon>
                       <PersonAdd fontSize="small" />
                     </ListItemIcon>
-                    Perfil
+                    Mi Perfil
                   </MenuItem>
-                </Link> */}
+                </Link> 
                
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
@@ -265,7 +265,7 @@ function DrawerAppBar(props) {
                 </MenuItem>
               </Menu>
             </>
-          ) :  token && role === "profesional" ? (
+          ): null} { token && role === "profesional" ? (
             <>
             <Box
               sx={{
@@ -341,7 +341,7 @@ function DrawerAppBar(props) {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
             <Link
-                to={"/mi-perfil"}
+                to={"/mi-perfil/profesional"}
                 style={{ textDecoration: "none", color: "#000" }}
               >
                 <MenuItem onClick={handleClose}>
@@ -352,14 +352,14 @@ function DrawerAppBar(props) {
                 </MenuItem>
               </Link> 
               <Link
-                to={"/panel/turnos/disponibles"}
+                to={"/panel/consulta/disponibles"}
                 style={{ textDecoration: "none", color: "#000" }}
               >
               <MenuItem onClick={handleClose}>
                 <ListItemIcon>
-                  <Settings fontSize="small" />
+                  <AddBusinessIcon fontSize="small" />
                 </ListItemIcon>
-                Turnos reservados
+                Mi consultorio
               </MenuItem>
               </Link>
 
@@ -371,7 +371,7 @@ function DrawerAppBar(props) {
               </MenuItem>
             </Menu>
           </>
-          ):  token && role === "sede" ? (
+          ):null}  {token && role === "sede" ? (
             <>
             <Box
               sx={{
@@ -446,7 +446,7 @@ function DrawerAppBar(props) {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-         {/*      <Link
+           {/*   <Link
                 to={"/mi-perfil"}
                 style={{ textDecoration: "none", color: "#000" }}
               >
@@ -456,7 +456,7 @@ function DrawerAppBar(props) {
                   </ListItemIcon>
                   Perfil
                 </MenuItem>
-              </Link> */}
+              </Link>  */}
               <Link
                 to={"/panel/sede"}
                 style={{ textDecoration: "none", color: "#000" }}
@@ -476,7 +476,9 @@ function DrawerAppBar(props) {
                 Cerrar sesión
               </MenuItem>
             </Menu>
-          </> ): (
+          </> ): null} 
+          
+        { !token && (
             <Box
               sx={{
                 display: {

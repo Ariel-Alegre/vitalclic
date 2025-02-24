@@ -29,6 +29,7 @@ import RegisterUserSuccess from './pages/RegisterUserSuccess';
 import TermsAndConditions from './pages/TermsAndConditions';
 import RegisterEmpresa from './pages/RegisterEmpresa';
 import RegisterBisnessSuccess from './pages/RegisterBisnessSuccess';
+import DetailsUser from './pages/DetailsUser';
 
 
 
@@ -55,7 +56,9 @@ function App() {
           <Route path="/registrar-empresa" element={<RegisterEmpresa />} />
 
 
-          <Route path="/mi-perfil" element={<DetailsProfessional />} />
+          <Route path="/mi-perfil/profesional" element={<DetailsProfessional />} />
+          <Route path="/mi-perfil" element={<DetailsUser />} />
+
 
           <Route path="/reservación-exitosa" element={<MessageSuccess />} />
           <Route path="/registro/sede-exitosa" element={<RegisterSedesSuccess />} />

@@ -11,6 +11,7 @@ const selectedTime = localStorage.getItem("selectedTime");
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
+    communication: "Llamada",
     shifts: "Para mi",
     name: "",
     lastName: "",
@@ -168,6 +169,26 @@ const selectedTime = localStorage.getItem("selectedTime");
           <div  className={styles.formContainer}>
             <h2 className={styles.title}>Datos del paciente</h2>
             <form className={styles.form} onSubmit={handleSubmit}>
+            <label className={styles.label}>¿Por qué medio te gustaría que te contacte?
+            </label>
+              <select
+              className={styles.input}
+              name="communication"
+              value={formData.communication}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Seleccionar medio de contacto</option>
+                <option value="Llamada">
+                Llamada
+              </option>
+              <option value="Video llamada">Video llamada</option>
+              <option value="Zoom">Zoom</option>
+              <option value="Meet">Meet</option>
+           
+
+
+            </select>
               <label className={styles.label}>¿Para quién es la consulta?</label>
               <select
               className={styles.input}
@@ -176,7 +197,7 @@ const selectedTime = localStorage.getItem("selectedTime");
               onChange={handleChange}
               required
             >
-              <option value="">Seleccionar para quien es el turno</option>
+              <option value="">Seleccionar para quien es la consulta</option>
                 <option value="Para mi">
                 Para mi
               </option>

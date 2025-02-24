@@ -19,6 +19,7 @@ module.exports = {
       // Obtener los datos del cuerpo de la solicitud
       const {
         shifts,
+        communication,
         name,
         lastName,
         email,
@@ -53,6 +54,9 @@ module.exports = {
 
         </p>
       <ul>
+        <li><strong>Medio que te gustaría que te contacte: </strong> ${communication} </li>
+        <br>
+
         <li><strong>Fecha y hora: </strong> ${date} ${time}</li>
         <br>
 
@@ -88,6 +92,7 @@ module.exports = {
       // Crear el nuevo registro en la base de datos
       const newShift = await OnlineShifts.create({
         shifts,
+        communication,
         name,
         lastName,
         email,

@@ -1,11 +1,53 @@
 import React from 'react';
 import styles from './Footer.module.css';
+import axios from "axios";
 
 const Footer = () => {
+  const [user, setUser] = React.useState("");
+
+    const [token, setToken] = React.useState("");
+    const [role, setRole] = React.useState("");
+
+  console.log(user)
+  const dataPersonal = async () => {
+    try {
+      const tokenFromStorage = localStorage.getItem("token"); // Obtener el token directamente
+      if (!tokenFromStorage) {
+        throw new Error("Token no encontrado en localStorage");
+      }
+      const response = await axios.get(
+        `https://vitalclic-production.up.railway.app/api/datapersonal`,
+        {
+          headers: {
+            Authorization: tokenFromStorage, // Usa el token aquí
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setUser(response.data);
+      setRole(response.data.role);
+    } catch (error) {
+      console.error("Error al obtener los detalles:", error);
+    } finally {
+    }
+  };
+    React.useEffect(() => {
+      const token = localStorage.getItem("token");
+  
+      setToken(token);
+    }, []);
+  React.useEffect(() => {
+    if (token) {
+      dataPersonal();
+    }
+  }, [token]);
   return (
     <footer className={styles.footer}>
       {/* Sección de enlaces para diferentes tipos de usuarios */}
       <div className={styles.footerLinks}>
+      {token && role === "personal" ? (
+
         <div className={styles.footerColumn}>
           <h3>PARA PACIENTES</h3>
           <ul>
@@ -18,7 +60,10 @@ const Footer = () => {
             <li><a href="#">Ayuda en línea</a></li>
           </ul>
         </div>
-      
+      ) : null}
+
+        {token && role === "profesional" ? (
+
         <div className={styles.footerColumn}>
           <h3>PARA PROFESIONALES</h3>
           <ul>
@@ -31,6 +76,8 @@ const Footer = () => {
             <li><a href="#">Ayuda en línea</a></li>
           </ul>
         </div>
+        ) : null}
+        {token && role === "sede" ? (
         
         <div className={styles.footerColumn}>
           <h3>PARA EMPRESAS</h3>
@@ -44,6 +91,7 @@ const Footer = () => {
             <li><a href="#">Ayuda en línea</a></li>
           </ul>
         </div>
+    ) : null}
       </div>
 
       {/* Sección del Libro de Reclamos */}

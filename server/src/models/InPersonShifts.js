@@ -13,6 +13,9 @@ module.exports = (sequelize) => {
     shifts: {
       type: DataTypes.STRING,
     },
+    communication: {
+      type: DataTypes.STRING,
+    },
     name: {
       type: DataTypes.STRING,
     },
