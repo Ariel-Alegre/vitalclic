@@ -30,6 +30,7 @@ module.exports = {
         date,
         time,
         specialty,
+        userId,
         userProfesionalId,  // Este campo ahora puede ser opcional
       } = req.body;
 
@@ -103,6 +104,7 @@ module.exports = {
         time,
         specialty,
         status: 'pendiente',
+        userId,
         userProfesionalId: userProfesional,  // Asigna `null` si no se proporciona
       });
 

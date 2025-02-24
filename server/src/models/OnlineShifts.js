@@ -58,6 +58,15 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
 
+    userId: {  // Clave foránea para la relación con UserProfessional
+      type: DataTypes.UUID, // Cambié el tipo de INTEGER a UUID
+      allowNull: true,  // Permite que el valor sea null
+      references: {
+        model: 'Users', // La tabla relacionada (UserProfessionals)
+        key: 'id', // Clave primaria de UserProfessionals
+      },
+    },
+
     userProfesionalId: {  // Clave foránea para la relación con UserProfessional
       type: DataTypes.UUID, // Cambié el tipo de INTEGER a UUID
       allowNull: true,  // Permite que el valor sea null
@@ -76,9 +85,7 @@ module.exports = (sequelize) => {
   }
   );
 
-  OnlineShifts.associate = (models) => {
-    OnlineShifts.belongsTo(models.User, { foreignKey: 'userId' }); // <-- Asegurar esta relación
-  };
+
 
   return OnlineShifts;
 };
