@@ -56,7 +56,6 @@ module.exports = {
       <ul>
         <li><strong>Medio que te gustaría que te contacte: </strong> ${communication} </li>
         <br>
-
         <li><strong>Fecha y hora: </strong> ${date} ${time}</li>
         <br>
 
