@@ -6,7 +6,7 @@ const MessageSuccess = () => {
   const navigate = useNavigate();
 
   const handleVerReservas = () => {
-    navigate("/mis-reservas"); // Ruta para ver las reservas
+    navigate("/mis-consultas"); // Ruta para ver las reservas
   };
 
   const handleVolverInicio = () => {

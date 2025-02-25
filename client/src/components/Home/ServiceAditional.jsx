@@ -797,7 +797,7 @@ const ServiceAditional = () => {
                             <option value="Llamada">
                             Llamada
                           </option>
-                          <option value="Video llamada">Video llamada</option>
+                          <option value="Videollamada ">Videollamada </option>
                           <option value="Zoom">Zoom</option>
                           <option value="Meet">Meet</option>
                        
@@ -832,7 +832,7 @@ const ServiceAditional = () => {
               <option value="">Selecionar género</option>
               <option value="masculino">Masculino </option>
               <option value="femenino">Femenino</option>
-              <option value="prefiero no contestar">Prefiero no contestar</option>
+              <option value="Otros">Otros</option>
 
             </select>
 
@@ -898,7 +898,7 @@ const ServiceAditional = () => {
               <option value="">Selecionar género</option>
               <option value="masculino">Masculino </option>
               <option value="femenino">Femenino</option>
-              <option value="prefiero no contestar">Prefiero no contestar</option>
+              <option value="Otros">Otros</option>
 
             </select>
 
@@ -970,7 +970,7 @@ const ServiceAditional = () => {
                             <option value="Llamada">
                             Llamada
                           </option>
-                          <option value="Video llamada">Video llamada</option>
+                          <option value="Videollamada ">Videollamada </option>
                           <option value="Zoom">Zoom</option>
                           <option value="Meet">Meet</option>
                        
@@ -1006,7 +1006,7 @@ const ServiceAditional = () => {
               <option value="">Selecionar género</option>
               <option value="masculino">Masculino </option>
               <option value="femenino">Femenino</option>
-              <option value="prefiero no contestar">Prefiero no contestar</option>
+              <option value="Otros">Otros</option>
 
             </select>
 
@@ -1076,7 +1076,7 @@ const ServiceAditional = () => {
               <option value="">Selecionar género</option>
               <option value="masculino">Masculino </option>
               <option value="femenino">Femenino</option>
-              <option value="prefiero no contestar">Prefiero no contestar</option>
+              <option value="Otros">Otros</option>
 
             </select>
 
@@ -1161,7 +1161,7 @@ const ServiceAditional = () => {
                             <option value="Llamada">
                             Llamada
                           </option>
-                          <option value="Video llamada">Video llamada</option>
+                          <option value="Videollamada ">Videollamada </option>
                           <option value="Zoom">Zoom</option>
                           <option value="Meet">Meet</option>
                        
@@ -1200,7 +1200,7 @@ const ServiceAditional = () => {
               <option value="">Selecionar género</option>
               <option value="Masculino">Masculino </option>
               <option value="Femenino">Femenino</option>
-              <option value="prefiero no contestar">Prefiero no contestar</option>
+              <option value="Otros">Otros</option>
 
             </select>
 
@@ -1283,7 +1283,7 @@ const ServiceAditional = () => {
               <option value="">Selecionar género</option>
               <option value="masculino">Masculino </option>
               <option value="femenino">Femenino</option>
-              <option value="prefiero no contestar">Prefiero no contestar</option>
+              <option value="Otros">Otros</option>
 
             </select>
 
@@ -1492,7 +1492,7 @@ const ServiceAditional = () => {
               <option value="">Selecionar género</option>
               <option value="masculino">Masculino </option>
               <option value="femenino">Femenino</option>
-              <option value="prefiero no contestar">Prefiero no contestar</option>
+              <option value="Otros">Otros</option>
 
 
             </select>

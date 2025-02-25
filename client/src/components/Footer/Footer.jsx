@@ -60,7 +60,7 @@ const Footer = () => {
           <Link to="/#" className={styles.footer_link}>Privacidad y cookies</Link>
 
           <Link to="/#" className={styles.footer_link_mobile}>Políticas de privacidad</Link>
-          <Link to="/#" className={styles.footer_link_mobile}>Contacto</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Contáctanos</Link>
           <Link to="/#" className={styles.footer_link_mobile}>Ayuda en línea</Link>
 
           
@@ -79,7 +79,7 @@ const Footer = () => {
           <Link to="/#" className={styles.footer_link}>Privacidad y cookies</Link>
 
           <Link to="/#" className={styles.footer_link_mobile}>Políticas de privacidad</Link>
-          <Link to="/#" className={styles.footer_link_mobile}>Contacto</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Contáctanos</Link>
           <Link to="/#" className={styles.footer_link_mobile}>Ayuda en línea</Link>
 
 </div>
@@ -97,7 +97,7 @@ const Footer = () => {
           <Link to="/#" className={styles.footer_link}>Privacidad y cookies</Link>
 
           <Link to="/#" className={styles.footer_link_mobile}>Políticas de privacidad</Link>
-          <Link to="/#" className={styles.footer_link_mobile}>Contacto</Link>
+          <Link to="/#" className={styles.footer_link_mobile}>Contáctanos</Link>
           <Link to="/#" className={styles.footer_link_mobile}>Ayuda en línea</Link>
 
   
