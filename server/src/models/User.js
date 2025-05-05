@@ -86,10 +86,6 @@ module.exports = (sequelize) => {
     timestamps: false, // Agrega createdAt y updatedAt automáticamente
   });
 
-  User.associate = (models) => {
-    User.hasMany(models.InPersonShifts, { foreignKey: 'userId' });
-    User.hasMany(models.OnlineShifts, { foreignKey: 'userId' });
-  };
 
   return User;
 };
