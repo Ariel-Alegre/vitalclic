@@ -9,11 +9,11 @@ const {PutUsers} = require("../controllers/PutUsers");
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
+router.put('/user/:userId', upload.single('image'), PutUsers);
 router.post('/register-user', RegisterUser);
 router.get('/all-user', AllUsers);
 
 
-router.put('/user/:userId', upload.single('image'), PutUsers);
 
 
 

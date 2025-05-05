@@ -10,7 +10,17 @@ module.exports = {
 
     try {
 
-      const allUsers = await User.findAll();
+      const allUsers = await User.findAll({
+        include: [
+          {
+            model: OnlineShifts
+          },
+          {
+            model: InPersonShifts
+
+          }
+        ]
+      });
 
       if (allUsers) {
         console.log("Todos los usuarios")
