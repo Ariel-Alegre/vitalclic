@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import PanelAdmin from './pages/PanelAdmin';
 import TableProfessional from './components/PanelAdmin/TableProfessional';
 import TableEmpresa from './components/PanelAdmin/TableEmpresa';
+import TableUser from './components/PanelAdmin/TableUser';
+
 
 import Test from './pages/Test';
 import DetailsProfessional from './pages/DetailsProfessional';
@@ -31,6 +33,11 @@ import RegisterEmpresa from './pages/RegisterEmpresa';
 import RegisterBisnessSuccess from './pages/RegisterBisnessSuccess';
 import DetailsUser from './pages/DetailsUser';
 import HistorialUser from './pages/HistorialUser';
+import TableConsultation from './components/PanelAdmin/TableConsultation';
+import OptionProfessional from './components/PanelAdmin/OptionProfessional';
+import TableConsultationEnd from './components/PanelAdmin/TableConsultationEnd';
+import TableSuppliers from './components/PanelAdmin/TableSuppliers';
+
 
 
 
@@ -76,12 +83,20 @@ function App() {
 
           <Route path="/administrar" element={<PanelAdmin />} >
 
-            <Route index element={<TableProfessional />} />
+            <Route index element={<OptionProfessional />} />
+            <Route path="opciones/profesionales" element={<OptionProfessional />} />
 
             <Route path="profesionales" element={<TableProfessional />} />
             <Route path="sedes" element={<TableSede />} />
             <Route path="empresas" element={<TableEmpresa />} />
+            <Route path="usuarios" element={<TableUser/>} />
+            <Route path="consultas/pendientes" element={<TableConsultation/>} />
+            <Route path="consultas/aceptadas" element={<TableConsultationEnd/>} />
 
+            <Route path="proveedores" element={<TableSuppliers />} />
+
+
+            
 
 
           </Route>

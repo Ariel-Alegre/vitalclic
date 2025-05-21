@@ -19,6 +19,8 @@ import Typography from '@mui/material/Typography';
 import { Outlet, useNavigate,Link, useLocation } from 'react-router-dom';
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import PeopleIcon from '@mui/icons-material/People';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
 const drawerWidth = 240;
@@ -58,14 +60,14 @@ function PanelAdmin(props) {
       <Divider />
       <List>
         <Link
-          to="profesionales"
+          to="opciones/profesionales"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem
             disablePadding
             sx={{
               backgroundColor:
-                location.pathname === "/administrar/profesionales"
+                location.pathname === "/administrar/opciones/profesionales"
                   ? "#e0f7fa"
                   : "transparent",
             }}
@@ -75,7 +77,7 @@ function PanelAdmin(props) {
                 <DashboardIcon
                   sx={{
                     color:
-                      location.pathname === "/administrar/profesionales"
+                      location.pathname === "/administrar/opciones/profesionales"
                         ? "#53676c"
                         : "black",
                   }}
@@ -85,7 +87,7 @@ function PanelAdmin(props) {
                 primary={"Profesionales"}
                 sx={{
                   color:
-                    location.pathname === "/administrar/profesionales"
+                    location.pathname === "/administrar/opciones/profesionales"
                       ? "#53676c"
                       : "black",
                 }}
@@ -130,35 +132,37 @@ function PanelAdmin(props) {
             </ListItemButton>
           </ListItem>
         </Link>
-      {/*   <Link
-          to="empresas"
+
+
+        <Link
+          to="usuarios"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItem
             disablePadding
             sx={{
               backgroundColor:
-                location.pathname === "/administrar/empresas"
+                location.pathname === "/administrar/usuarios"
                   ? "#e0f7fa"
                   : "transparent",
             }}
           >
             <ListItemButton>
               <ListItemIcon>
-                <EventAvailableIcon
+                <PeopleIcon
                   sx={{
                     color:
-                      location.pathname === "/administrar/empresas"
+                      location.pathname === "/administrar/usuarios"
                         ? "#53676c"
                         : "black",
                   }}
                 />
               </ListItemIcon>
               <ListItemText
-                primary={"Empresas"}
+                primary={"Usuarios"}
                 sx={{
                   color:
-                    location.pathname === "/administrar/empresas"
+                    location.pathname === "/administrar/usuarios"
                       ? "#53676c"
                       : "black",
                 }}
@@ -166,7 +170,44 @@ function PanelAdmin(props) {
             </ListItemButton>
           </ListItem>
         </Link>
-         */}
+
+
+         <Link
+          to="proveedores"
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <ListItem
+            disablePadding
+            sx={{
+              backgroundColor:
+                location.pathname === "/administrar/proveedores"
+                  ? "#e0f7fa"
+                  : "transparent",
+            }}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <StorefrontIcon
+                  sx={{
+                    color:
+                      location.pathname === "/administrar/proveedores"
+                        ? "#53676c"
+                        : "black",
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary={"Proveedores"}
+                sx={{
+                  color:
+                    location.pathname === "/administrar/proveedores"
+                      ? "#53676c"
+                      : "black",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        </Link>
         <Toolbar />
         <Divider />
         <ListItem

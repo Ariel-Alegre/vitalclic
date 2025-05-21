@@ -1,76 +1,67 @@
-import React from 'react';
-import { Card, CardContent, Typography, Container, Grid, Box } from '@mui/material';
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-const teleconsultations = [
-    { id: 1, doctor: 'Dr. Ana Pérez', patient: 'Juan Gómez', date: '2024-06-14', diagnosis: 'Gripe común' },
-    { id: 2, doctor: 'Dr. Carlos López', patient: 'María Torres', date: '2024-06-13', diagnosis: 'Migraña' }
-];
+export default function ScrollDialog() {
+  const [open, setOpen] = React.useState(false);
+  const [scroll, setScroll] = React.useState('paper');
 
-const inPersonConsultations = [
-    { id: 3, doctor: 'Dra. Sofía Martínez', patient: 'Pedro Sánchez', date: '2024-06-12', diagnosis: 'Hipertensión' }
-];
+  const handleClickOpen = (scrollType) => () => {
+    setOpen(true);
+    setScroll(scrollType);
+  };
 
-export default function MedicalConsultations() {
-    return (
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-            <Typography variant="h4" gutterBottom align="center">
-                Consultas Médicas
-            </Typography>
-            <Box>
-                <Typography variant="h5" gutterBottom>
-                    🖥️ Teleconsultas
-                </Typography>
-                <Grid container spacing={3}>
-                    {teleconsultations.map((consultation) => (
-                        <Grid item xs={12} sm={6} md={4} key={consultation.id}>
-                            <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
-                                <CardContent>
-                                    <Typography variant="h6" gutterBottom>
-                                        {consultation.doctor}
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        Paciente: {consultation.patient}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Fecha: {consultation.date}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        Diagnóstico: {consultation.diagnosis}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-            <Box mt={4}>
-                <Typography variant="h5" gutterBottom>
-                    🏥 Consultas Presenciales
-                </Typography>
-                <Grid container spacing={3}>
-                    {inPersonConsultations.map((consultation) => (
-                        <Grid item xs={12} sm={6} md={4} key={consultation.id}>
-                            <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
-                                <CardContent>
-                                    <Typography variant="h6" gutterBottom>
-                                        {consultation.doctor}
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        Paciente: {consultation.patient}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Fecha: {consultation.date}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        Diagnóstico: {consultation.diagnosis}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
-        </Container>
-    );
+  const descriptionElementRef = React.useRef(null);
+  React.useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open]);
+
+  return (
+    <React.Fragment>
+      <Button onClick={handleClickOpen('body')}>button</Button>
+      <Button onClick={handleClickOpen('body')}>scroll=body</Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll={scroll}
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+      >
+        <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
+        <DialogContent dividers={scroll === 'paper'}>
+          <DialogContentText
+            id="scroll-dialog-description"
+            ref={descriptionElementRef}
+            tabIndex={-1}
+          >
+            {[...new Array(50)]
+              .map(
+                () => `Cras mattis consectetur purus sit amet fermentum.
+Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
+              )
+              .join('\n')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Subscribe</Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
+  );
 }
